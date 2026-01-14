@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
+  <title>ERT Gear & P2H</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;500;700&display=swap"
+    rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['DM Sans', 'sans-serif'], // More humanist font than Inter
+          },
+          colors: {
+            app: {
+              bg: '#F3F6F8',       /* Ceramic Light Grey */
+              surface: '#FFFFFF',  /* Pure White Paper */
+              elevated: '#F8FAFC', /* Slightly darker white for texture */
+              border: '#E2E8F0',   /* Very soft grey border */
+              primary: '#10B981',  /* Emerald 500 (Organic Green) */
+              secondary: '#34D399', /* Emerald 400 */
+              critical: '#EF4444', /* Soft Red */
+              success: '#10B981',  /* Organic Green */
+              warning: '#F59E0B',  /* Warm Amber */
+              text: {
+                primary: '#1E293B',   /* Slate 800 - High contrast dark blue/grey */
+                secondary: '#64748B', /* Slate 500 */
+                muted: '#94A3B8'      /* Slate 400 */
+              }
+            }
+          },
+          boxShadow: {
+            'soft': '0 10px 40px -10px rgba(0, 0, 0, 0.05)',
+            'float': '0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.01)',
+            'card': '0 4px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px -1px rgba(0, 0, 0, 0.02)',
+            'inner': 'inset 0 2px 4px 0 rgba(0, 0, 0, 0.02)',
+          },
+          borderRadius: {
+            'xl': '16px',
+            '2xl': '24px',
+            '3xl': '32px', // Super rounded for humanist feel
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      background-color: #F1F5F9;
+      /* Slate 100 desktop */
+      color: #1E293B;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* Hide scrollbar */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    /* Glass effect util - adapted for light mode */
+    .glass {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    /* Override Chrome/Edge Autofill Blue Background */
+    input:-webkit-autofill,
+    input:-webkit-autofill:hover,
+    input:-webkit-autofill:focus,
+    input:-webkit-autofill:active {
+      -webkit-box-shadow: 0 0 0 30px #ffffff inset !important;
+      -webkit-text-fill-color: #1e293b !important;
+      transition: background-color 5000s ease-in-out 0s;
+    }
+  </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
+    "@google/genai": "https://esm.sh/@google/genai@^1.35.0",
+    "lucide-react": "https://esm.sh/lucide-react@^0.562.0",
+    "react/": "https://esm.sh/react@^19.2.3/",
+    "react": "https://esm.sh/react@^19.2.3"
+  }
+}
+</script>
+  <link rel="stylesheet" href="/index.css">
+</head>
+
+<body>
+  <div id="root"></div>
+  <script type="module" src="/index.tsx"></script>
+</body>
+
+</html>

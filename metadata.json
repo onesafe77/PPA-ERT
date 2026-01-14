@@ -1,0 +1,8 @@
+{
+  "name": "ERT Inspection",
+  "description": "Aplikasi inspeksi modern untuk enterprise dengan dukungan AI.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
+}
