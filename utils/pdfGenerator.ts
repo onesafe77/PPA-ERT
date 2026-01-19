@@ -288,14 +288,14 @@ interface APARData {
     createdAt: string;
 }
 
-const APAR_ITEMS = ['Handle', 'Lock Pin', 'Seal Segel', 'Tabung', 'Hose Nozzle', 'Braket'];
+const APAR_ITEMS_PDF = ['Handle', 'Lock Pin', 'Seal Segel', 'Tabung', 'Hose Nozzle', 'Braket'];
 
 export async function generateAPARPDF(data: APARData): Promise<void> {
-    const doc = new jsPDF('p', 'mm', 'a4');
-    const pageWidth = 210;
-    const margin = 15;
+    const doc = new jsPDF('l', 'mm', 'a4');
+    const pageWidth = 297;
+    const pageHeight = 210;
+    const margin = 10;
 
-    // Parse checklist data
     let checklistParsed: Record<string, boolean> = {};
     try {
         checklistParsed = JSON.parse(data.checklistData || '{}');
@@ -303,148 +303,148 @@ export async function generateAPARPDF(data: APARData): Promise<void> {
         checklistParsed = {};
     }
 
+    const dateStr = data.date || data.createdAt;
+    const inspectionDate = dateStr ? new Date(dateStr) : new Date();
+    const monthNames = ['JANUARI', 'FEBRUARI', 'MARET', 'APRIL', 'MEI', 'JUNI', 'JULI', 'AGUSTUS', 'SEPTEMBER', 'OKTOBER', 'NOVEMBER', 'DESEMBER'];
+    const periodeInspeksi = `${monthNames[inspectionDate.getMonth()]} ${inspectionDate.getFullYear()}`;
+    const tanggalInspeksi = inspectionDate.toLocaleDateString('id-ID', { day: '2-digit', month: '2-digit', year: 'numeric' });
+
     // ============ HEADER ============
-    try {
-        const ppaLogo = await loadImageAsBase64('/ppa-logo.png');
-        if (ppaLogo) doc.addImage(ppaLogo, 'PNG', margin, 10, 20, 20);
-    } catch (e) { }
-
-    try {
-        const ertLogo = await loadImageAsBase64('/ert-logo.png');
-        if (ertLogo) doc.addImage(ertLogo, 'PNG', margin + 25, 10, 20, 20);
-    } catch (e) { }
-
-    // Title
-    doc.setFontSize(16);
+    doc.setFontSize(14);
     doc.setFont('helvetica', 'bold');
-    doc.setTextColor(220, 53, 69);
-    doc.text('LAPORAN INSPEKSI APAR', pageWidth / 2, 18, { align: 'center' });
-    doc.setFontSize(10);
-    doc.setTextColor(100, 100, 100);
-    doc.text('Alat Pemadam Api Ringan', pageWidth / 2, 25, { align: 'center' });
-
-    // Red separator line
-    doc.setDrawColor(220, 53, 69);
-    doc.setLineWidth(1);
-    doc.line(margin, 35, pageWidth - margin, 35);
+    doc.setTextColor(0, 0, 0);
+    doc.text('CHECKLIST INSPEKSI', pageWidth / 2, 12, { align: 'center' });
+    doc.setFontSize(12);
+    doc.text('ALAT PEMADAM API RINGAN (APAR)', pageWidth / 2, 18, { align: 'center' });
 
     // ============ INFO SECTION ============
-    let y = 45;
-    doc.setFontSize(10);
+    doc.setFontSize(9);
     doc.setFont('helvetica', 'normal');
-    doc.setTextColor(0, 0, 0);
-
-    const labelX = margin;
-    const valueX = margin + 45;
-    const col2LabelX = pageWidth / 2 + 10;
-    const col2ValueX = col2LabelX + 35;
-
-    // Row 1
-    doc.setFont('helvetica', 'bold');
-    doc.text('Tanggal:', labelX, y);
-    doc.setFont('helvetica', 'normal');
-    const dateStr = data.date || data.createdAt;
-    const formattedDate = dateStr ? new Date(dateStr).toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' }) : '-';
-    doc.text(formattedDate, valueX, y);
+    
+    doc.text('Project / Site', margin, 28);
+    doc.text(`: PPA / BIB`, margin + 28, 28);
+    
+    doc.text('Periode Inspeksi', margin, 34);
+    doc.text(`: ${periodeInspeksi}`, margin + 28, 34);
 
     doc.setFont('helvetica', 'bold');
-    doc.text('No. Tag:', col2LabelX, y);
+    doc.text(data.location || 'LOKASI', pageWidth - margin - 60, 28);
+    
     doc.setFont('helvetica', 'normal');
-    doc.text(data.tagNumber || '-', col2ValueX, y);
+    doc.setFontSize(8);
+    doc.text('PPA-BIB-F-SHE-20A', pageWidth - margin, 34, { align: 'right' });
 
-    // Row 2
-    y += 8;
-    doc.setFont('helvetica', 'bold');
-    doc.text('Lokasi:', labelX, y);
-    doc.setFont('helvetica', 'normal');
-    doc.text(data.location || '-', valueX, y);
+    // ============ TABLE ============
+    const getCheckMark = (item: string) => {
+        return checklistParsed[item] === true ? 'V' : '';
+    };
 
-    doc.setFont('helvetica', 'bold');
-    doc.text('Kapasitas:', col2LabelX, y);
-    doc.setFont('helvetica', 'normal');
-    doc.text(data.capacity || '-', col2ValueX, y);
+    const kondisiAPAR = data.condition === 'LAYAK' ? 'L' : 'TL';
 
-    // Row 3
-    y += 8;
-    doc.setFont('helvetica', 'bold');
-    doc.text('Unit/Detail:', labelX, y);
-    doc.setFont('helvetica', 'normal');
-    doc.text(data.unitNumber || '-', valueX, y);
-
-    doc.setFont('helvetica', 'bold');
-    doc.text('PIC:', col2LabelX, y);
-    doc.setFont('helvetica', 'normal');
-    doc.text(data.pic || '-', col2ValueX, y);
-
-    // ============ CHECKLIST TABLE ============
-    y += 15;
-    doc.setFontSize(12);
-    doc.setFont('helvetica', 'bold');
-    doc.text('Hasil Pemeriksaan', margin, y);
-
-    const tableData = APAR_ITEMS.map(item => {
-        const isChecked = checklistParsed[item] === true;
-        return [item, isChecked ? 'OK' : 'NOT OK'];
-    });
+    const tableBody = [[
+        '1',
+        data.unitNumber || '-',
+        data.capacity || '6 Kg',
+        data.tagNumber || '-',
+        getCheckMark('Handle'),
+        getCheckMark('Lock Pin'),
+        getCheckMark('Seal Segel'),
+        getCheckMark('Tabung'),
+        getCheckMark('Hose Nozzle'),
+        getCheckMark('Braket'),
+        kondisiAPAR,
+        data.notes || '',
+        tanggalInspeksi,
+        data.pic || '-'
+    ]];
 
     autoTable(doc, {
-        startY: y + 5,
-        head: [['Item Pemeriksaan', 'Status']],
-        body: tableData,
-        theme: 'striped',
-        styles: { fontSize: 10, cellPadding: 4 },
-        headStyles: { fillColor: [220, 53, 69], textColor: [255, 255, 255], fontStyle: 'bold' },
+        startY: 40,
+        head: [[
+            { content: 'NO', rowSpan: 2 },
+            { content: 'No Unit/ Lokasi', rowSpan: 2 },
+            { content: 'Kapasitas', rowSpan: 2 },
+            { content: 'No. Tag', rowSpan: 2 },
+            { content: 'ITEM PEMERIKSAAN', colSpan: 6 },
+            { content: 'Kondisi\nAPAR(LAYAK/\nTIDAK LAYAK)', rowSpan: 2 },
+            { content: 'Keterangan', rowSpan: 2 },
+            { content: 'Tanggal\nInspeksi', rowSpan: 2 },
+            { content: 'PIC', rowSpan: 2 }
+        ], [
+            'Handle', 'Lock Pin', 'Seal\nSegel', 'Tabung', 'Hose\nNozzle', 'Braket'
+        ]],
+        body: tableBody,
+        theme: 'grid',
+        styles: { 
+            fontSize: 7, 
+            cellPadding: 2, 
+            lineColor: [0, 0, 0], 
+            lineWidth: 0.2, 
+            valign: 'middle',
+            halign: 'center',
+            textColor: [0, 0, 0]
+        },
+        headStyles: { 
+            fillColor: [255, 255, 255], 
+            textColor: [0, 0, 0], 
+            fontStyle: 'bold', 
+            halign: 'center',
+            valign: 'middle',
+            fontSize: 7
+        },
         columnStyles: {
-            0: { cellWidth: 100 },
-            1: { cellWidth: 50, halign: 'center' }
+            0: { cellWidth: 10 },
+            1: { cellWidth: 40, halign: 'left' },
+            2: { cellWidth: 18 },
+            3: { cellWidth: 15 },
+            4: { cellWidth: 14 },
+            5: { cellWidth: 14 },
+            6: { cellWidth: 14 },
+            7: { cellWidth: 14 },
+            8: { cellWidth: 14 },
+            9: { cellWidth: 14 },
+            10: { cellWidth: 22 },
+            11: { cellWidth: 35, halign: 'left' },
+            12: { cellWidth: 20 },
+            13: { cellWidth: 25 }
         },
         margin: { left: margin, right: margin },
-        didParseCell: function(data) {
-            if (data.section === 'body' && data.column.index === 1) {
-                if (data.cell.raw === 'OK') {
-                    data.cell.styles.textColor = [40, 167, 69];
-                    data.cell.styles.fontStyle = 'bold';
-                } else {
-                    data.cell.styles.textColor = [220, 53, 69];
-                    data.cell.styles.fontStyle = 'bold';
-                }
-            }
-        }
+        tableWidth: 'auto'
     });
 
-    // ============ KONDISI AKHIR ============
-    y = (doc as any).lastAutoTable.finalY + 15;
-    doc.setFontSize(12);
-    doc.setFont('helvetica', 'bold');
-    doc.text('Kondisi Akhir:', margin, y);
-
-    const conditionColor = data.condition === 'LAYAK' ? [40, 167, 69] : [220, 53, 69];
-    doc.setTextColor(conditionColor[0], conditionColor[1], conditionColor[2]);
-    doc.setFontSize(14);
-    doc.text(data.condition || '-', margin + 45, y);
-
-    // ============ CATATAN ============
-    y += 15;
-    doc.setTextColor(0, 0, 0);
-    doc.setFontSize(12);
-    doc.setFont('helvetica', 'bold');
-    doc.text('Catatan:', margin, y);
-    doc.setFont('helvetica', 'normal');
-    doc.setFontSize(10);
-    doc.text(data.notes || '-', margin, y + 8);
-
-    // ============ FOOTER ============
-    y += 40;
-    doc.setDrawColor(200, 200, 200);
-    doc.setLineWidth(0.5);
-    doc.line(margin, y, pageWidth - margin, y);
-
+    // ============ KETERANGAN ============
+    let y = (doc as any).lastAutoTable.finalY + 8;
     doc.setFontSize(8);
-    doc.setTextColor(128, 128, 128);
-    doc.text('Dokumen ini dibuat otomatis oleh sistem ERT PPA', pageWidth / 2, y + 8, { align: 'center' });
-    doc.text(`ID Inspeksi: #${data.id}`, pageWidth / 2, y + 13, { align: 'center' });
+    doc.setFont('helvetica', 'bold');
+    doc.text('Keterangan', margin, y);
+    
+    doc.setFont('helvetica', 'normal');
+    y += 5;
+    doc.text('V', margin, y);
+    doc.text(': Kondisi Layak', margin + 8, y);
+    y += 4;
+    doc.text('X', margin, y);
+    doc.text(': Kondisi Tidak Layak', margin + 8, y);
+    y += 4;
+    doc.setFontSize(7);
+    doc.text('Jika berat APAR kurang dari 10% dari berat APAR kondisi baru', margin + 8, y);
 
-    // Save
-    const fileName = `APAR_${data.tagNumber || data.id}_${formattedDate.replace(/\s/g, '_')}.pdf`;
+    // ============ SIGNATURE SECTION ============
+    const sigY = y + 15;
+    const leftSigX = margin + 60;
+    const rightSigX = pageWidth - margin - 80;
+
+    doc.setFontSize(9);
+    doc.setFont('helvetica', 'normal');
+    doc.text(`Girimulya,        ${periodeInspeksi}`, rightSigX + 20, sigY - 5);
+
+    doc.text('Diketahui Oleh,', leftSigX, sigY);
+    doc.text('Di Periksa Oleh,', rightSigX + 40, sigY);
+
+    doc.text('(………………............….….)', leftSigX - 10, sigY + 25);
+    doc.text('(…………….........…………...)', rightSigX + 30, sigY + 25);
+
+    // Save file
+    const fileName = `CHECKLIST_INSPEKSI_APAR_${data.location?.replace(/\s/g, '_') || 'APAR'}_${periodeInspeksi.replace(/\s/g, '_')}.pdf`;
     doc.save(fileName);
 }

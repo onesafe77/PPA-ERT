@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowLeft, Save } from 'lucide-react';
+import { ArrowLeft, Save, ChevronDown } from 'lucide-react';
 import { ScreenName } from '../types';
 import { LoadingOverlay } from '../components/LoadingOverlay';
 
@@ -9,6 +9,39 @@ interface APARFormProps {
 }
 
 const APAR_ITEMS = ['Handle', 'Lock Pin', 'Seal Segel', 'Tabung', 'Hose Nozzle', 'Braket'];
+
+const APAR_LOCATIONS = [
+    'MAIN OFFICE',
+    'AREA ASSEMBLY',
+    'AREA CATERING',
+    'AREA GOH BAY TRACK & WHEEL',
+    'BUSS BAGONG',
+    'GUDANG OLI',
+    'MANPOWER',
+    'MASTRATECH',
+    'OFFICE ERT BARU',
+    'OFFICE GA MESS BARU',
+    'OFFICE SHE',
+    'OFFICE SS6',
+    'PIT STOP FMC UT KGU',
+    'PIT STOP KGU SELATAN',
+    'PIT STOP KGU TENGAH',
+    'PIT STOP KGU UTARA',
+    'ROOM A2',
+    'SWIMMING POOL',
+    'VIEW POINT',
+    'VIEWPOINT KGU-SELATAN',
+    'WAREHOUSE UT',
+    'WORKSHOP BINA PERTIWI',
+    'WORKSHOP BOSTON',
+    'WORKSHOP EKA DHARMA & PWB',
+    'WORKSHOP FMC UT',
+    'WORKSHOP HIGH VOLTAGE',
+    'WORKSHOP MULTINDO',
+    'WORKSHOP SENTOSA TEKHNIK',
+    'WORKSHOP UNITED DIESEL',
+    'WTP'
+];
 
 export const APARInspectionScreen: React.FC<APARFormProps> = ({ onNavigate, user }) => {
     const [loading, setLoading] = useState(false);
@@ -99,13 +132,19 @@ export const APARInspectionScreen: React.FC<APARFormProps> = ({ onNavigate, user
                 <div className="bg-white rounded-xl p-4 shadow-sm space-y-4 max-w-5xl mx-auto w-full">
                     <div>
                         <label className="text-[10px] font-bold text-slate-500 uppercase block mb-1">LOKASI (AREA)</label>
-                        <input
-                            type="text"
-                            value={location}
-                            onChange={(e) => setLocation(e.target.value)}
-                            placeholder="Contoh: Food Court, Gusang..."
-                            className="w-full h-10 px-3 bg-slate-50 border border-slate-200 rounded-lg text-sm font-medium focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500 transition-all"
-                        />
+                        <div className="relative">
+                            <select
+                                value={location}
+                                onChange={(e) => setLocation(e.target.value)}
+                                className="w-full h-10 px-3 bg-slate-50 border border-slate-200 rounded-lg text-sm font-medium focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500 transition-all appearance-none cursor-pointer"
+                            >
+                                <option value="">-- Pilih Lokasi --</option>
+                                {APAR_LOCATIONS.map((loc) => (
+                                    <option key={loc} value={loc}>{loc}</option>
+                                ))}
+                            </select>
+                            <ChevronDown size={18} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
+                        </div>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
