@@ -298,6 +298,7 @@ interface APARData {
     diPeriksaOleh?: string;
     signatureDiketahui?: string;
     signatureDiPeriksa?: string;
+    periodeInspeksi?: string;
     date?: string;
     createdAt: string;
     units?: APARUnit[];
@@ -314,7 +315,7 @@ export async function generateAPARPDF(data: APARData): Promise<void> {
     const dateStr = data.date || data.createdAt;
     const inspectionDate = dateStr ? new Date(dateStr) : new Date();
     const monthNames = ['JANUARI', 'FEBRUARI', 'MARET', 'APRIL', 'MEI', 'JUNI', 'JULI', 'AGUSTUS', 'SEPTEMBER', 'OKTOBER', 'NOVEMBER', 'DESEMBER'];
-    const periodeInspeksi = `${monthNames[inspectionDate.getMonth()]} ${inspectionDate.getFullYear()}`;
+    const periodeInspeksi = data.periodeInspeksi || `${monthNames[inspectionDate.getMonth()]} ${inspectionDate.getFullYear()}`;
     const tanggalInspeksi = inspectionDate.toLocaleDateString('id-ID', { day: '2-digit', month: '2-digit', year: 'numeric' });
 
     // ============ LOGO PT. PPA ============
@@ -437,19 +438,19 @@ export async function generateAPARPDF(data: APARData): Promise<void> {
         },
         columnStyles: {
             0: { cellWidth: 10 },
-            1: { cellWidth: 42, halign: 'left' },
-            2: { cellWidth: 16 },
-            3: { cellWidth: 14 },
-            4: { cellWidth: 13 },
-            5: { cellWidth: 13 },
-            6: { cellWidth: 13 },
-            7: { cellWidth: 13 },
-            8: { cellWidth: 13 },
-            9: { cellWidth: 13 },
-            10: { cellWidth: 22 },
-            11: { cellWidth: 50, halign: 'left', overflow: 'linebreak' },
+            1: { cellWidth: 40, halign: 'left' },
+            2: { cellWidth: 15 },
+            3: { cellWidth: 12 },
+            4: { cellWidth: 12 },
+            5: { cellWidth: 12 },
+            6: { cellWidth: 12 },
+            7: { cellWidth: 12 },
+            8: { cellWidth: 12 },
+            9: { cellWidth: 12 },
+            10: { cellWidth: 20 },
+            11: { cellWidth: 62, halign: 'left', overflow: 'linebreak' },
             12: { cellWidth: 18 },
-            13: { cellWidth: 20 }
+            13: { cellWidth: 18 }
         },
         margin: { left: margin, right: margin },
         tableWidth: 'auto'

@@ -61,6 +61,10 @@ export const APARInspectionScreen: React.FC<APARFormProps> = ({ onNavigate, user
 
     const [location, setLocation] = useState('');
     const [pic, setPic] = useState(user?.name || '');
+    const [periodeMonth, setPeriodeMonth] = useState(new Date().getMonth());
+    const [periodeYear, setPeriodeYear] = useState(new Date().getFullYear());
+
+    const MONTH_NAMES = ['JANUARI', 'FEBRUARI', 'MARET', 'APRIL', 'MEI', 'JUNI', 'JULI', 'AGUSTUS', 'SEPTEMBER', 'OKTOBER', 'NOVEMBER', 'DESEMBER'];
 
     const [unitNumber, setUnitNumber] = useState('');
     const [capacity, setCapacity] = useState('6 Kg');
@@ -188,6 +192,7 @@ export const APARInspectionScreen: React.FC<APARFormProps> = ({ onNavigate, user
                     diPeriksaOleh,
                     signatureDiketahui,
                     signatureDiPeriksa,
+                    periodeInspeksi: `${MONTH_NAMES[periodeMonth]} ${periodeYear}`,
                     createdAt: new Date().toISOString(),
                     units: unitsForPDF
                 } as any);
@@ -294,6 +299,35 @@ export const APARInspectionScreen: React.FC<APARFormProps> = ({ onNavigate, user
                                     placeholder="Masukkan nama petugas..."
                                     className="w-full h-12 px-4 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500 transition-all"
                                 />
+                            </div>
+                            <div>
+                                <label className="text-xs font-bold text-slate-600 uppercase block mb-2">PERIODE INSPEKSI</label>
+                                <div className="flex gap-3">
+                                    <div className="relative flex-1">
+                                        <select
+                                            value={periodeMonth}
+                                            onChange={(e) => setPeriodeMonth(Number(e.target.value))}
+                                            className="w-full h-12 px-4 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500 transition-all appearance-none cursor-pointer"
+                                        >
+                                            {MONTH_NAMES.map((month, idx) => (
+                                                <option key={month} value={idx}>{month}</option>
+                                            ))}
+                                        </select>
+                                        <ChevronDown size={20} className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
+                                    </div>
+                                    <div className="relative w-28">
+                                        <select
+                                            value={periodeYear}
+                                            onChange={(e) => setPeriodeYear(Number(e.target.value))}
+                                            className="w-full h-12 px-4 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500 transition-all appearance-none cursor-pointer"
+                                        >
+                                            {[2024, 2025, 2026, 2027, 2028].map((year) => (
+                                                <option key={year} value={year}>{year}</option>
+                                            ))}
+                                        </select>
+                                        <ChevronDown size={20} className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
@@ -426,13 +460,13 @@ export const APARInspectionScreen: React.FC<APARFormProps> = ({ onNavigate, user
                                 <div className="overflow-x-auto">
                                     <table className="w-full text-xs">
                                         <thead>
-                                            <tr className="bg-slate-100">
-                                                <th className="px-2 py-2 text-left font-bold text-slate-600">NO</th>
-                                                <th className="px-2 py-2 text-left font-bold text-slate-600">Detail Lokasi</th>
-                                                <th className="px-2 py-2 text-center font-bold text-slate-600">Kapasitas</th>
-                                                <th className="px-2 py-2 text-center font-bold text-slate-600">Tag</th>
-                                                <th className="px-2 py-2 text-center font-bold text-slate-600">Kondisi</th>
-                                                <th className="px-2 py-2 text-center font-bold text-slate-600">Hapus</th>
+                                            <tr className="bg-slate-300">
+                                                <th className="px-2 py-2 text-left font-bold text-slate-700">NO</th>
+                                                <th className="px-2 py-2 text-left font-bold text-slate-700">Detail Lokasi</th>
+                                                <th className="px-2 py-2 text-center font-bold text-slate-700">Kapasitas</th>
+                                                <th className="px-2 py-2 text-center font-bold text-slate-700">Tag</th>
+                                                <th className="px-2 py-2 text-center font-bold text-slate-700">Kondisi</th>
+                                                <th className="px-2 py-2 text-center font-bold text-slate-700">Hapus</th>
                                             </tr>
                                         </thead>
                                         <tbody>
