@@ -242,9 +242,10 @@ app.post('/api/apar', async (req, res) => {
 
 app.get('/api/apar', async (req, res) => {
     try {
-        const data = await db.select().from(aparInspections).orderBy(desc(aparInspections.date));
+        const data = await db.select().from(aparInspections).orderBy(desc(aparInspections.id));
         res.json(data);
     } catch (error) {
+        console.error('APAR Fetch Error:', error);
         res.status(500).json({ error: 'Failed to fetch APAR inspections' });
     }
 });
@@ -273,9 +274,15 @@ app.post('/api/hydrant', async (req, res) => {
 
 app.get('/api/hydrant', async (req, res) => {
     try {
-        const data = await db.select().from(hydrantInspections).orderBy(desc(hydrantInspections.date));
-        res.json(data);
-    } catch (error) {
+        const data = await db.select().from(hydrantInspections).orderBy(desc(hydrantInspections.id));
+        res.json(data || []);
+    } catch (error: any) {
+        // Handle Neon driver bug with empty tables
+        if (error?.cause?.message?.includes('Cannot read properties of null')) {
+            res.json([]);
+            return;
+        }
+        console.error('Hydrant Fetch Error:', error);
         res.status(500).json({ error: 'Failed to fetch Hydrant inspections' });
     }
 });

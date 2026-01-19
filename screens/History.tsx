@@ -35,16 +35,23 @@ export const HistoryScreen: React.FC = () => {
 
   const fetchInspections = async () => {
     try {
-      // Fetch all inspection types
-      const [p2hRes, aparRes, hydrantRes] = await Promise.all([
-        fetch('/api/p2h'),
-        fetch('/api/apar'),
-        fetch('/api/hydrant')
-      ]);
+      // Fetch all inspection types - handle each independently
+      const fetchWithFallback = async (url: string) => {
+        try {
+          const res = await fetch(url);
+          if (!res.ok) return [];
+          const data = await res.json();
+          return Array.isArray(data) ? data : [];
+        } catch {
+          return [];
+        }
+      };
 
-      const p2hData = await p2hRes.json();
-      const aparData = await aparRes.json();
-      const hydrantData = await hydrantRes.json();
+      const [p2hData, aparData, hydrantData] = await Promise.all([
+        fetchWithFallback('/api/p2h'),
+        fetchWithFallback('/api/apar'),
+        fetchWithFallback('/api/hydrant')
+      ]);
 
       // Combine and add type field
       const combined: Inspection[] = [
@@ -53,10 +60,13 @@ export const HistoryScreen: React.FC = () => {
         ...hydrantData.map((item: any) => ({ ...item, type: 'HYDRANT' as const }))
       ];
 
-      // Sort by date (newest first)
+      // Sort by id (newest first) - more reliable than dates
       combined.sort((a, b) => {
-        const dateA = new Date(a.date || a.createdAt).getTime();
-        const dateB = new Date(b.date || b.createdAt).getTime();
+        const dateA = new Date(a.date || a.createdAt || 0).getTime();
+        const dateB = new Date(b.date || b.createdAt || 0).getTime();
+        if (dateA === dateB || (isNaN(dateA) && isNaN(dateB))) {
+          return b.id - a.id;
+        }
         return dateB - dateA;
       });
 
