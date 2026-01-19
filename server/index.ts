@@ -91,13 +91,9 @@ app.post('/api/p2h', async (req, res) => {
             notes,
             userId: userId || null,
             status: 'PENDING'
-        });
+        }).returning();
 
-        // MySQL specific: get the inserted ID
-        const insertId = newP2H[0].insertId;
-        const insertedP2H = await db.select().from(p2hInspections).where(eq(p2hInspections.id, insertId));
-
-        res.json(insertedP2H[0]);
+        res.json(newP2H[0]);
     } catch (error) {
         console.error('P2H create error:', error);
         res.status(500).json({ error: 'Failed to create P2H inspection' });
@@ -138,19 +134,13 @@ app.get('/api/inspections', async (req, res) => {
 
 app.post('/api/inspections', async (req, res) => {
     try {
-        const newInspection = await db.insert(inspections).values(req.body);
-
-        // MySQL specific: get the inserted ID
-        const insertId = newInspection[0].insertId;
-        const inserted = await db.select().from(inspections).where(eq(inspections.id, insertId));
-
-        res.json(inserted[0]);
+        const newInspection = await db.insert(inspections).values(req.body).returning();
+        res.json(newInspection[0]);
     } catch (error) {
         res.status(500).json({ error: 'Failed to create inspection' });
     }
 });
 
-// --- Chat Routes ---
 // --- Chat Routes ---
 app.post('/api/chat', async (req, res) => {
     try {
@@ -239,11 +229,9 @@ app.post('/api/apar', async (req, res) => {
             notes,
             pic,
             userId
-        });
+        }).returning();
 
-        const insertId = newApar[0].insertId;
-        const inserted = await db.select().from(aparInspections).where(eq(aparInspections.id, insertId));
-        res.json(inserted[0]);
+        res.json(newApar[0]);
     } catch (error) {
         console.error('APAR Create Error:', error);
         res.status(500).json({ error: 'Failed to create APAR inspection' });
@@ -271,11 +259,9 @@ app.post('/api/hydrant', async (req, res) => {
             notes,
             pic,
             userId
-        });
+        }).returning();
 
-        const insertId = newHydrant[0].insertId;
-        const inserted = await db.select().from(hydrantInspections).where(eq(hydrantInspections.id, insertId));
-        res.json(inserted[0]);
+        res.json(newHydrant[0]);
     } catch (error) {
         console.error('Hydrant Create Error:', error);
         res.status(500).json({ error: 'Failed to create Hydrant inspection' });
@@ -302,11 +288,9 @@ app.post('/api/pica', async (req, res) => {
             deadline: deadline ? new Date(deadline) : null,
             userId,
             status: 'OPEN'
-        });
+        }).returning();
 
-        const insertId = newPica[0].insertId;
-        const inserted = await db.select().from(picaReports).where(eq(picaReports.id, insertId));
-        res.json(inserted[0]);
+        res.json(newPica[0]);
     } catch (error) {
         console.error('PICA Create Error:', error);
         res.status(500).json({ error: 'Failed to create PICA report' });

@@ -1,7 +1,7 @@
-import { mysqlTable, serial, text, timestamp, int, boolean } from 'drizzle-orm/mysql-core';
+import { pgTable, serial, text, timestamp, integer, boolean } from 'drizzle-orm/pg-core';
 
-export const users = mysqlTable('users', {
-    id: int('id').primaryKey().autoincrement(),
+export const users = pgTable('users', {
+    id: serial('id').primaryKey(),
     employeeId: text('employee_id').notNull().unique(), // Added for NRP/Pegawai ID
     name: text('name').notNull(),
     role: text('role').notNull().default('user'), // 'admin', 'user', 'safety_officer'
@@ -9,29 +9,29 @@ export const users = mysqlTable('users', {
     createdAt: timestamp('created_at').defaultNow(),
 });
 
-export const inspections = mysqlTable('inspections', {
-    id: int('id').primaryKey().autoincrement(),
+export const inspections = pgTable('inspections', {
+    id: serial('id').primaryKey(),
     type: text('type').notNull(), // 'P2H' or 'Gear'
     title: text('title').notNull(),
     status: text('status').notNull(), // 'APPROVED', 'NOT READY', 'WAITING'
     date: text('date').notNull(),
     location: text('location'),
     severity: text('severity'), // 'low', 'medium', 'high'
-    userId: int('user_id').references(() => users.id),
+    userId: integer('user_id').references(() => users.id),
     createdAt: timestamp('created_at').defaultNow(),
 });
 
-export const chatLogs = mysqlTable('chat_logs', {
-    id: int('id').primaryKey().autoincrement(),
-    userId: int('user_id').references(() => users.id),
+export const chatLogs = pgTable('chat_logs', {
+    id: serial('id').primaryKey(),
+    userId: integer('user_id').references(() => users.id),
     message: text('message').notNull(),
     role: text('role').notNull(), // 'user' or 'model'
     timestamp: timestamp('timestamp').defaultNow(),
 });
 
 // P2H Inspection table
-export const p2hInspections = mysqlTable('p2h_inspections', {
-    id: int('id').primaryKey().autoincrement(),
+export const p2hInspections = pgTable('p2h_inspections', {
+    id: serial('id').primaryKey(),
     unitNumber: text('unit_number').notNull(),
     vehicleType: text('vehicle_type').notNull(),
     operatorName: text('operator_name'),
@@ -40,74 +40,58 @@ export const p2hInspections = mysqlTable('p2h_inspections', {
     checklistData: text('checklist_data'), // JSON string
     notes: text('notes'),
     status: text('status').default('PENDING'), // PENDING, APPROVED, NOT_READY
-    userId: int('user_id').references(() => users.id),
+    userId: integer('user_id').references(() => users.id),
     createdAt: timestamp('created_at').defaultNow(),
 });
 
-export const schedules = mysqlTable('schedules', {
-    id: int('id').primaryKey().autoincrement(),
+// APAR Inspection Table
+export const aparInspections = pgTable('apar_inspections', {
+    id: serial('id').primaryKey(),
+    date: timestamp('date').notNull(),
+    location: text('location').notNull(),
+    unitNumber: text('unit_number'), // e.g. "Dapur KPS"
+    capacity: text('capacity'),      // e.g. "6 Kg"
+    tagNumber: text('tag_number'),   // e.g. "1"
+    checklistData: text('checklist_data'), // JSON: { handle: boolean, ... }
+    condition: text('condition_status').notNull(), // 'LAYAK' / 'TIDAK LAYAK'
+    notes: text('notes'),
+    pic: text('pic'),
+    userId: integer('user_id').references(() => users.id),
+    createdAt: timestamp('created_at').defaultNow(),
+});
+
+// Hydrant Inspection Table
+export const hydrantInspections = pgTable('hydrant_inspections', {
+    id: serial('id').primaryKey(),
+    date: timestamp('date').notNull(),
+    location: text('location').notNull(), // e.g. "Gudang Handak"
+    shift: text('shift'),
+    checklistData: text('checklist_data'), // JSON string
+    notes: text('notes'),
+    pic: text('pic'),
+    userId: integer('user_id').references(() => users.id),
+    createdAt: timestamp('created_at').defaultNow(),
+});
+
+export const schedules = pgTable('schedules', {
+    id: serial('id').primaryKey(),
     title: text('title').notNull(),
     date: timestamp('date').notNull(),
     type: text('type').notNull(), // 'P2H' or 'Gear'
     unit: text('unit').notNull(),
     notes: text('notes'),
     status: text('status').default('Scheduled'), // Scheduled, Completed
-    userId: int('user_id').references(() => users.id),
+    userId: integer('user_id').references(() => users.id),
     createdAt: timestamp('created_at').defaultNow(),
 });
 
-
-// APAR Inspection Table
-export const aparInspections = mysqlTable('apar_inspections', {
-    id: int('id').primaryKey().autoincrement(),
-    date: timestamp('date').notNull(),
-    location: text('location').notNull(),
-
-    // Detailed Item Info (Generic for one row)
-    unitNumber: text('unit_number'), // e.g. "Dapur KPS"
-    capacity: text('capacity'),      // e.g. "6 Kg"
-    tagNumber: text('tag_number'),   // e.g. "1"
-
-    // Checklist items as JSON or boolean columns? 
-    // Image shows: Handle, Lock Pin, Seal, Tabung, Hose, Braket.
-    // Let's store as boolean columns for easier querying or JSON `checklist_data` for flexibility?
-    // Given the request "similar to P2H", we use `checklist_data` JSON.
-    checklistData: text('checklist_data'), // JSON: { handle: boolean, lock_pin: boolean, ... }
-
-    condition: text('condition_status').notNull(), // 'LAYAK' / 'TIDAK LAYAK'
-    notes: text('notes'),
-    pic: text('pic'),
-
-    userId: int('user_id').references(() => users.id),
-    createdAt: timestamp('created_at').defaultNow(),
-});
-
-// Hydrant Inspection Table
-export const hydrantInspections = mysqlTable('hydrant_inspections', {
-    id: int('id').primaryKey().autoincrement(),
-    date: timestamp('date').notNull(),
-    location: text('location').notNull(), // e.g. "Gudang Handak"
-    shift: text('shift'),
-
-    // The form is nested. Let's store the entire form structure in JSON similar to P2H.
-    // "checklist_data" will contain the Lines -> Components -> Checks status.
-    checklistData: text('checklist_data'), // JSON string
-
-    notes: text('notes'),
-    pic: text('pic'),
-
-    userId: int('user_id').references(() => users.id),
-    createdAt: timestamp('created_at').defaultNow(),
-});
-
-// PICA Reports Table
-export const picaReports = mysqlTable('pica_reports', {
-    id: int('id').primaryKey().autoincrement(),
+export const picaReports = pgTable('pica_reports', {
+    id: serial('id').primaryKey(),
     title: text('title').notNull(),
     description: text('description').notNull(),
-    imageData: text('image_data'), // Base64 string or URL
+    imageData: text('image_data'), // Base64 or URL
     deadline: timestamp('deadline'),
-    status: text('status').default('OPEN'), // OPEN, CLOSED, IN_PROGRESS
-    userId: int('user_id').references(() => users.id),
+    status: text('status').default('OPEN'), // OPEN, CLOSED
+    userId: integer('user_id').references(() => users.id),
     createdAt: timestamp('created_at').defaultNow(),
 });
