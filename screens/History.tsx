@@ -163,23 +163,25 @@ export const HistoryScreen: React.FC = () => {
               >
                 <Filter size={22} />
               </button>
-              {showFilterMenu && (
-                <div className="absolute right-0 top-14 bg-white rounded-xl shadow-xl border border-slate-100 overflow-hidden z-50 min-w-[140px]">
-                  {['ALL', 'P2H', 'APAR', 'HYDRANT'].map((type) => (
-                    <button
-                      key={type}
-                      onClick={() => { setFilterType(type as any); setShowFilterMenu(false); }}
-                      className={`w-full px-4 py-3 text-left text-sm font-medium hover:bg-slate-50 transition-colors ${
-                        filterType === type ? 'bg-indigo-50 text-indigo-600' : 'text-slate-700'
-                      }`}
-                    >
-                      {type === 'ALL' ? 'Semua' : type}
-                    </button>
-                  ))}
-                </div>
-              )}
             </div>
           </div>
+          {showFilterMenu && (
+            <div className="mt-3 bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl p-2 flex gap-2">
+              {['ALL', 'P2H', 'APAR', 'HYDRANT'].map((type) => (
+                <button
+                  key={type}
+                  onClick={() => { setFilterType(type as any); setShowFilterMenu(false); }}
+                  className={`flex-1 px-4 py-2 rounded-xl text-sm font-bold transition-all ${
+                    filterType === type 
+                      ? 'bg-white text-indigo-600 shadow-md' 
+                      : 'text-white/80 hover:bg-white/10'
+                  }`}
+                >
+                  {type === 'ALL' ? 'Semua' : type}
+                </button>
+              ))}
+            </div>
+          )}
         </div>
       </div>
 
