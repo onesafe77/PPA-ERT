@@ -272,3 +272,179 @@ export async function generateP2HPDF(data: P2HData): Promise<void> {
     // Save
     doc.save(`P2H_${data.unitNumber}_${new Date(data.createdAt).toISOString().split('T')[0]}.pdf`);
 }
+
+// ============ APAR PDF Generator ============
+interface APARData {
+    id: number;
+    location: string;
+    unitNumber: string;
+    capacity: string;
+    tagNumber: string;
+    checklistData: string;
+    condition: string;
+    notes: string;
+    pic: string;
+    date?: string;
+    createdAt: string;
+}
+
+const APAR_ITEMS = ['Handle', 'Lock Pin', 'Seal Segel', 'Tabung', 'Hose Nozzle', 'Braket'];
+
+export async function generateAPARPDF(data: APARData): Promise<void> {
+    const doc = new jsPDF('p', 'mm', 'a4');
+    const pageWidth = 210;
+    const margin = 15;
+
+    // Parse checklist data
+    let checklistParsed: Record<string, boolean> = {};
+    try {
+        checklistParsed = JSON.parse(data.checklistData || '{}');
+    } catch (e) {
+        checklistParsed = {};
+    }
+
+    // ============ HEADER ============
+    try {
+        const ppaLogo = await loadImageAsBase64('/ppa-logo.png');
+        if (ppaLogo) doc.addImage(ppaLogo, 'PNG', margin, 10, 20, 20);
+    } catch (e) { }
+
+    try {
+        const ertLogo = await loadImageAsBase64('/ert-logo.png');
+        if (ertLogo) doc.addImage(ertLogo, 'PNG', margin + 25, 10, 20, 20);
+    } catch (e) { }
+
+    // Title
+    doc.setFontSize(16);
+    doc.setFont('helvetica', 'bold');
+    doc.setTextColor(220, 53, 69);
+    doc.text('LAPORAN INSPEKSI APAR', pageWidth / 2, 18, { align: 'center' });
+    doc.setFontSize(10);
+    doc.setTextColor(100, 100, 100);
+    doc.text('Alat Pemadam Api Ringan', pageWidth / 2, 25, { align: 'center' });
+
+    // Red separator line
+    doc.setDrawColor(220, 53, 69);
+    doc.setLineWidth(1);
+    doc.line(margin, 35, pageWidth - margin, 35);
+
+    // ============ INFO SECTION ============
+    let y = 45;
+    doc.setFontSize(10);
+    doc.setFont('helvetica', 'normal');
+    doc.setTextColor(0, 0, 0);
+
+    const labelX = margin;
+    const valueX = margin + 45;
+    const col2LabelX = pageWidth / 2 + 10;
+    const col2ValueX = col2LabelX + 35;
+
+    // Row 1
+    doc.setFont('helvetica', 'bold');
+    doc.text('Tanggal:', labelX, y);
+    doc.setFont('helvetica', 'normal');
+    const dateStr = data.date || data.createdAt;
+    const formattedDate = dateStr ? new Date(dateStr).toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' }) : '-';
+    doc.text(formattedDate, valueX, y);
+
+    doc.setFont('helvetica', 'bold');
+    doc.text('No. Tag:', col2LabelX, y);
+    doc.setFont('helvetica', 'normal');
+    doc.text(data.tagNumber || '-', col2ValueX, y);
+
+    // Row 2
+    y += 8;
+    doc.setFont('helvetica', 'bold');
+    doc.text('Lokasi:', labelX, y);
+    doc.setFont('helvetica', 'normal');
+    doc.text(data.location || '-', valueX, y);
+
+    doc.setFont('helvetica', 'bold');
+    doc.text('Kapasitas:', col2LabelX, y);
+    doc.setFont('helvetica', 'normal');
+    doc.text(data.capacity || '-', col2ValueX, y);
+
+    // Row 3
+    y += 8;
+    doc.setFont('helvetica', 'bold');
+    doc.text('Unit/Detail:', labelX, y);
+    doc.setFont('helvetica', 'normal');
+    doc.text(data.unitNumber || '-', valueX, y);
+
+    doc.setFont('helvetica', 'bold');
+    doc.text('PIC:', col2LabelX, y);
+    doc.setFont('helvetica', 'normal');
+    doc.text(data.pic || '-', col2ValueX, y);
+
+    // ============ CHECKLIST TABLE ============
+    y += 15;
+    doc.setFontSize(12);
+    doc.setFont('helvetica', 'bold');
+    doc.text('Hasil Pemeriksaan', margin, y);
+
+    const tableData = APAR_ITEMS.map(item => {
+        const isChecked = checklistParsed[item] === true;
+        return [item, isChecked ? 'OK' : 'NOT OK'];
+    });
+
+    autoTable(doc, {
+        startY: y + 5,
+        head: [['Item Pemeriksaan', 'Status']],
+        body: tableData,
+        theme: 'striped',
+        styles: { fontSize: 10, cellPadding: 4 },
+        headStyles: { fillColor: [220, 53, 69], textColor: [255, 255, 255], fontStyle: 'bold' },
+        columnStyles: {
+            0: { cellWidth: 100 },
+            1: { cellWidth: 50, halign: 'center' }
+        },
+        margin: { left: margin, right: margin },
+        didParseCell: function(data) {
+            if (data.section === 'body' && data.column.index === 1) {
+                if (data.cell.raw === 'OK') {
+                    data.cell.styles.textColor = [40, 167, 69];
+                    data.cell.styles.fontStyle = 'bold';
+                } else {
+                    data.cell.styles.textColor = [220, 53, 69];
+                    data.cell.styles.fontStyle = 'bold';
+                }
+            }
+        }
+    });
+
+    // ============ KONDISI AKHIR ============
+    y = (doc as any).lastAutoTable.finalY + 15;
+    doc.setFontSize(12);
+    doc.setFont('helvetica', 'bold');
+    doc.text('Kondisi Akhir:', margin, y);
+
+    const conditionColor = data.condition === 'LAYAK' ? [40, 167, 69] : [220, 53, 69];
+    doc.setTextColor(conditionColor[0], conditionColor[1], conditionColor[2]);
+    doc.setFontSize(14);
+    doc.text(data.condition || '-', margin + 45, y);
+
+    // ============ CATATAN ============
+    y += 15;
+    doc.setTextColor(0, 0, 0);
+    doc.setFontSize(12);
+    doc.setFont('helvetica', 'bold');
+    doc.text('Catatan:', margin, y);
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(10);
+    doc.text(data.notes || '-', margin, y + 8);
+
+    // ============ FOOTER ============
+    y += 40;
+    doc.setDrawColor(200, 200, 200);
+    doc.setLineWidth(0.5);
+    doc.line(margin, y, pageWidth - margin, y);
+
+    doc.setFontSize(8);
+    doc.setTextColor(128, 128, 128);
+    doc.text('Dokumen ini dibuat otomatis oleh sistem ERT PPA', pageWidth / 2, y + 8, { align: 'center' });
+    doc.text(`ID Inspeksi: #${data.id}`, pageWidth / 2, y + 13, { align: 'center' });
+
+    // Save
+    const fileName = `APAR_${data.tagNumber || data.id}_${formattedDate.replace(/\s/g, '_')}.pdf`;
+    doc.save(fileName);
+}

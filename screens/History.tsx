@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Search, Filter, Download, MoreHorizontal, Clock, CheckCircle2, FileText, Loader2 } from 'lucide-react';
-import { generateP2HPDF } from '../utils/pdfGenerator';
+import { generateP2HPDF, generateAPARPDF } from '../utils/pdfGenerator';
 
 interface Inspection {
   id: number;
@@ -81,11 +81,19 @@ export const HistoryScreen: React.FC = () => {
   const handleDownloadPDF = async (inspection: Inspection) => {
     if (inspection.type === 'P2H') {
       await generateP2HPDF(inspection as any);
+    } else if (inspection.type === 'APAR') {
+      await generateAPARPDF(inspection as any);
     }
   };
 
   const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('id-ID', {
+    if (!dateString) return 'Tanggal tidak tersedia';
+    const date = new Date(dateString);
+    // Check if date is valid and not epoch (1970)
+    if (isNaN(date.getTime()) || date.getFullYear() < 2000) {
+      return 'Tanggal tidak tersedia';
+    }
+    return date.toLocaleDateString('id-ID', {
       day: '2-digit',
       month: 'short',
       year: 'numeric',
@@ -140,7 +148,7 @@ export const HistoryScreen: React.FC = () => {
 
       <div className="flex-1 overflow-y-auto max-w-7xl mx-auto w-full">
         {/* Stats Summary */}
-        <div className="px-6 -mt-6 relative z-20 grid grid-cols-3 gap-3 mb-2">
+        <div className="px-6 mt-4 relative z-20 grid grid-cols-3 gap-3 mb-2">
           <div className="bg-white p-3 rounded-[20px] shadow-sm border border-slate-100 flex flex-col items-center">
             <span className="text-2xl font-bold text-slate-800">{inspections.length}</span>
             <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Total</span>
@@ -191,10 +199,14 @@ export const HistoryScreen: React.FC = () => {
                           #{item.id}
                         </span>
                       </div>
-                      {item.type === 'P2H' && (
+                      {(item.type === 'P2H' || item.type === 'APAR') && (
                         <button
                           onClick={() => handleDownloadPDF(item)}
-                          className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center hover:bg-emerald-100 transition-colors"
+                          className={`w-8 h-8 rounded-lg flex items-center justify-center transition-colors ${
+                            item.type === 'P2H' 
+                              ? 'bg-emerald-50 text-emerald-600 hover:bg-emerald-100' 
+                              : 'bg-red-50 text-red-600 hover:bg-red-100'
+                          }`}
                           title="Download PDF"
                         >
                           <Download size={16} />
@@ -216,7 +228,7 @@ export const HistoryScreen: React.FC = () => {
                     <div className="flex justify-between items-end">
                       <div className="flex flex-col gap-1">
                         <span className="text-xs text-slate-500 font-medium flex items-center gap-1.5">
-                          <Clock size={12} /> {formatDate(item.date || item.createdAt)}
+                          <Clock size={12} /> {formatDate(item.createdAt || item.date)}
                         </span>
                         {item.location && item.type === 'P2H' && (
                           <span className="text-xs text-slate-500 font-medium flex items-center gap-1.5">
