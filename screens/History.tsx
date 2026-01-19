@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Search, Filter, Download, MoreHorizontal, Clock, CheckCircle2, FileText, Loader2, X } from 'lucide-react';
-import { generateP2HPDF, generateAPARPDF } from '../utils/pdfGenerator';
+import { generateP2HPDF, generateAPARPDF, generateHydrantPDF } from '../utils/pdfGenerator';
 
 interface Inspection {
   id: number;
@@ -86,6 +86,25 @@ export const HistoryScreen: React.FC = () => {
       await generateP2HPDF(inspection as any);
     } else if (inspection.type === 'APAR') {
       await generateAPARPDF(inspection as any);
+    } else if (inspection.type === 'HYDRANT') {
+      try {
+        const checklistParsed = JSON.parse(inspection.checklistData || '{}');
+        await generateHydrantPDF({
+          id: inspection.id,
+          location: inspection.location,
+          pic: inspection.pic || '',
+          diketahuiOleh: checklistParsed.diketahuiOleh || '',
+          diPeriksaOleh: checklistParsed.diPeriksaOleh || inspection.pic || '',
+          signatureDiketahui: checklistParsed.signatureDiketahui || '',
+          signatureDiPeriksa: checklistParsed.signatureDiPeriksa || '',
+          periodeInspeksi: checklistParsed.periodeInspeksi || '',
+          createdAt: inspection.date || inspection.createdAt,
+          items: checklistParsed.items || []
+        });
+      } catch (err) {
+        console.error('Error generating Hydrant PDF:', err);
+        alert('Gagal mengunduh PDF Hydrant');
+      }
     }
   };
 
@@ -248,19 +267,19 @@ export const HistoryScreen: React.FC = () => {
                           #{item.id}
                         </span>
                       </div>
-                      {(item.type === 'P2H' || item.type === 'APAR') && (
-                        <button
-                          onClick={() => handleDownloadPDF(item)}
-                          className={`w-8 h-8 rounded-lg flex items-center justify-center transition-colors ${
-                            item.type === 'P2H' 
-                              ? 'bg-emerald-50 text-emerald-600 hover:bg-emerald-100' 
-                              : 'bg-red-50 text-red-600 hover:bg-red-100'
-                          }`}
-                          title="Download PDF"
-                        >
-                          <Download size={16} />
-                        </button>
-                      )}
+                      <button
+                        onClick={() => handleDownloadPDF(item)}
+                        className={`w-8 h-8 rounded-lg flex items-center justify-center transition-colors ${
+                          item.type === 'P2H' 
+                            ? 'bg-emerald-50 text-emerald-600 hover:bg-emerald-100' 
+                            : item.type === 'APAR'
+                              ? 'bg-red-50 text-red-600 hover:bg-red-100'
+                              : 'bg-cyan-50 text-cyan-600 hover:bg-cyan-100'
+                        }`}
+                        title="Download PDF"
+                      >
+                        <Download size={16} />
+                      </button>
                     </div>
 
                     <h3 className="font-bold text-slate-800 text-sm leading-snug mb-1 group-hover:text-indigo-600 transition-colors">
