@@ -35,7 +35,7 @@ export const ScheduleScreen: React.FC<ScheduleScreenProps> = ({ onNavigate, user
 
     const fetchSchedules = async () => {
         try {
-            const response = await fetch(`http://localhost:3000/api/schedules?userId=${user?.id}`);
+            const response = await fetch(`/api/schedules?userId=${user?.id}`);
             if (response.ok) {
                 const data = await response.json();
                 setSchedules(data);
@@ -56,7 +56,7 @@ export const ScheduleScreen: React.FC<ScheduleScreenProps> = ({ onNavigate, user
         try {
             const dateTime = new Date(`${formData.date}T${formData.time}`);
 
-            const response = await fetch('http://localhost:3000/api/schedules', {
+            const response = await fetch('/api/schedules', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({

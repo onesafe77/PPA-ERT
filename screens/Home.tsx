@@ -12,7 +12,7 @@ interface HomeProps {
 
 export const Home: React.FC<HomeProps> = ({ onNavigate, user }) => {
     return (
-        <div className="pb-32 animate-fade-in bg-[#F3F6F8] h-full overflow-y-auto font-sans">
+        <div className="pb-32 md:pb-8 animate-fade-in bg-[#F3F6F8] h-full overflow-y-auto font-sans">
             {/* Modern Header with Neon Aesthetic */}
             <div className="relative bg-slate-900 rounded-b-[40px] pt-8 pb-32 px-6 overflow-hidden shadow-2xl z-0">
                 {/* Background Effects */}
@@ -69,7 +69,7 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, user }) => {
                 </div>
             </div>
 
-            <div className="px-6 -mt-24 relative z-10 space-y-8">
+            <div className="px-6 md:px-8 lg:px-12 -mt-24 relative z-10 space-y-8 max-w-7xl md:mx-auto">
                 {/* A. Spotlight Campaign (Carousel) */}
                 <div className="shadow-2xl shadow-slate-200/50 rounded-[32px]">
                     <SpotlightCarousel onNavigate={onNavigate} />
@@ -81,7 +81,7 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, user }) => {
                         <h4 className="text-base font-bold text-slate-800">Overview Hari Ini</h4>
                         <span className="text-xs font-bold text-emerald-600 bg-emerald-50 px-2 py-1 rounded-lg">Updated 5m ago</span>
                     </div>
-                    <div className="grid grid-cols-2 gap-3">
+                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
                         {MOCK_KPI.slice(0, 2).map((kpi, idx) => (
                             <div key={idx} className="bg-white p-4 rounded-[24px] shadow-sm border border-slate-100 relative overflow-hidden group">
                                 <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-br from-slate-50 to-emerald-50 rounded-bl-[32px] -mr-4 -mt-4 transition-all group-hover:scale-110" />
@@ -102,10 +102,10 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, user }) => {
                 </div>
 
                 {/* C. Quick Actions & CTA */}
-                <div className="grid grid-cols-2 gap-3">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
                     <button
                         onClick={() => onNavigate('inspection')}
-                        className="col-span-2 bg-gradient-to-br from-slate-900 to-slate-800 rounded-[28px] p-5 flex items-center justify-between shadow-lg shadow-slate-300 active:scale-[0.98] transition-all group relative overflow-hidden"
+                        className="col-span-2 md:col-span-4 bg-gradient-to-br from-slate-900 to-slate-800 rounded-[28px] p-5 md:p-6 flex items-center justify-between shadow-lg shadow-slate-300 active:scale-[0.98] transition-all group relative overflow-hidden"
                     >
                         <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/10 rounded-full blur-2xl -mr-10 -mt-10" />
                         <div className="flex flex-col items-start relative z-10">
@@ -134,6 +134,16 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, user }) => {
                             <Calendar size={20} />
                         </div>
                         <span className="text-xs font-bold text-slate-700">Jadwal</span>
+                    </button>
+
+                    <button
+                        onClick={() => onNavigate('pica-form')}
+                        className="col-span-2 md:col-span-1 bg-red-50 rounded-[24px] p-4 flex flex-col items-center justify-center gap-2 shadow-sm border border-red-100 active:scale-[0.95] transition-all h-28 group"
+                    >
+                        <div className="w-10 h-10 bg-red-500 text-white rounded-xl flex items-center justify-center mb-1 shadow-lg shadow-red-500/30 group-hover:scale-110 transition-transform">
+                            <AlertTriangle size={20} />
+                        </div>
+                        <span className="text-xs font-bold text-red-700">Lapor PICA</span>
                     </button>
                 </div>
 

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Layout } from './components/Layout';
 import { BottomNav } from './components/BottomNav';
+import { DesktopSidebar } from './components/DesktopSidebar';
 import { Landing } from './screens/Landing';
 import { Login } from './screens/Login';
 import { Home } from './screens/Home';
@@ -12,6 +13,9 @@ import { P2HFormScreen } from './screens/P2HFormScreen';
 import { QRScannerScreen } from './screens/QRScannerScreen';
 import { ScheduleScreen } from './screens/ScheduleScreen';
 import { NotificationScreen } from './screens/NotificationScreen';
+import { APARInspectionScreen } from './screens/APARInspectionScreen';
+import { HydrantInspectionScreen } from './screens/HydrantInspectionScreen';
+import { PicaFormScreen } from './screens/PicaFormScreen';
 import { ScreenName } from './types';
 
 interface UserData {
@@ -25,12 +29,17 @@ function App() {
   const [currentScreen, setCurrentScreen] = useState<ScreenName>('landing');
   const [user, setUser] = useState<UserData | null>(null);
 
-  // Helper to determine if we should show bottom nav
-  const showBottomNav = !['landing', 'login', 'p2h-form', 'qr-scan'].includes(currentScreen);
+  // Helper to determine if we should show navigation
+  const showNav = !['landing', 'login', 'p2h-form', 'qr-scan', 'apar-form', 'hydrant-form', 'pica-form'].includes(currentScreen);
 
   const handleLoginSuccess = (userData: UserData) => {
     setUser(userData);
     setCurrentScreen('home');
+  };
+
+  const handleLogout = () => {
+    setUser(null);
+    setCurrentScreen('landing');
   };
 
   const renderScreen = () => {
@@ -57,6 +66,12 @@ function App() {
         return <ScheduleScreen onNavigate={setCurrentScreen} user={user} />;
       case 'notifications':
         return <NotificationScreen onNavigate={setCurrentScreen} />;
+      case 'apar-form':
+        return <APARInspectionScreen onNavigate={setCurrentScreen} user={user} />;
+      case 'hydrant-form':
+        return <HydrantInspectionScreen onNavigate={setCurrentScreen} user={user} />;
+      case 'pica-form':
+        return <PicaFormScreen onNavigate={setCurrentScreen} user={user} />;
       default:
         return <Landing onNavigate={setCurrentScreen} />;
     }
@@ -64,11 +79,23 @@ function App() {
 
   return (
     <Layout>
-      <main className="flex-1 overflow-hidden relative">
+      {/* Desktop Sidebar */}
+      {showNav && (
+        <DesktopSidebar
+          currentScreen={currentScreen}
+          onNavigate={setCurrentScreen}
+          user={user}
+          onLogout={handleLogout}
+        />
+      )}
+
+      {/* Main Content with responsive padding */}
+      <main className={`flex-1 relative min-h-screen ${showNav ? 'md:ml-64' : ''}`}>
         {renderScreen()}
       </main>
 
-      {showBottomNav && (
+      {/* Mobile Bottom Navigation */}
+      {showNav && (
         <BottomNav
           currentScreen={currentScreen}
           onNavigate={setCurrentScreen}

@@ -74,7 +74,7 @@ export const P2HFormScreen: React.FC<P2HFormProps> = ({ onNavigate, user }) => {
 
         setLoading(true);
         try {
-            const response = await fetch('http://localhost:3000/api/p2h', {
+            const response = await fetch('/api/p2h', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -135,9 +135,9 @@ export const P2HFormScreen: React.FC<P2HFormProps> = ({ onNavigate, user }) => {
             <div className="p-4 space-y-4">
 
                 {/* Info Fields */}
-                <div className="bg-white rounded-xl p-4 shadow-sm">
-                    <div className="grid grid-cols-2 gap-3">
-                        <div>
+                <div className="bg-white rounded-xl p-4 shadow-sm max-w-5xl mx-auto w-full">
+                    <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-4">
+                        <div className="lg:col-span-1">
                             <label className="text-[10px] font-bold text-slate-500 uppercase">NAMA</label>
                             <input
                                 type="text"
@@ -193,8 +193,12 @@ export const P2HFormScreen: React.FC<P2HFormProps> = ({ onNavigate, user }) => {
                     </div>
                 </div>
 
+            </div>
+
+            {/* Desktop Grid Wrapper for Checklists */}
+            <div className="max-w-5xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-4">
                 {/* Walk Around Check */}
-                <div className="bg-white rounded-xl overflow-hidden shadow-sm">
+                <div className="bg-white rounded-xl overflow-hidden shadow-sm h-full">
                     <div className="bg-red-600 text-white text-xs font-bold py-2 px-4">
                         WALK AROUND CHECK
                     </div>
@@ -223,7 +227,6 @@ export const P2HFormScreen: React.FC<P2HFormProps> = ({ onNavigate, user }) => {
                                         </button>
                                     </div>
                                 </div>
-                                {/* Tindakan input - shows when X is selected */}
                                 {checks[item]?.status === 'x' && (
                                     <input
                                         type="text"
@@ -239,7 +242,7 @@ export const P2HFormScreen: React.FC<P2HFormProps> = ({ onNavigate, user }) => {
                 </div>
 
                 {/* Attachment Check */}
-                <div className="bg-white rounded-xl overflow-hidden shadow-sm">
+                <div className="bg-white rounded-xl overflow-hidden shadow-sm h-full">
                     <div className="bg-red-600 text-white text-xs font-bold py-2 px-4">
                         PENGECHECKAN ATT ACHEMENT
                     </div>
@@ -278,6 +281,9 @@ export const P2HFormScreen: React.FC<P2HFormProps> = ({ onNavigate, user }) => {
                         ))}
                     </div>
                 </div>
+            </div>
+
+            <div className="max-w-5xl mx-auto w-full text-center space-y-4">
 
                 {/* Kerusakan Lain */}
                 <div className="bg-white rounded-xl p-4 shadow-sm">
@@ -314,6 +320,6 @@ export const P2HFormScreen: React.FC<P2HFormProps> = ({ onNavigate, user }) => {
                     Simpan Inspeksi P2H
                 </button>
             </div>
-        </div>
+        </div >
     );
 };

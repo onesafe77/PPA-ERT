@@ -1,9 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Search, QrCode, Truck, Wrench, History, Plus, Filter, Calendar } from 'lucide-react';
-import { Button } from '../components/Button';
 import { StatusPill } from '../components/Card';
-import { MOCK_INSPECTIONS } from '../constants';
-
 import { ScreenName } from '../types';
 
 interface InspectionScreenProps {
@@ -11,7 +8,64 @@ interface InspectionScreenProps {
 }
 
 export const InspectionScreen: React.FC<InspectionScreenProps> = ({ onNavigate }) => {
-    const [activeTab, setActiveTab] = useState<'P2H' | 'Gear'>('P2H');
+    const [activeTab, setActiveTab] = useState<'P2H' | 'Gear' | 'APAR' | 'Hydrant'>('P2H');
+    const [inspections, setInspections] = useState<any[]>([]);
+    const [loading, setLoading] = useState(false);
+
+    useEffect(() => {
+        fetchInspections();
+    }, []);
+
+    const fetchInspections = async () => {
+        setLoading(true);
+        try {
+            const [p2hRes, aparRes, hydrantRes] = await Promise.all([
+                fetch('/api/p2h'),
+                fetch('/api/apar'),
+                fetch('/api/hydrant')
+            ]);
+
+            const p2hData = await p2hRes.json();
+            const aparData = await aparRes.json();
+            const hydrantData = await hydrantRes.json();
+
+            const combined = [
+                ...p2hData.map((item: any) => ({ ...item, type: 'P2H', title: `${item.unitNumber} - ${item.vehicleType}` })),
+                ...aparData.map((item: any) => ({ ...item, type: 'APAR', title: `APAR ${item.tagNumber || ''} - ${item.capacity}` })),
+                ...hydrantData.map((item: any) => ({ ...item, type: 'Hydrant', title: `Hydrant ${item.location}` }))
+            ];
+
+            // Sort by date newest
+            combined.sort((a, b) => new Date(b.date || b.createdAt).getTime() - new Date(a.date || a.createdAt).getTime());
+
+            setInspections(combined);
+        } catch (err) {
+            console.error(err);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const formatDate = (dateString: string) => {
+        return new Date(dateString).toLocaleDateString('id-ID', {
+            day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit'
+        });
+    };
+
+    const getTabColor = (tab: string) => {
+        if (tab === 'APAR') return 'from-red-500 to-rose-600';
+        if (tab === 'Hydrant') return 'from-blue-500 to-cyan-500';
+        if (tab === 'Gear') return 'from-blue-600 to-indigo-600';
+        return 'from-emerald-500 to-teal-600';
+    };
+
+    const getStatusPillColor = (status: string) => {
+        if (status === 'APPROVED') return 'bg-emerald-500';
+        if (status === 'NOT_READY' || status === 'TIDAK LAYAK') return 'bg-red-500';
+        return 'bg-amber-500';
+    };
+
+    const filteredInspections = inspections.filter(i => i.type === activeTab).slice(0, 5);
 
     return (
         <div className="pb-32 animate-fade-in flex flex-col h-full bg-[#F3F6F8] font-sans">
@@ -31,18 +85,30 @@ export const InspectionScreen: React.FC<InspectionScreenProps> = ({ onNavigate }
                     </div>
 
                     {/* Glass Tabs */}
-                    <div className="flex p-1 bg-white/10 backdrop-blur-md rounded-[24px] border border-white/10 mb-6">
+                    <div className="grid grid-cols-4 p-1 bg-white/10 backdrop-blur-md rounded-[24px] border border-white/10 mb-6 overflow-x-auto">
                         <button
                             onClick={() => setActiveTab('P2H')}
-                            className={`flex-1 py-3 rounded-[20px] text-sm font-bold flex items-center justify-center gap-2 transition-all duration-300 ${activeTab === 'P2H' ? 'bg-emerald-500 text-white shadow-lg shadow-emerald-500/30' : 'text-slate-300 hover:text-white hover:bg-white/5'}`}
+                            className={`py-3 rounded-[20px] text-[10px] font-bold flex flex-col items-center justify-center gap-1 transition-all duration-300 ${activeTab === 'P2H' ? 'bg-emerald-500 text-white shadow-lg' : 'text-slate-300 hover:text-white hover:bg-white/5'}`}
                         >
-                            <Truck size={18} /> Unit P2H
+                            <Truck size={14} /> P2H
                         </button>
                         <button
                             onClick={() => setActiveTab('Gear')}
-                            className={`flex-1 py-3 rounded-[20px] text-sm font-bold flex items-center justify-center gap-2 transition-all duration-300 ${activeTab === 'Gear' ? 'bg-blue-500 text-white shadow-lg shadow-blue-500/30' : 'text-slate-300 hover:text-white hover:bg-white/5'}`}
+                            className={`py-3 rounded-[20px] text-[10px] font-bold flex flex-col items-center justify-center gap-1 transition-all duration-300 ${activeTab === 'Gear' ? 'bg-blue-500 text-white shadow-lg' : 'text-slate-300 hover:text-white hover:bg-white/5'}`}
                         >
-                            <Wrench size={18} /> ERT Gear
+                            <Wrench size={14} /> Gear
+                        </button>
+                        <button
+                            onClick={() => setActiveTab('APAR')}
+                            className={`py-3 rounded-[20px] text-[10px] font-bold flex flex-col items-center justify-center gap-1 transition-all duration-300 ${activeTab === 'APAR' ? 'bg-red-500 text-white shadow-lg' : 'text-slate-300 hover:text-white hover:bg-white/5'}`}
+                        >
+                            <span className="text-[10px]">🔥</span> APAR
+                        </button>
+                        <button
+                            onClick={() => setActiveTab('Hydrant')}
+                            className={`py-3 rounded-[20px] text-[10px] font-bold flex flex-col items-center justify-center gap-1 transition-all duration-300 ${activeTab === 'Hydrant' ? 'bg-sky-500 text-white shadow-lg' : 'text-slate-300 hover:text-white hover:bg-white/5'}`}
+                        >
+                            <span className="text-[10px]">💧</span> Hydrant
                         </button>
                     </div>
 
@@ -68,8 +134,14 @@ export const InspectionScreen: React.FC<InspectionScreenProps> = ({ onNavigate }
 
                 {/* Start Inspection Card */}
                 <button
-                    onClick={() => onNavigate && onNavigate(activeTab === 'P2H' ? 'p2h-form' : 'p2h-form')}
-                    className={`w-full p-1 rounded-[32px] bg-gradient-to-br ${activeTab === 'P2H' ? 'from-emerald-500 to-teal-600' : 'from-blue-500 to-indigo-600'} shadow-xl shadow-slate-200 group active:scale-[0.98] transition-all`}
+                    onClick={() => {
+                        if (!onNavigate) return;
+                        if (activeTab === 'P2H') onNavigate('p2h-form');
+                        else if (activeTab === 'APAR') onNavigate('apar-form');
+                        else if (activeTab === 'Hydrant') onNavigate('hydrant-form');
+                        else onNavigate('p2h-form'); // Default
+                    }}
+                    className={`w-full p-1 rounded-[32px] bg-gradient-to-br ${getTabColor(activeTab)} shadow-xl shadow-slate-200 group active:scale-[0.98] transition-all`}
                 >
                     <div className="bg-white/10 backdrop-blur-sm rounded-[30px] p-5 flex items-center justify-between border border-white/20 h-[80px]">
                         <div className="flex flex-col items-start pl-2">
@@ -89,20 +161,27 @@ export const InspectionScreen: React.FC<InspectionScreenProps> = ({ onNavigate }
                             <History size={16} className="text-slate-400" />
                             Baru Dilihat
                         </h2>
-                        <button className="text-xs font-bold text-emerald-600 bg-emerald-50 px-3 py-1.5 rounded-full">See All</button>
+                        <button
+                            onClick={() => onNavigate && onNavigate('history')}
+                            className="text-xs font-bold text-emerald-600 bg-emerald-50 px-3 py-1.5 rounded-full"
+                        >
+                            See All
+                        </button>
                     </div>
 
                     <div className="space-y-3">
-                        {MOCK_INSPECTIONS.filter(i => i.type === activeTab).map((item) => (
-                            <div key={item.id} className="bg-white rounded-[24px] p-4 shadow-sm border border-slate-100 hover:shadow-md transition-all cursor-pointer group relative overflow-hidden">
-                                <div className={`absolute top-0 left-0 w-1 h-full ${item.status === 'Approved' ? 'bg-emerald-500' : item.status === 'NOT READY' ? 'bg-red-500' : 'bg-amber-500'}`} />
+                        {loading ? (
+                            <div className="text-center py-8 text-slate-400 text-xs">Memuat data...</div>
+                        ) : filteredInspections.map((item) => (
+                            <div key={`${item.type}-${item.id}`} className="bg-white rounded-[24px] p-4 shadow-sm border border-slate-100 hover:shadow-md transition-all cursor-pointer group relative overflow-hidden">
+                                <div className={`absolute top-0 left-0 w-1 h-full ${getStatusPillColor(item.status)}`} />
 
                                 <div className="flex justify-between items-start pl-3">
                                     <div className="flex-1">
                                         <div className="flex items-center gap-2 mb-1">
-                                            <span className="text-xs font-bold text-slate-400 bg-slate-50 px-2 py-0.5 rounded-md border border-slate-100">{item.id}</span>
+                                            <span className="text-xs font-bold text-slate-400 bg-slate-50 px-2 py-0.5 rounded-md border border-slate-100">#{item.id}</span>
                                             <span className="text-[10px] text-slate-400 font-medium flex items-center gap-1">
-                                                <Calendar size={10} /> {item.date}
+                                                <Calendar size={10} /> {formatDate(item.date || item.createdAt)}
                                             </span>
                                         </div>
                                         <h3 className="text-base font-bold text-slate-800 mb-1 group-hover:text-emerald-600 transition-colors">{item.title}</h3>
@@ -116,7 +195,7 @@ export const InspectionScreen: React.FC<InspectionScreenProps> = ({ onNavigate }
                                 </div>
                             </div>
                         ))}
-                        {MOCK_INSPECTIONS.filter(i => i.type === activeTab).length === 0 && (
+                        {!loading && filteredInspections.length === 0 && (
                             <div className="p-8 text-center border-2 border-dashed border-slate-200 rounded-[24px] bg-slate-50/50 flex flex-col items-center justify-center gap-3">
                                 <div className="w-12 h-12 bg-slate-100 rounded-full flex items-center justify-center text-slate-300">
                                     <History size={24} />

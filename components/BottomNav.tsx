@@ -17,7 +17,7 @@ export const BottomNav: React.FC<BottomNavProps> = ({ currentScreen, onNavigate 
   ];
 
   return (
-    <div className="fixed bottom-0 left-0 w-full pb-safe z-50 pointer-events-none">
+    <div className="md:hidden fixed bottom-0 left-0 w-full pb-safe z-50 pointer-events-none">
       {/* Gradient fade to hide content scrolling behind */}
       <div className="absolute bottom-0 w-full h-32 bg-gradient-to-t from-white via-white/80 to-transparent pointer-events-none"></div>
 

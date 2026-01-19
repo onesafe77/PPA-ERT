@@ -1,0 +1,6 @@
+
+--- Analyzing APAR: FORM INSPEKSI APAR,12.pdf ---
+Error parsing APAR: Class constructors cannot be invoked without 'new'
+
+--- Analyzing Hydrant: PPA-BIB-F-SHE-20B FORM CHECKLIST INSPEKSI FIRE HYDRANT-1.pdf ---
+Error parsing Hydrant: Class constructors cannot be invoked without 'new'

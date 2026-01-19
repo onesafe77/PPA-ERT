@@ -2,7 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import { db } from './db';
-import { users, inspections, chatLogs, p2hInspections, schedules } from './schema';
+import { users, inspections, chatLogs, p2hInspections, schedules, aparInspections, hydrantInspections, picaReports } from './schema';
 import { eq, desc } from 'drizzle-orm';
 import OpenAI from 'openai';
 
@@ -32,7 +32,7 @@ async function ensureUserExists() {
 ensureUserExists();
 
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3001;
 
 app.use(cors());
 app.use(express.json());
@@ -91,8 +91,13 @@ app.post('/api/p2h', async (req, res) => {
             notes,
             userId: userId || null,
             status: 'PENDING'
-        }).returning();
-        res.json(newP2H[0]);
+        });
+
+        // MySQL specific: get the inserted ID
+        const insertId = newP2H[0].insertId;
+        const insertedP2H = await db.select().from(p2hInspections).where(eq(p2hInspections.id, insertId));
+
+        res.json(insertedP2H[0]);
     } catch (error) {
         console.error('P2H create error:', error);
         res.status(500).json({ error: 'Failed to create P2H inspection' });
@@ -133,8 +138,13 @@ app.get('/api/inspections', async (req, res) => {
 
 app.post('/api/inspections', async (req, res) => {
     try {
-        const newInspection = await db.insert(inspections).values(req.body).returning();
-        res.json(newInspection[0]);
+        const newInspection = await db.insert(inspections).values(req.body);
+
+        // MySQL specific: get the inserted ID
+        const insertId = newInspection[0].insertId;
+        const inserted = await db.select().from(inspections).where(eq(inspections.id, insertId));
+
+        res.json(inserted[0]);
     } catch (error) {
         res.status(500).json({ error: 'Failed to create inspection' });
     }
@@ -211,6 +221,104 @@ app.get('/api/schedules', async (req, res) => {
     } catch (error) {
         console.error('Get Schedules Error:', error);
         res.status(500).json({ error: 'Failed to fetch schedules' });
+    }
+});
+
+// --- APAR Inspection Routes ---
+app.post('/api/apar', async (req, res) => {
+    try {
+        const { date, location, unitNumber, capacity, tagNumber, checklistData, condition, notes, pic, userId } = req.body;
+        const newApar = await db.insert(aparInspections).values({
+            date: new Date(date),
+            location,
+            unitNumber,
+            capacity,
+            tagNumber,
+            checklistData,
+            condition,
+            notes,
+            pic,
+            userId
+        });
+
+        const insertId = newApar[0].insertId;
+        const inserted = await db.select().from(aparInspections).where(eq(aparInspections.id, insertId));
+        res.json(inserted[0]);
+    } catch (error) {
+        console.error('APAR Create Error:', error);
+        res.status(500).json({ error: 'Failed to create APAR inspection' });
+    }
+});
+
+app.get('/api/apar', async (req, res) => {
+    try {
+        const data = await db.select().from(aparInspections).orderBy(desc(aparInspections.date));
+        res.json(data);
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to fetch APAR inspections' });
+    }
+});
+
+// --- Hydrant Inspection Routes ---
+app.post('/api/hydrant', async (req, res) => {
+    try {
+        const { date, location, shift, checklistData, notes, pic, userId } = req.body;
+        const newHydrant = await db.insert(hydrantInspections).values({
+            date: new Date(date),
+            location,
+            shift,
+            checklistData,
+            notes,
+            pic,
+            userId
+        });
+
+        const insertId = newHydrant[0].insertId;
+        const inserted = await db.select().from(hydrantInspections).where(eq(hydrantInspections.id, insertId));
+        res.json(inserted[0]);
+    } catch (error) {
+        console.error('Hydrant Create Error:', error);
+        res.status(500).json({ error: 'Failed to create Hydrant inspection' });
+    }
+});
+
+app.get('/api/hydrant', async (req, res) => {
+    try {
+        const data = await db.select().from(hydrantInspections).orderBy(desc(hydrantInspections.date));
+        res.json(data);
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to fetch Hydrant inspections' });
+    }
+});
+
+// --- PICA Routes ---
+app.post('/api/pica', async (req, res) => {
+    try {
+        const { title, description, imageData, deadline, userId } = req.body;
+        const newPica = await db.insert(picaReports).values({
+            title,
+            description,
+            imageData,
+            deadline: deadline ? new Date(deadline) : null,
+            userId,
+            status: 'OPEN'
+        });
+
+        const insertId = newPica[0].insertId;
+        const inserted = await db.select().from(picaReports).where(eq(picaReports.id, insertId));
+        res.json(inserted[0]);
+    } catch (error) {
+        console.error('PICA Create Error:', error);
+        res.status(500).json({ error: 'Failed to create PICA report' });
+    }
+});
+
+app.get('/api/pica', async (req, res) => {
+    try {
+        const data = await db.select().from(picaReports).orderBy(desc(picaReports.createdAt));
+        res.json(data);
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to fetch PICA reports' });
     }
 });
 

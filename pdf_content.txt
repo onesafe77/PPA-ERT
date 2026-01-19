@@ -1,0 +1,8 @@
+Checking directory...
+Found 22 PDF files.
+
+--- Analyzing APAR Form: FORM INSPEKSI APAR,12.pdf ---
+Error parsing APAR: pdf is not a function
+
+--- Analyzing Hydrant Form: PPA-BIB-F-SHE-20B FORM CHECKLIST INSPEKSI FIRE HYDRANT-1.pdf ---
+Error parsing Hydrant: pdf is not a function
