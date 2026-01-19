@@ -296,6 +296,8 @@ interface APARData {
     pic: string;
     diketahuiOleh?: string;
     diPeriksaOleh?: string;
+    signatureDiketahui?: string;
+    signatureDiPeriksa?: string;
     date?: string;
     createdAt: string;
     units?: APARUnit[];
@@ -470,7 +472,7 @@ export async function generateAPARPDF(data: APARData): Promise<void> {
     doc.text('Jika berat APAR kurang dari 10% dari berat APAR kondisi baru', margin + 6, y);
 
     // ============ SIGNATURE SECTION ============
-    const sigY = Math.max(y + 15, 155);
+    const sigY = Math.max(y + 15, 150);
     const leftSigX = 80;
     const rightSigX = pageWidth - 80;
 
@@ -484,19 +486,31 @@ export async function generateAPARPDF(data: APARData): Promise<void> {
     const diketahuiName = data.diketahuiOleh || '';
     const diPeriksaName = data.diPeriksaOleh || data.pic || '';
 
+    if (data.signatureDiketahui) {
+        try {
+            doc.addImage(data.signatureDiketahui, 'PNG', leftSigX - 20, sigY + 3, 40, 15);
+        } catch (e) { }
+    }
+
+    if (data.signatureDiPeriksa) {
+        try {
+            doc.addImage(data.signatureDiPeriksa, 'PNG', rightSigX - 20, sigY + 3, 40, 15);
+        } catch (e) { }
+    }
+
     if (diketahuiName) {
         doc.setFont('helvetica', 'bold');
-        doc.text(diketahuiName, leftSigX, sigY + 18, { align: 'center' });
+        doc.text(diketahuiName, leftSigX, sigY + 22, { align: 'center' });
         doc.setFont('helvetica', 'normal');
     }
-    doc.text('(………………….….)', leftSigX, sigY + 25, { align: 'center' });
+    doc.text('(………………….….)', leftSigX, sigY + 28, { align: 'center' });
 
     if (diPeriksaName) {
         doc.setFont('helvetica', 'bold');
-        doc.text(diPeriksaName, rightSigX, sigY + 18, { align: 'center' });
+        doc.text(diPeriksaName, rightSigX, sigY + 22, { align: 'center' });
         doc.setFont('helvetica', 'normal');
     }
-    doc.text('(……………………...)', rightSigX, sigY + 25, { align: 'center' });
+    doc.text('(……………………...)', rightSigX, sigY + 28, { align: 'center' });
 
     // Save file
     const fileName = `CHECKLIST_INSPEKSI_APAR_${data.location?.replace(/\s/g, '_') || 'APAR'}_${periodeInspeksi.replace(/\s/g, '_')}.pdf`;

@@ -3,6 +3,7 @@ import { ArrowLeft, ArrowRight, Save, ChevronDown, Plus, Trash2, FileText, Check
 import { ScreenName } from '../types';
 import { LoadingOverlay } from '../components/LoadingOverlay';
 import { generateAPARPDF } from '../utils/pdfGenerator';
+import { SignaturePad } from '../components/SignaturePad';
 
 interface APARFormProps {
     onNavigate: (screen: ScreenName) => void;
@@ -73,6 +74,8 @@ export const APARInspectionScreen: React.FC<APARFormProps> = ({ onNavigate, user
 
     const [diketahuiOleh, setDiketahuiOleh] = useState('');
     const [diPeriksaOleh, setDiPeriksaOleh] = useState('');
+    const [signatureDiketahui, setSignatureDiketahui] = useState('');
+    const [signatureDiPeriksa, setSignatureDiPeriksa] = useState('');
 
     const handleCheck = (item: string) => {
         setChecks(prev => ({ ...prev, [item]: !prev[item] }));
@@ -133,6 +136,10 @@ export const APARInspectionScreen: React.FC<APARFormProps> = ({ onNavigate, user
             alert('Mohon isi nama Diketahui Oleh dan Di Periksa Oleh');
             return;
         }
+        if (!signatureDiketahui || !signatureDiPeriksa) {
+            alert('Mohon tanda tangani kedua kolom tanda tangan');
+            return;
+        }
 
         setLoading(true);
         try {
@@ -179,6 +186,8 @@ export const APARInspectionScreen: React.FC<APARFormProps> = ({ onNavigate, user
                     pic: diPeriksaOleh,
                     diketahuiOleh,
                     diPeriksaOleh,
+                    signatureDiketahui,
+                    signatureDiPeriksa,
                     createdAt: new Date().toISOString(),
                     units: unitsForPDF
                 } as any);
@@ -545,32 +554,42 @@ export const APARInspectionScreen: React.FC<APARFormProps> = ({ onNavigate, user
                                 </div>
                                 <div>
                                     <h2 className="font-bold text-slate-800 text-lg">Tanda Tangan</h2>
-                                    <p className="text-slate-500 text-sm">Masukkan nama untuk tanda tangan di PDF</p>
+                                    <p className="text-slate-500 text-sm">Tanda tangan langsung di layar</p>
                                 </div>
                             </div>
 
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <div>
-                                    <label className="text-xs font-bold text-slate-600 uppercase block mb-2">DIKETAHUI OLEH</label>
-                                    <input
-                                        type="text"
-                                        value={diketahuiOleh}
-                                        onChange={(e) => setDiketahuiOleh(e.target.value)}
-                                        placeholder="Nama atasan/supervisor..."
-                                        className="w-full h-12 px-4 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500 transition-all"
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div className="space-y-3">
+                                    <div>
+                                        <label className="text-xs font-bold text-slate-600 uppercase block mb-2">NAMA (DIKETAHUI OLEH)</label>
+                                        <input
+                                            type="text"
+                                            value={diketahuiOleh}
+                                            onChange={(e) => setDiketahuiOleh(e.target.value)}
+                                            placeholder="Nama atasan/supervisor..."
+                                            className="w-full h-10 px-3 bg-slate-50 border border-slate-200 rounded-lg text-sm font-medium focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500 transition-all"
+                                        />
+                                    </div>
+                                    <SignaturePad 
+                                        label="TANDA TANGAN DIKETAHUI OLEH"
+                                        onSignatureChange={setSignatureDiketahui}
                                     />
-                                    <p className="text-[10px] text-slate-400 mt-1">Nama akan muncul di PDF</p>
                                 </div>
-                                <div>
-                                    <label className="text-xs font-bold text-slate-600 uppercase block mb-2">DI PERIKSA OLEH</label>
-                                    <input
-                                        type="text"
-                                        value={diPeriksaOleh}
-                                        onChange={(e) => setDiPeriksaOleh(e.target.value)}
-                                        placeholder="Nama petugas inspeksi..."
-                                        className="w-full h-12 px-4 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500 transition-all"
+                                <div className="space-y-3">
+                                    <div>
+                                        <label className="text-xs font-bold text-slate-600 uppercase block mb-2">NAMA (DI PERIKSA OLEH)</label>
+                                        <input
+                                            type="text"
+                                            value={diPeriksaOleh}
+                                            onChange={(e) => setDiPeriksaOleh(e.target.value)}
+                                            placeholder="Nama petugas inspeksi..."
+                                            className="w-full h-10 px-3 bg-slate-50 border border-slate-200 rounded-lg text-sm font-medium focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500 transition-all"
+                                        />
+                                    </div>
+                                    <SignaturePad 
+                                        label="TANDA TANGAN DI PERIKSA OLEH"
+                                        onSignatureChange={setSignatureDiPeriksa}
                                     />
-                                    <p className="text-[10px] text-slate-400 mt-1">Nama akan muncul di PDF</p>
                                 </div>
                             </div>
                         </div>
@@ -585,7 +604,7 @@ export const APARInspectionScreen: React.FC<APARFormProps> = ({ onNavigate, user
                             </button>
                             <button
                                 onClick={handleSubmitAll}
-                                disabled={!diketahuiOleh || !diPeriksaOleh}
+                                disabled={!diketahuiOleh || !diPeriksaOleh || !signatureDiketahui || !signatureDiPeriksa}
                                 className="flex-1 bg-green-600 hover:bg-green-700 disabled:bg-slate-300 text-white font-bold py-4 rounded-xl shadow-lg active:scale-[0.98] transition-all flex items-center justify-center gap-2"
                             >
                                 <Save size={18} />
