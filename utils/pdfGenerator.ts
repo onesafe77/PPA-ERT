@@ -342,7 +342,8 @@ export async function generateAPARPDF(data: APARData): Promise<void> {
     doc.text(`: ${periodeInspeksi}`, margin + 28, 34);
 
     doc.setFont('helvetica', 'bold');
-    doc.text(data.location || 'LOKASI', pageWidth - margin - 70, 28);
+    doc.setFontSize(12);
+    doc.text(data.location || 'LOKASI', pageWidth / 2, 28, { align: 'center' });
     
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(8);
@@ -353,7 +354,7 @@ export async function generateAPARPDF(data: APARData): Promise<void> {
 
     if (data.units && data.units.length > 0) {
         tableBody = data.units.map((unit, idx) => {
-            const getCheck = (item: string) => unit.checks[item] === true ? 'V' : '';
+            const getCheck = (item: string) => unit.checks[item] === true ? 'V' : 'X';
             const kondisi = unit.condition === 'LAYAK' ? 'L' : 'TL';
             return [
                 String(idx + 1),
@@ -379,7 +380,7 @@ export async function generateAPARPDF(data: APARData): Promise<void> {
         } catch (e) {
             checklistParsed = {};
         }
-        const getCheckMark = (item: string) => checklistParsed[item] === true ? 'V' : '';
+        const getCheckMark = (item: string) => checklistParsed[item] === true ? 'V' : 'X';
         const kondisiAPAR = data.condition === 'LAYAK' ? 'L' : 'TL';
         tableBody = [[
             '1',
@@ -436,19 +437,19 @@ export async function generateAPARPDF(data: APARData): Promise<void> {
         },
         columnStyles: {
             0: { cellWidth: 10 },
-            1: { cellWidth: 45, halign: 'left' },
-            2: { cellWidth: 18 },
+            1: { cellWidth: 42, halign: 'left' },
+            2: { cellWidth: 16 },
             3: { cellWidth: 14 },
-            4: { cellWidth: 14 },
-            5: { cellWidth: 14 },
-            6: { cellWidth: 14 },
-            7: { cellWidth: 14 },
-            8: { cellWidth: 14 },
-            9: { cellWidth: 14 },
-            10: { cellWidth: 24 },
-            11: { cellWidth: 30, halign: 'left' },
-            12: { cellWidth: 20 },
-            13: { cellWidth: 22 }
+            4: { cellWidth: 13 },
+            5: { cellWidth: 13 },
+            6: { cellWidth: 13 },
+            7: { cellWidth: 13 },
+            8: { cellWidth: 13 },
+            9: { cellWidth: 13 },
+            10: { cellWidth: 22 },
+            11: { cellWidth: 50, halign: 'left', overflow: 'linebreak' },
+            12: { cellWidth: 18 },
+            13: { cellWidth: 20 }
         },
         margin: { left: margin, right: margin },
         tableWidth: 'auto'
