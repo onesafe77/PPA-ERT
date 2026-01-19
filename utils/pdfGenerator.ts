@@ -518,3 +518,246 @@ export async function generateAPARPDF(data: APARData): Promise<void> {
     const fileName = `CHECKLIST_INSPEKSI_APAR_${data.location?.replace(/\s/g, '_') || 'APAR'}_${periodeInspeksi.replace(/\s/g, '_')}.pdf`;
     doc.save(fileName);
 }
+
+// ============ HYDRANT PDF Generator ============
+interface HydrantItem {
+    no: number;
+    lineNumber: string;
+    komponenUnit: string;
+    subKomponen: string;
+    checks: Record<string, boolean>;
+    condition: 'L' | 'TL';
+    notes: string;
+}
+
+interface HydrantData {
+    id: number;
+    location: string;
+    pic: string;
+    diketahuiOleh?: string;
+    diPeriksaOleh?: string;
+    signatureDiketahui?: string;
+    signatureDiPeriksa?: string;
+    periodeInspeksi?: string;
+    createdAt: string;
+    items: HydrantItem[];
+}
+
+const HYDRANT_DESKRIPSI: Record<string, string[]> = {
+    'BOX HYDRANT': ['Kondisi Box Bersih', 'Tidak ada barang lain Selain Perlengkapan Hydrant'],
+    'JET NOOZLE': ['Tidak Terdapat retakan Atau Bocor', 'Kaitan Sambungan Kopling Tidak Aus'],
+    'HOSE HYDRANT': ['Tidak dalam Keadaan Bocor', 'Tersusun Rapi di Hose Rack'],
+    'HOSE RACK': ['Rack Tidak Ada Yang Patah', 'Mudah di urai Jika digunakan'],
+    'KUNCI HYDRANT PILLAR': ['Tersedia Kunci Hydrant', 'Kunci Hydrant Valve Berfungsi Dengan Baik'],
+    'WATER CANNON': ['Tidak Ada Keretakan, Kebocoran & Berkarat', 'Mekanisme katup Bisa dibuka, ditutup & diputar dengan lancar', 'Mekanisme Drainase Tidak Ada Sumbatan'],
+    'HYDRANT PILLAR': ['Tidak ada Retakan, Korosi atau keausan', 'Tidak dalam Keadaan Bocor', 'Mudah Digunakan dan Tidak Berkarat', 'Valve pillar Hydran di buka & di tutup dengan mudah', 'Tidak ada sumbatan'],
+    'PIPA HYDRANT': ['Pipa Hydrant Tidak ada kebocoran, retakan & korosif']
+};
+
+export async function generateHydrantPDF(data: HydrantData): Promise<void> {
+    const doc = new jsPDF('l', 'mm', 'a4');
+    const pageWidth = 297;
+    const pageHeight = 210;
+    const margin = 8;
+
+    const monthNames = ['JANUARI', 'FEBRUARI', 'MARET', 'APRIL', 'MEI', 'JUNI', 'JULI', 'AGUSTUS', 'SEPTEMBER', 'OKTOBER', 'NOVEMBER', 'DESEMBER'];
+    const inspectionDate = new Date(data.createdAt);
+    const periodeInspeksi = data.periodeInspeksi || `${monthNames[inspectionDate.getMonth()]} ${inspectionDate.getFullYear()}`;
+
+    // ============ LOGO PT. PPA ============
+    try {
+        const ptPpaLogo = await loadImageAsBase64('/pt-ppa-logo.png');
+        if (ptPpaLogo) doc.addImage(ptPpaLogo, 'PNG', margin, 5, 16, 16);
+    } catch (e) { }
+
+    // ============ HEADER ============
+    doc.setFontSize(12);
+    doc.setFont('helvetica', 'bold');
+    doc.setTextColor(0, 0, 0);
+    doc.text('CHECKLIST INSPEKSI', pageWidth / 2, 10, { align: 'center' });
+    doc.setFontSize(10);
+    doc.text('ALAT PROTEKSI KEBAKARAN ( HYDRANT )', pageWidth / 2, 16, { align: 'center' });
+
+    // ============ INFO SECTION ============
+    doc.setFontSize(8);
+    doc.setFont('helvetica', 'normal');
+    
+    doc.text('Project / Site', margin, 26);
+    doc.text(': PPA / BIB', margin + 24, 26);
+    
+    doc.text('Periode Inspeksi', margin, 32);
+    doc.text(`: ${periodeInspeksi}`, margin + 24, 32);
+    
+    doc.text('Area Inspeksi', margin, 38);
+    doc.text(`: ${data.location || '-'}`, margin + 24, 38);
+
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(8);
+    doc.text('PPA-BIB-F-SHE-20B', pageWidth - margin, 38, { align: 'right' });
+
+    // ============ GROUP ITEMS BY LINE ============
+    const itemsByLine: Record<string, HydrantItem[]> = {};
+    data.items.forEach(item => {
+        if (!itemsByLine[item.lineNumber]) {
+            itemsByLine[item.lineNumber] = [];
+        }
+        itemsByLine[item.lineNumber].push(item);
+    });
+
+    // ============ BUILD TABLE DATA ============
+    let tableBody: any[][] = [];
+    let noCounter = 1;
+
+    Object.keys(itemsByLine).sort().forEach((line) => {
+        tableBody.push([
+            { content: line, colSpan: 8, styles: { fillColor: [230, 230, 230], fontStyle: 'bold', halign: 'center' } }
+        ]);
+
+        const lineItems = itemsByLine[line];
+        
+        const itemsByKomponen: Record<string, HydrantItem[]> = {};
+        lineItems.forEach(item => {
+            const baseSubKomponen = item.subKomponen.replace(/\s+\d+$/, '');
+            if (!itemsByKomponen[item.komponenUnit]) {
+                itemsByKomponen[item.komponenUnit] = [];
+            }
+            itemsByKomponen[item.komponenUnit].push(item);
+        });
+
+        Object.entries(itemsByKomponen).forEach(([komponen, items]) => {
+            items.forEach((item, idx) => {
+                const baseSubKomponen = item.subKomponen.replace(/\s+\d+$/, '').trim();
+                const deskripsiList = HYDRANT_DESKRIPSI[baseSubKomponen] || [];
+                const deskripsiText = deskripsiList.map((d, i) => {
+                    const letter = String.fromCharCode(97 + i);
+                    return `${letter}. ${d}`;
+                }).join('\n');
+
+                const acceptedYes = Object.values(item.checks).filter(v => v === true).length;
+                const acceptedNo = Object.values(item.checks).filter(v => v === false).length || (deskripsiList.length - acceptedYes);
+
+                tableBody.push([
+                    { content: String(noCounter), styles: { halign: 'center' } },
+                    { content: idx === 0 ? komponen : '', styles: { fontStyle: 'bold' } },
+                    item.subKomponen,
+                    { content: deskripsiText, styles: { halign: 'left', fontSize: 6 } },
+                    { content: acceptedYes > 0 ? 'V' : '', styles: { halign: 'center' } },
+                    { content: acceptedNo > 0 && acceptedYes === 0 ? 'X' : '', styles: { halign: 'center' } },
+                    { content: item.condition, styles: { halign: 'center', fontStyle: 'bold', textColor: item.condition === 'L' ? [0, 128, 0] : [255, 0, 0] } },
+                    { content: item.notes || '', styles: { halign: 'left' } }
+                ]);
+                noCounter++;
+            });
+        });
+    });
+
+    // ============ TABLE ============
+    autoTable(doc, {
+        startY: 44,
+        head: [[
+            { content: 'NO', styles: { halign: 'center' } },
+            { content: 'KOMPONEN\nUNIT', styles: { halign: 'center' } },
+            { content: 'SUB-\nKOMPONEN', styles: { halign: 'center' } },
+            { content: 'DESKRIPSI', styles: { halign: 'center' } },
+            { content: 'YES', styles: { halign: 'center' } },
+            { content: 'NO', styles: { halign: 'center' } },
+            { content: 'LAYAK/\nTIDAK\nLAYAK', styles: { halign: 'center' } },
+            { content: 'KETERANGAN', styles: { halign: 'center' } }
+        ]],
+        body: tableBody,
+        theme: 'grid',
+        styles: { 
+            fontSize: 7, 
+            cellPadding: 1.5, 
+            lineColor: [0, 0, 0], 
+            lineWidth: 0.15, 
+            valign: 'middle',
+            textColor: [0, 0, 0]
+        },
+        headStyles: { 
+            fillColor: [255, 255, 255], 
+            textColor: [0, 0, 0], 
+            fontStyle: 'bold', 
+            halign: 'center',
+            valign: 'middle',
+            fontSize: 7
+        },
+        columnStyles: {
+            0: { cellWidth: 10 },
+            1: { cellWidth: 30 },
+            2: { cellWidth: 35 },
+            3: { cellWidth: 85 },
+            4: { cellWidth: 12 },
+            5: { cellWidth: 12 },
+            6: { cellWidth: 18 },
+            7: { cellWidth: 60, overflow: 'linebreak' }
+        },
+        margin: { left: margin, right: margin },
+        tableWidth: 'auto'
+    });
+
+    // ============ KETERANGAN ============
+    let y = (doc as any).lastAutoTable.finalY + 5;
+    
+    if (y > pageHeight - 50) {
+        doc.addPage();
+        y = 20;
+    }
+
+    doc.setFontSize(7);
+    doc.setFont('helvetica', 'bold');
+    doc.text('Ket.', margin, y);
+    
+    doc.setFont('helvetica', 'normal');
+    y += 4;
+    doc.text('V', margin, y);
+    doc.text(': Kondisi Layak', margin + 6, y);
+    y += 3;
+    doc.text('X', margin, y);
+    doc.text(': Kondisi Tidak Layak', margin + 6, y);
+
+    // ============ SIGNATURE SECTION ============
+    const sigY = Math.max(y + 12, (doc as any).lastAutoTable.finalY + 20);
+    const leftSigX = 100;
+    const rightSigX = pageWidth - 70;
+
+    doc.setFontSize(8);
+    doc.setFont('helvetica', 'normal');
+    doc.text(`Girimulya,        ${periodeInspeksi}`, rightSigX, sigY - 8, { align: 'center' });
+
+    doc.text('Diketahui Oleh,', leftSigX, sigY, { align: 'center' });
+    doc.text('Di Periksa Oleh,', rightSigX, sigY, { align: 'center' });
+
+    const diketahuiName = data.diketahuiOleh || '';
+    const diPeriksaName = data.diPeriksaOleh || data.pic || '';
+
+    if (data.signatureDiketahui) {
+        try {
+            doc.addImage(data.signatureDiketahui, 'PNG', leftSigX - 18, sigY + 2, 36, 14);
+        } catch (e) { }
+    }
+
+    if (data.signatureDiPeriksa) {
+        try {
+            doc.addImage(data.signatureDiPeriksa, 'PNG', rightSigX - 18, sigY + 2, 36, 14);
+        } catch (e) { }
+    }
+
+    if (diketahuiName) {
+        doc.setFont('helvetica', 'bold');
+        doc.text(diketahuiName, leftSigX, sigY + 20, { align: 'center' });
+        doc.setFont('helvetica', 'normal');
+    }
+    doc.text('(………………….….)', leftSigX, sigY + 25, { align: 'center' });
+
+    if (diPeriksaName) {
+        doc.setFont('helvetica', 'bold');
+        doc.text(diPeriksaName, rightSigX, sigY + 20, { align: 'center' });
+        doc.setFont('helvetica', 'normal');
+    }
+    doc.text('(……………………...)', rightSigX, sigY + 25, { align: 'center' });
+
+    // Save file
+    const fileName = `CHECKLIST_INSPEKSI_HYDRANT_${data.location?.replace(/[^a-zA-Z0-9]/g, '_') || 'HYDRANT'}_${periodeInspeksi.replace(/\s/g, '_')}.pdf`;
+    doc.save(fileName);
+}
