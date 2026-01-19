@@ -218,7 +218,7 @@ app.get('/api/schedules', async (req, res) => {
 app.post('/api/apar', async (req, res) => {
     try {
         const { date, location, unitNumber, capacity, tagNumber, checklistData, condition, notes, pic, userId } = req.body;
-        const newApar = await db.insert(aparInspections).values({
+        await db.insert(aparInspections).values({
             date: new Date(date),
             location,
             unitNumber,
@@ -229,9 +229,11 @@ app.post('/api/apar', async (req, res) => {
             notes,
             pic,
             userId
-        }).returning();
+        });
 
-        res.json(newApar[0]);
+        // Fetch the latest inserted record
+        const result = await db.select().from(aparInspections).orderBy(desc(aparInspections.id)).limit(1);
+        res.json(result[0] || { id: Date.now(), success: true });
     } catch (error) {
         console.error('APAR Create Error:', error);
         res.status(500).json({ error: 'Failed to create APAR inspection' });
@@ -251,7 +253,7 @@ app.get('/api/apar', async (req, res) => {
 app.post('/api/hydrant', async (req, res) => {
     try {
         const { date, location, shift, checklistData, notes, pic, userId } = req.body;
-        const newHydrant = await db.insert(hydrantInspections).values({
+        await db.insert(hydrantInspections).values({
             date: new Date(date),
             location,
             shift,
@@ -259,9 +261,10 @@ app.post('/api/hydrant', async (req, res) => {
             notes,
             pic,
             userId
-        }).returning();
+        });
 
-        res.json(newHydrant[0]);
+        const result = await db.select().from(hydrantInspections).orderBy(desc(hydrantInspections.id)).limit(1);
+        res.json(result[0] || { id: Date.now(), success: true });
     } catch (error) {
         console.error('Hydrant Create Error:', error);
         res.status(500).json({ error: 'Failed to create Hydrant inspection' });
@@ -281,16 +284,17 @@ app.get('/api/hydrant', async (req, res) => {
 app.post('/api/pica', async (req, res) => {
     try {
         const { title, description, imageData, deadline, userId } = req.body;
-        const newPica = await db.insert(picaReports).values({
+        await db.insert(picaReports).values({
             title,
             description,
             imageData,
             deadline: deadline ? new Date(deadline) : null,
             userId,
             status: 'OPEN'
-        }).returning();
+        });
 
-        res.json(newPica[0]);
+        const result = await db.select().from(picaReports).orderBy(desc(picaReports.id)).limit(1);
+        res.json(result[0] || { id: Date.now(), success: true });
     } catch (error) {
         console.error('PICA Create Error:', error);
         res.status(500).json({ error: 'Failed to create PICA report' });

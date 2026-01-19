@@ -1,4 +1,4 @@
-modules = ["nodejs-20"]
+modules = ["nodejs-20", "postgresql-16"]
 
 [[ports]]
 localPort = 3000
@@ -54,3 +54,6 @@ waitForPort = 5000
 
 [workflows.workflow.metadata]
 outputType = "webview"
+
+[nix]
+channel = "stable-25_05"
