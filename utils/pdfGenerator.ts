@@ -274,18 +274,29 @@ export async function generateP2HPDF(data: P2HData): Promise<void> {
 }
 
 // ============ APAR PDF Generator ============
-interface APARData {
-    id: number;
-    location: string;
+interface APARUnit {
+    no: number;
     unitNumber: string;
     capacity: string;
     tagNumber: string;
-    checklistData: string;
+    checks: Record<string, boolean>;
     condition: string;
     notes: string;
+}
+
+interface APARData {
+    id: number;
+    location: string;
+    unitNumber?: string;
+    capacity?: string;
+    tagNumber?: string;
+    checklistData?: string;
+    condition?: string;
+    notes?: string;
     pic: string;
     date?: string;
     createdAt: string;
+    units?: APARUnit[];
 }
 
 const APAR_ITEMS_PDF = ['Handle', 'Lock Pin', 'Seal Segel', 'Tabung', 'Hose Nozzle', 'Braket'];
@@ -296,68 +307,95 @@ export async function generateAPARPDF(data: APARData): Promise<void> {
     const pageHeight = 210;
     const margin = 10;
 
-    let checklistParsed: Record<string, boolean> = {};
-    try {
-        checklistParsed = JSON.parse(data.checklistData || '{}');
-    } catch (e) {
-        checklistParsed = {};
-    }
-
     const dateStr = data.date || data.createdAt;
     const inspectionDate = dateStr ? new Date(dateStr) : new Date();
     const monthNames = ['JANUARI', 'FEBRUARI', 'MARET', 'APRIL', 'MEI', 'JUNI', 'JULI', 'AGUSTUS', 'SEPTEMBER', 'OKTOBER', 'NOVEMBER', 'DESEMBER'];
     const periodeInspeksi = `${monthNames[inspectionDate.getMonth()]} ${inspectionDate.getFullYear()}`;
     const tanggalInspeksi = inspectionDate.toLocaleDateString('id-ID', { day: '2-digit', month: '2-digit', year: 'numeric' });
 
+    // ============ LOGO PT. PPA ============
+    try {
+        const ptPpaLogo = await loadImageAsBase64('/pt-ppa-logo.png');
+        if (ptPpaLogo) doc.addImage(ptPpaLogo, 'PNG', margin, 5, 18, 18);
+    } catch (e) { }
+
     // ============ HEADER ============
     doc.setFontSize(14);
     doc.setFont('helvetica', 'bold');
     doc.setTextColor(0, 0, 0);
-    doc.text('CHECKLIST INSPEKSI', pageWidth / 2, 12, { align: 'center' });
-    doc.setFontSize(12);
-    doc.text('ALAT PEMADAM API RINGAN (APAR)', pageWidth / 2, 18, { align: 'center' });
+    doc.text('CHECKLIST INSPEKSI', pageWidth / 2, 10, { align: 'center' });
+    doc.setFontSize(11);
+    doc.text('ALAT PEMADAM API RINGAN (APAR)', pageWidth / 2, 16, { align: 'center' });
 
     // ============ INFO SECTION ============
     doc.setFontSize(9);
     doc.setFont('helvetica', 'normal');
     
     doc.text('Project / Site', margin, 28);
-    doc.text(`: PPA / BIB`, margin + 28, 28);
+    doc.text(': PPA / BIB', margin + 28, 28);
     
     doc.text('Periode Inspeksi', margin, 34);
     doc.text(`: ${periodeInspeksi}`, margin + 28, 34);
 
     doc.setFont('helvetica', 'bold');
-    doc.text(data.location || 'LOKASI', pageWidth - margin - 60, 28);
+    doc.text(data.location || 'LOKASI', pageWidth - margin - 70, 28);
     
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(8);
     doc.text('PPA-BIB-F-SHE-20A', pageWidth - margin, 34, { align: 'right' });
 
+    // ============ BUILD TABLE DATA ============
+    let tableBody: string[][] = [];
+
+    if (data.units && data.units.length > 0) {
+        tableBody = data.units.map((unit, idx) => {
+            const getCheck = (item: string) => unit.checks[item] === true ? 'V' : '';
+            const kondisi = unit.condition === 'LAYAK' ? 'L' : 'TL';
+            return [
+                String(idx + 1),
+                unit.unitNumber || '-',
+                unit.capacity || '6 Kg',
+                unit.tagNumber || String(idx + 1),
+                getCheck('Handle'),
+                getCheck('Lock Pin'),
+                getCheck('Seal Segel'),
+                getCheck('Tabung'),
+                getCheck('Hose Nozzle'),
+                getCheck('Braket'),
+                kondisi,
+                unit.notes || '',
+                tanggalInspeksi,
+                data.pic || '-'
+            ];
+        });
+    } else {
+        let checklistParsed: Record<string, boolean> = {};
+        try {
+            checklistParsed = JSON.parse(data.checklistData || '{}');
+        } catch (e) {
+            checklistParsed = {};
+        }
+        const getCheckMark = (item: string) => checklistParsed[item] === true ? 'V' : '';
+        const kondisiAPAR = data.condition === 'LAYAK' ? 'L' : 'TL';
+        tableBody = [[
+            '1',
+            data.unitNumber || '-',
+            data.capacity || '6 Kg',
+            data.tagNumber || '-',
+            getCheckMark('Handle'),
+            getCheckMark('Lock Pin'),
+            getCheckMark('Seal Segel'),
+            getCheckMark('Tabung'),
+            getCheckMark('Hose Nozzle'),
+            getCheckMark('Braket'),
+            kondisiAPAR,
+            data.notes || '',
+            tanggalInspeksi,
+            data.pic || '-'
+        ]];
+    }
+
     // ============ TABLE ============
-    const getCheckMark = (item: string) => {
-        return checklistParsed[item] === true ? 'V' : '';
-    };
-
-    const kondisiAPAR = data.condition === 'LAYAK' ? 'L' : 'TL';
-
-    const tableBody = [[
-        '1',
-        data.unitNumber || '-',
-        data.capacity || '6 Kg',
-        data.tagNumber || '-',
-        getCheckMark('Handle'),
-        getCheckMark('Lock Pin'),
-        getCheckMark('Seal Segel'),
-        getCheckMark('Tabung'),
-        getCheckMark('Hose Nozzle'),
-        getCheckMark('Braket'),
-        kondisiAPAR,
-        data.notes || '',
-        tanggalInspeksi,
-        data.pic || '-'
-    ]];
-
     autoTable(doc, {
         startY: 40,
         head: [[
@@ -394,55 +432,55 @@ export async function generateAPARPDF(data: APARData): Promise<void> {
         },
         columnStyles: {
             0: { cellWidth: 10 },
-            1: { cellWidth: 40, halign: 'left' },
+            1: { cellWidth: 45, halign: 'left' },
             2: { cellWidth: 18 },
-            3: { cellWidth: 15 },
+            3: { cellWidth: 14 },
             4: { cellWidth: 14 },
             5: { cellWidth: 14 },
             6: { cellWidth: 14 },
             7: { cellWidth: 14 },
             8: { cellWidth: 14 },
             9: { cellWidth: 14 },
-            10: { cellWidth: 22 },
-            11: { cellWidth: 35, halign: 'left' },
+            10: { cellWidth: 24 },
+            11: { cellWidth: 30, halign: 'left' },
             12: { cellWidth: 20 },
-            13: { cellWidth: 25 }
+            13: { cellWidth: 22 }
         },
         margin: { left: margin, right: margin },
         tableWidth: 'auto'
     });
 
     // ============ KETERANGAN ============
-    let y = (doc as any).lastAutoTable.finalY + 8;
+    let y = (doc as any).lastAutoTable.finalY + 6;
     doc.setFontSize(8);
     doc.setFont('helvetica', 'bold');
     doc.text('Keterangan', margin, y);
     
     doc.setFont('helvetica', 'normal');
-    y += 5;
+    y += 4;
     doc.text('V', margin, y);
-    doc.text(': Kondisi Layak', margin + 8, y);
+    doc.text(': Kondisi Layak', margin + 6, y);
     y += 4;
     doc.text('X', margin, y);
-    doc.text(': Kondisi Tidak Layak', margin + 8, y);
+    doc.text(': Kondisi Tidak Layak', margin + 6, y);
     y += 4;
     doc.setFontSize(7);
-    doc.text('Jika berat APAR kurang dari 10% dari berat APAR kondisi baru', margin + 8, y);
+    doc.text('Jika berat APAR kurang dari 10% dari berat APAR kondisi baru', margin + 6, y);
 
     // ============ SIGNATURE SECTION ============
-    const sigY = y + 15;
-    const leftSigX = margin + 60;
-    const rightSigX = pageWidth - margin - 80;
+    const sigY = Math.max(y + 12, 160);
+    const leftSigX = margin + 80;
+    const rightSigX = pageWidth - margin - 60;
 
     doc.setFontSize(9);
     doc.setFont('helvetica', 'normal');
-    doc.text(`Girimulya,        ${periodeInspeksi}`, rightSigX + 20, sigY - 5);
+    doc.text(`Girimulya,        ${periodeInspeksi}`, rightSigX, sigY - 8);
 
     doc.text('Diketahui Oleh,', leftSigX, sigY);
-    doc.text('Di Periksa Oleh,', rightSigX + 40, sigY);
+    doc.text('Di Periksa Oleh,', rightSigX, sigY);
 
-    doc.text('(………………............….….)', leftSigX - 10, sigY + 25);
-    doc.text('(…………….........…………...)', rightSigX + 30, sigY + 25);
+    doc.text('(………………….….)', leftSigX - 5, sigY + 20);
+    doc.text('(……………………...)', rightSigX - 5, sigY + 20);
 
     // Save file
     const fileName = `CHECKLIST_INSPEKSI_APAR_${data.location?.replace(/\s/g, '_') || 'APAR'}_${periodeInspeksi.replace(/\s/g, '_')}.pdf`;
