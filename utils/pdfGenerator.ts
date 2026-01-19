@@ -294,6 +294,8 @@ interface APARData {
     condition?: string;
     notes?: string;
     pic: string;
+    diketahuiOleh?: string;
+    diPeriksaOleh?: string;
     date?: string;
     createdAt: string;
     units?: APARUnit[];
@@ -468,19 +470,33 @@ export async function generateAPARPDF(data: APARData): Promise<void> {
     doc.text('Jika berat APAR kurang dari 10% dari berat APAR kondisi baru', margin + 6, y);
 
     // ============ SIGNATURE SECTION ============
-    const sigY = Math.max(y + 12, 160);
-    const leftSigX = margin + 80;
-    const rightSigX = pageWidth - margin - 60;
+    const sigY = Math.max(y + 15, 155);
+    const leftSigX = 80;
+    const rightSigX = pageWidth - 80;
 
     doc.setFontSize(9);
     doc.setFont('helvetica', 'normal');
-    doc.text(`Girimulya,        ${periodeInspeksi}`, rightSigX, sigY - 8);
+    doc.text(`Girimulya,        ${periodeInspeksi}`, rightSigX - 10, sigY - 10, { align: 'center' });
 
-    doc.text('Diketahui Oleh,', leftSigX, sigY);
-    doc.text('Di Periksa Oleh,', rightSigX, sigY);
+    doc.text('Diketahui Oleh,', leftSigX, sigY, { align: 'center' });
+    doc.text('Di Periksa Oleh,', rightSigX, sigY, { align: 'center' });
 
-    doc.text('(………………….….)', leftSigX - 5, sigY + 20);
-    doc.text('(……………………...)', rightSigX - 5, sigY + 20);
+    const diketahuiName = data.diketahuiOleh || '';
+    const diPeriksaName = data.diPeriksaOleh || data.pic || '';
+
+    if (diketahuiName) {
+        doc.setFont('helvetica', 'bold');
+        doc.text(diketahuiName, leftSigX, sigY + 18, { align: 'center' });
+        doc.setFont('helvetica', 'normal');
+    }
+    doc.text('(………………….….)', leftSigX, sigY + 25, { align: 'center' });
+
+    if (diPeriksaName) {
+        doc.setFont('helvetica', 'bold');
+        doc.text(diPeriksaName, rightSigX, sigY + 18, { align: 'center' });
+        doc.setFont('helvetica', 'normal');
+    }
+    doc.text('(……………………...)', rightSigX, sigY + 25, { align: 'center' });
 
     // Save file
     const fileName = `CHECKLIST_INSPEKSI_APAR_${data.location?.replace(/\s/g, '_') || 'APAR'}_${periodeInspeksi.replace(/\s/g, '_')}.pdf`;
