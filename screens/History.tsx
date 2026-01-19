@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Search, Filter, Download, MoreHorizontal, Clock, CheckCircle2, FileText, Loader2 } from 'lucide-react';
+import { Search, Filter, Download, MoreHorizontal, Clock, CheckCircle2, FileText, Loader2, X } from 'lucide-react';
 import { generateP2HPDF, generateAPARPDF } from '../utils/pdfGenerator';
 
 interface Inspection {
@@ -28,6 +28,9 @@ interface Inspection {
 export const HistoryScreen: React.FC = () => {
   const [inspections, setInspections] = useState<Inspection[]>([]);
   const [loading, setLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [filterType, setFilterType] = useState<'ALL' | 'P2H' | 'APAR' | 'HYDRANT'>('ALL');
+  const [showFilterMenu, setShowFilterMenu] = useState(false);
 
   useEffect(() => {
     fetchInspections();
@@ -121,6 +124,18 @@ export const HistoryScreen: React.FC = () => {
     }
   };
 
+  const filteredInspections = inspections.filter(item => {
+    const matchesType = filterType === 'ALL' || item.type === filterType;
+    const searchLower = searchQuery.toLowerCase();
+    const matchesSearch = searchQuery === '' || 
+      (item.unitNumber?.toLowerCase().includes(searchLower)) ||
+      (item.operatorName?.toLowerCase().includes(searchLower)) ||
+      (item.location?.toLowerCase().includes(searchLower)) ||
+      (item.pic?.toLowerCase().includes(searchLower)) ||
+      (item.tagNumber?.toLowerCase().includes(searchLower));
+    return matchesType && matchesSearch;
+  });
+
   return (
     <div className="pb-32 md:pb-8 animate-fade-in flex flex-col h-full bg-[#F3F6F8] font-sans overflow-y-auto">
       {/* Heavy Neon Header */}
@@ -135,13 +150,35 @@ export const HistoryScreen: React.FC = () => {
               <Search size={20} className="text-slate-400 mr-3" />
               <input
                 type="text"
-                placeholder="Cari No. Unit atau Operator..."
-                className="bg-transparent border-none text-white placeholder-slate-400 text-sm w-full focus:ring-0 p-0"
+                placeholder="Cari No. Unit, Operator, Lokasi..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="bg-transparent border-none text-white placeholder-slate-400 text-sm w-full focus:ring-0 focus:outline-none p-0"
               />
             </div>
-            <button className="w-[52px] h-[52px] bg-indigo-500 text-white rounded-2xl flex items-center justify-center shadow-lg active:scale-95 transition-transform border border-indigo-400">
-              <Filter size={22} />
-            </button>
+            <div className="relative">
+              <button 
+                onClick={() => setShowFilterMenu(!showFilterMenu)}
+                className={`w-[52px] h-[52px] ${filterType !== 'ALL' ? 'bg-emerald-500 border-emerald-400' : 'bg-indigo-500 border-indigo-400'} text-white rounded-2xl flex items-center justify-center shadow-lg active:scale-95 transition-transform border`}
+              >
+                <Filter size={22} />
+              </button>
+              {showFilterMenu && (
+                <div className="absolute right-0 top-14 bg-white rounded-xl shadow-xl border border-slate-100 overflow-hidden z-50 min-w-[140px]">
+                  {['ALL', 'P2H', 'APAR', 'HYDRANT'].map((type) => (
+                    <button
+                      key={type}
+                      onClick={() => { setFilterType(type as any); setShowFilterMenu(false); }}
+                      className={`w-full px-4 py-3 text-left text-sm font-medium hover:bg-slate-50 transition-colors ${
+                        filterType === type ? 'bg-indigo-50 text-indigo-600' : 'text-slate-700'
+                      }`}
+                    >
+                      {type === 'ALL' ? 'Semua' : type}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>
@@ -150,37 +187,47 @@ export const HistoryScreen: React.FC = () => {
         {/* Stats Summary */}
         <div className="px-6 mt-4 relative z-20 grid grid-cols-3 gap-3 mb-2">
           <div className="bg-white p-3 rounded-[20px] shadow-sm border border-slate-100 flex flex-col items-center">
-            <span className="text-2xl font-bold text-slate-800">{inspections.length}</span>
+            <span className="text-2xl font-bold text-slate-800">{filteredInspections.length}</span>
             <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Total</span>
           </div>
           <div className="bg-emerald-50 p-3 rounded-[20px] shadow-sm border border-emerald-100 flex flex-col items-center">
-            <span className="text-2xl font-bold text-emerald-600">{inspections.filter(i => i.status === 'APPROVED').length}</span>
+            <span className="text-2xl font-bold text-emerald-600">{filteredInspections.filter(i => i.status === 'APPROVED').length}</span>
             <span className="text-[10px] text-emerald-400 font-bold uppercase tracking-wider">Approved</span>
           </div>
           <div className="bg-amber-50 p-3 rounded-[20px] shadow-sm border border-amber-100 flex flex-col items-center">
-            <span className="text-2xl font-bold text-amber-500">{inspections.filter(i => i.status === 'PENDING').length}</span>
+            <span className="text-2xl font-bold text-amber-500">{filteredInspections.filter(i => i.status === 'PENDING').length}</span>
             <span className="text-[10px] text-amber-400 font-bold uppercase tracking-wider">Pending</span>
           </div>
         </div>
 
         {/* Timeline List */}
         <div className="p-6 pt-2 space-y-6">
-          <h3 className="text-sm font-bold text-slate-400 uppercase tracking-wider pl-1">Inspeksi Terbaru</h3>
+          <div className="flex items-center justify-between">
+            <h3 className="text-sm font-bold text-slate-400 uppercase tracking-wider pl-1">Inspeksi Terbaru</h3>
+            {(filterType !== 'ALL' || searchQuery) && (
+              <button 
+                onClick={() => { setFilterType('ALL'); setSearchQuery(''); }}
+                className="text-xs text-indigo-600 hover:text-indigo-700 font-medium flex items-center gap-1"
+              >
+                <X size={12} /> Reset Filter
+              </button>
+            )}
+          </div>
 
           {loading ? (
             <div className="flex flex-col items-center justify-center py-20 gap-4">
               <Loader2 size={32} className="text-indigo-500 animate-spin" />
               <span className="text-slate-400 font-medium">Memuat data...</span>
             </div>
-          ) : inspections.length === 0 ? (
+          ) : filteredInspections.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-20 gap-4 bg-white rounded-[28px] border-2 border-dashed border-slate-200">
               <FileText size={48} className="text-slate-300" />
-              <span className="text-slate-400 font-medium">Belum ada data inspeksi.</span>
-              <span className="text-slate-300 text-sm">Mulai inspeksi pertama Anda!</span>
+              <span className="text-slate-400 font-medium">{inspections.length === 0 ? 'Belum ada data inspeksi.' : 'Tidak ada hasil yang cocok.'}</span>
+              <span className="text-slate-300 text-sm">{inspections.length === 0 ? 'Mulai inspeksi pertama Anda!' : 'Coba ubah filter atau kata kunci pencarian.'}</span>
             </div>
           ) : (
             <div className="relative ml-4 md:ml-0 space-y-8 md:space-y-0 md:grid md:grid-cols-2 md:gap-6 pb-4">
-              {inspections.map((item) => (
+              {filteredInspections.map((item) => (
                 <div key={`${item.type}-${item.id}`} className="relative pl-8 md:pl-0 group cursor-pointer">
                   {/* Timeline Dot (Mobile Only) */}
                   <div className={`md:hidden absolute -left-[9px] top-4 w-4 h-4 rounded-full border-2 border-white shadow-sm transition-transform group-hover:scale-125 ${getStatusColor(item.status || 'PENDING')}`}></div>
