@@ -53,15 +53,7 @@ const __dirname = path.dirname(__filename);
 // Serve static files from the React app build directory
 app.use(express.static(path.join(__dirname, '../dist')));
 
-// The "catchall" handler: for any request that doesn't
-// match one above, send back React's index.html file.
-app.get('*', (req, res) => {
-    // Check if request is for API, if so return 404 instead of html
-    if (req.path.startsWith('/api')) {
-        return res.status(404).json({ error: 'API endpoint not found' });
-    }
-    res.sendFile(path.join(__dirname, '../dist/index.html'));
-});
+
 
 // app.get('/', ... ) -> Removed/Overridden by static serve or caught by '*' if index.html exists.
 // But we can keep an API health check at /api/health if needed.
@@ -340,6 +332,17 @@ app.get('/api/pica', async (req, res) => {
     } catch (error) {
         res.status(500).json({ error: 'Failed to fetch PICA reports' });
     }
+});
+
+// The "catchall" handler: for any request that doesn't
+// match one above, send back React's index.html file.
+// In Express 5, use (.*) or a regex for wildcard matching.
+app.get(/(.*)/, (req, res) => {
+    // Check if request is for API, if so return 404 instead of html
+    if (req.path.startsWith('/api')) {
+        return res.status(404).json({ error: 'API endpoint not found' });
+    }
+    res.sendFile(path.join(__dirname, '../dist/index.html'));
 });
 
 app.listen(Number(port), '0.0.0.0', () => {
