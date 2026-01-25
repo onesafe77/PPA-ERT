@@ -761,3 +761,400 @@ export async function generateHydrantPDF(data: HydrantData): Promise<void> {
     const fileName = `CHECKLIST_INSPEKSI_HYDRANT_${data.location?.replace(/[^a-zA-Z0-9]/g, '_') || 'HYDRANT'}_${periodeInspeksi.replace(/\s/g, '_')}.pdf`;
     doc.save(fileName);
 }
+
+// ============================================
+// EYE WASH PDF GENERATOR
+// ============================================
+
+interface EyeWashData {
+    id: number;
+    location: string;
+    regNumber: string;
+    inspector: string;
+    periodeInspeksi: string;
+    tanggalInspeksi: string;
+    checklistData: string; // JSON
+    kondisiKeseluruhan: 'LAYAK' | 'TIDAK LAYAK';
+    keterangan: string;
+    photos: string[];
+    diketahuiOleh: string;
+    diPeriksaOleh: string;
+    signatureDiketahui: string;
+    signatureDiPeriksa: string;
+    createdAt: string;
+}
+
+export async function generateEyeWashPDF(data: EyeWashData): Promise<void> {
+    const doc = new jsPDF('p', 'mm', 'a4');
+    const pageWidth = 210;
+    const pageHeight = 297;
+    const margin = 10;
+
+    // Parse checklist
+    let checklist: Record<string, boolean> = {};
+    try {
+        checklist = JSON.parse(data.checklistData || '{}');
+    } catch (e) {
+        checklist = {};
+    }
+
+    // ============ LOGO ============
+    try {
+        const ptPpaLogo = await loadImageAsBase64('/pt-ppa-logo.png');
+        if (ptPpaLogo) doc.addImage(ptPpaLogo, 'PNG', margin, 5, 18, 18);
+    } catch (e) { }
+
+    // ============ HEADER ============
+    doc.setFontSize(14);
+    doc.setFont('helvetica', 'bold');
+    doc.text('CHECKLIST INSPEKSI EYE WASH', pageWidth / 2, 12, { align: 'center' });
+
+    doc.setFontSize(8);
+    doc.setFont('helvetica', 'normal');
+    doc.text('Form No: PPA-BIB-F-SHE-20C', pageWidth - margin, 10, { align: 'right' });
+
+    // ============ INFO SECTION ============
+    let y = 28;
+    doc.setFontSize(9);
+    doc.text('Project / Site', margin, y);
+    doc.text(': PPA / BIB', margin + 35, y);
+
+    y += 6;
+    doc.text('Periode Inspeksi', margin, y);
+    doc.text(`: ${data.periodeInspeksi}`, margin + 35, y);
+
+    y += 6;
+    doc.text('Tanggal Inspeksi', margin, y);
+    doc.text(`: ${data.tanggalInspeksi}`, margin + 35, y);
+
+    y += 6;
+    doc.text('Nama Inspektor', margin, y);
+    doc.text(`: ${data.inspector}`, margin + 35, y);
+
+    y += 6;
+    doc.text('Lokasi', margin, y);
+    doc.text(`: ${data.location}`, margin + 35, y);
+
+    y += 6;
+    doc.text('No. REG Eye Wash', margin, y);
+    doc.text(`: ${data.regNumber}`, margin + 35, y);
+
+    // ============ CHECKLIST TABLE ============
+    y += 8;
+    const checklistItems = [
+        'Isi', 'Karet Penutup', 'Kebersihan', 'Kondisi',
+        'Lubang Pembuangan Air', 'Tempat Eye Wash', 'KIP', 'Braket'
+    ];
+
+    const tableBody = checklistItems.map((item, idx) => {
+        const isLayak = checklist[item] === true;
+        return [
+            String(idx + 1),
+            item,
+            isLayak ? 'V' : '',
+            isLayak ? '' : 'V'
+        ];
+    });
+
+    autoTable(doc, {
+        startY: y,
+        head: [['NO', 'ITEM PEMERIKSAAN', 'LAYAK', 'TIDAK LAYAK']],
+        body: tableBody,
+        theme: 'grid',
+        styles: { fontSize: 9, cellPadding: 3, halign: 'center' },
+        headStyles: { fillColor: [255, 255, 255], textColor: [0, 0, 0], fontStyle: 'bold' },
+        columnStyles: {
+            0: { cellWidth: 15 },
+            1: { cellWidth: 100, halign: 'left' },
+            2: { cellWidth: 30 },
+            3: { cellWidth: 35 }
+        },
+        margin: { left: margin, right: margin }
+    });
+
+    // ============ KONDISI KESELURUHAN ============
+    y = (doc as any).lastAutoTable.finalY + 8;
+    doc.setFont('helvetica', 'bold');
+    doc.text('Kondisi Eye Wash Keseluruhan:', margin, y);
+    doc.setFont('helvetica', 'normal');
+    doc.text(data.kondisiKeseluruhan, margin + 70, y);
+
+    y += 6;
+    doc.setFont('helvetica', 'bold');
+    doc.text('Keterangan:', margin, y);
+    y += 5;
+    doc.setFont('helvetica', 'normal');
+    doc.text(data.keterangan || '-', margin, y, { maxWidth: pageWidth - 2 * margin });
+
+    // ============ SIGNATURES ============
+    y += 20;
+    const leftSigX = 60;
+    const rightSigX = pageWidth - 60;
+
+    doc.setFontSize(9);
+    doc.text(`Girimulya,        ${data.periodeInspeksi}`, rightSigX, y - 8, { align: 'center' });
+
+    doc.text('Diketahui Oleh,', leftSigX, y, { align: 'center' });
+    doc.text('Diperiksa Oleh,', rightSigX, y, { align: 'center' });
+
+    if (data.signatureDiketahui) {
+        try {
+            doc.addImage(data.signatureDiketahui, 'PNG', leftSigX - 20, y + 3, 40, 15);
+        } catch (e) { }
+    }
+
+    if (data.signatureDiPeriksa) {
+        try {
+            doc.addImage(data.signatureDiPeriksa, 'PNG', rightSigX - 20, y + 3, 40, 15);
+        } catch (e) { }
+    }
+
+    doc.setFont('helvetica', 'bold');
+    doc.text(data.diketahuiOleh || '', leftSigX, y + 22, { align: 'center' });
+    doc.text(data.diPeriksaOleh || '', rightSigX, y + 22, { align: 'center' });
+
+    // ============ PHOTOS ON ADDITIONAL PAGES ============
+    if (data.photos && data.photos.length > 0) {
+        doc.addPage();
+        let photoY = 20;
+        doc.setFontSize(12);
+        doc.setFont('helvetica', 'bold');
+        doc.text('DOKUMENTASI FOTO', pageWidth / 2, photoY, { align: 'center' });
+        photoY += 10;
+
+        const photosPerRow = 2;
+        const photoWidth = 80;
+        const photoHeight = 60;
+        const spacing = 10;
+
+        data.photos.forEach((photo, idx) => {
+            const col = idx % photosPerRow;
+            const row = Math.floor(idx / photosPerRow);
+
+            const x = margin + col * (photoWidth + spacing);
+            const yPos = photoY + row * (photoHeight + spacing);
+
+            // Check if we need a new page
+            if (yPos + photoHeight > pageHeight - margin) {
+                doc.addPage();
+                photoY = 20;
+            }
+
+            try {
+                doc.addImage(photo, 'JPEG', x, yPos, photoWidth, photoHeight);
+                doc.setFontSize(8);
+                doc.setFont('helvetica', 'normal');
+                doc.text(`Foto ${idx + 1}`, x + photoWidth / 2, yPos + photoHeight + 4, { align: 'center' });
+            } catch (e) {
+                console.error('Failed to add photo:', e);
+            }
+        });
+    }
+
+    // Save
+    doc.save(`CHECKLIST_EYE_WASH_${data.regNumber}_${data.periodeInspeksi.replace(/\s/g, '_')}.pdf`);
+}
+
+// ============================================
+// SMOKE DETECTOR PDF GENERATOR
+// ============================================
+
+interface SmokeDetectorUnit {
+    nomorDetector: string;
+    fungsiKontrol: 'LAYAK' | 'TIDAK LAYAK';
+    fungsiSensor: 'LAYAK' | 'TIDAK LAYAK';
+    fungsiFireAlarm: 'LAYAK' | 'TIDAK LAYAK';
+    keterangan: string;
+}
+
+interface SmokeDetectorData {
+    id: number;
+    subLokasi: string;
+    pic: string;
+    periodeInspeksi: string;
+    tanggalInspeksi: string;
+    units: SmokeDetectorUnit[];
+    photos: string[];
+    diketahuiOleh: string;
+    diPeriksaOleh: string;
+    signatureDiketahui: string;
+    signatureDiPeriksa: string;
+    createdAt: string;
+}
+
+export async function generateSmokeDetectorPDF(data: SmokeDetectorData): Promise<void> {
+    const doc = new jsPDF('l', 'mm', 'a4'); // Landscape
+    const pageWidth = 297;
+    const pageHeight = 210;
+    const margin = 10;
+
+    // ============ LOGO ============
+    try {
+        const ptPpaLogo = await loadImageAsBase64('/pt-ppa-logo.png');
+        if (ptPpaLogo) doc.addImage(ptPpaLogo, 'PNG', margin, 5, 16, 16);
+    } catch (e) { }
+
+    // ============ HEADER ============
+    doc.setFontSize(12);
+    doc.setFont('helvetica', 'bold');
+    doc.text('CHECKLIST INSPEKSI SMOKE DETECTOR', pageWidth / 2, 10, { align: 'center' });
+
+    doc.setFontSize(7);
+    doc.setFont('helvetica', 'normal');
+    doc.text('Form No: PPA-BIB-F-SHE-20N', pageWidth - margin, 10, { align: 'right' });
+
+    // ============ INFO SECTION ============
+    doc.setFontSize(8);
+    let y = 24;
+    doc.text('Project / Site', margin, y);
+    doc.text(': PPA / BIB', margin + 30, y);
+
+    doc.text('Sub Lokasi', margin + 100, y);
+    doc.text(`: ${data.subLokasi}`, margin + 130, y);
+
+    y += 5;
+    doc.text('Periode Inspeksi', margin, y);
+    doc.text(`: ${data.periodeInspeksi}`, margin + 30, y);
+
+    doc.text('Tanggal Inspeksi', margin + 100, y);
+    doc.text(`: ${data.tanggalInspeksi}`, margin + 130, y);
+
+    y += 5;
+    doc.text('Nama PIC', margin, y);
+    doc.text(`: ${data.pic}`, margin + 30, y);
+
+    // ============ SUMMARY ============
+    const totalUnit = data.units.length;
+    const totalLayak = data.units.filter(u =>
+        u.fungsiKontrol === 'LAYAK' &&
+        u.fungsiSensor === 'LAYAK' &&
+        u.fungsiFireAlarm === 'LAYAK'
+    ).length;
+    const totalTidakLayak = totalUnit - totalLayak;
+
+    doc.text(`Total Unit: ${totalUnit}`, margin + 180, y);
+    doc.setTextColor(0, 128, 0);
+    doc.text(`Layak: ${totalLayak}`, margin + 210, y);
+    doc.setTextColor(255, 0, 0);
+    doc.text(`Tidak Layak: ${totalTidakLayak}`, margin + 235, y);
+    doc.setTextColor(0, 0, 0);
+
+    // ============ UNITS TABLE ============
+    y += 8;
+    const tableBody = data.units.map((unit, idx) => [
+        String(idx + 1),
+        unit.nomorDetector,
+        unit.fungsiKontrol === 'LAYAK' ? 'V' : 'X',
+        unit.fungsiSensor === 'LAYAK' ? 'V' : 'X',
+        unit.fungsiFireAlarm === 'LAYAK' ? 'V' : 'X',
+        unit.keterangan || '-'
+    ]);
+
+    autoTable(doc, {
+        startY: y,
+        head: [[
+            'NO',
+            'NOMOR SMOKE DETECTOR',
+            'FUNGSI KONTROL\n(L/TL)',
+            'FUNGSI SENSOR\n(L/TL)',
+            'FUNGSI FIRE ALARM\n(L/TL)',
+            'KETERANGAN'
+        ]],
+        body: tableBody,
+        theme: 'grid',
+        styles: { fontSize: 7, cellPadding: 2, halign: 'center', valign: 'middle' },
+        headStyles: {
+            fillColor: [255, 255, 255],
+            textColor: [0, 0, 0],
+            fontStyle: 'bold',
+            halign: 'center'
+        },
+        columnStyles: {
+            0: { cellWidth: 12 },
+            1: { cellWidth: 50, halign: 'left' },
+            2: { cellWidth: 30 },
+            3: { cellWidth: 30 },
+            4: { cellWidth: 35 },
+            5: { cellWidth: 110, halign: 'left' }
+        },
+        margin: { left: margin, right: margin }
+    });
+
+    // ============ KETERANGAN ============
+    y = (doc as any).lastAutoTable.finalY + 6;
+    doc.setFontSize(7);
+    doc.setFont('helvetica', 'bold');
+    doc.text('Keterangan:', margin, y);
+    doc.setFont('helvetica', 'normal');
+    y += 3;
+    doc.text('V = Layak (Fungsi normal)', margin, y);
+    y += 3;
+    doc.text('X = Tidak Layak (Perlu perbaikan atau penggantian)', margin, y);
+
+    // ============ SIGNATURES ============
+    y += 12;
+    const leftSigX = 80;
+    const rightSigX = pageWidth - 80;
+
+    doc.setFontSize(8);
+    doc.text(`Girimulya,        ${data.periodeInspeksi}`, rightSigX, y - 8, { align: 'center' });
+
+    doc.text('Diketahui Oleh,', leftSigX, y, { align: 'center' });
+    doc.text('Diperiksa Oleh,', rightSigX, y, { align: 'center' });
+
+    if (data.signatureDiketahui) {
+        try {
+            doc.addImage(data.signatureDiketahui, 'PNG', leftSigX - 18, y + 2, 36, 14);
+        } catch (e) { }
+    }
+
+    if (data.signatureDiPeriksa) {
+        try {
+            doc.addImage(data.signatureDiPeriksa, 'PNG', rightSigX - 18, y + 2, 36, 14);
+        } catch (e) { }
+    }
+
+    doc.setFont('helvetica', 'bold');
+    doc.text(data.diketahuiOleh || '', leftSigX, y + 20, { align: 'center' });
+    doc.text(data.diPeriksaOleh || '', rightSigX, y + 20, { align: 'center' });
+
+    // ============ PHOTOS ON ADDITIONAL PAGES ============
+    if (data.photos && data.photos.length > 0) {
+        doc.addPage();
+        let photoY = 20;
+        doc.setFontSize(12);
+        doc.setFont('helvetica', 'bold');
+        doc.text('DOKUMENTASI FOTO', pageWidth / 2, photoY, { align: 'center' });
+        photoY += 10;
+
+        const photosPerRow = 3;
+        const photoWidth = 80;
+        const photoHeight = 60;
+        const spacing = 8;
+
+        data.photos.forEach((photo, idx) => {
+            const col = idx % photosPerRow;
+            const row = Math.floor(idx / photosPerRow);
+
+            const x = margin + col * (photoWidth + spacing);
+            const yPos = photoY + row * (photoHeight + spacing);
+
+            if (yPos + photoHeight > pageHeight - margin) {
+                doc.addPage();
+                photoY = 20;
+            }
+
+            try {
+                doc.addImage(photo, 'JPEG', x, yPos, photoWidth, photoHeight);
+                doc.setFontSize(7);
+                doc.setFont('helvetica', 'normal');
+                doc.text(`Foto ${idx + 1}`, x + photoWidth / 2, yPos + photoHeight + 3, { align: 'center' });
+            } catch (e) {
+                console.error('Failed to add photo:', e);
+            }
+        });
+    }
+
+    // Save
+    doc.save(`CHECKLIST_SMOKE_DETECTOR_${data.subLokasi.replace(/\s/g, '_')}_${data.periodeInspeksi.replace(/\s/g, '_')}.pdf`);
+}

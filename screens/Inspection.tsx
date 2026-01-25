@@ -8,7 +8,7 @@ interface InspectionScreenProps {
 }
 
 export const InspectionScreen: React.FC<InspectionScreenProps> = ({ onNavigate }) => {
-    const [activeTab, setActiveTab] = useState<'P2H' | 'Gear' | 'APAR' | 'Hydrant'>('P2H');
+    const [activeTab, setActiveTab] = useState<'P2H' | 'Gear' | 'APAR' | 'Hydrant' | 'Eye Wash' | 'Smoke Detector'>('P2H');
     const [inspections, setInspections] = useState<any[]>([]);
     const [loading, setLoading] = useState(false);
 
@@ -19,20 +19,26 @@ export const InspectionScreen: React.FC<InspectionScreenProps> = ({ onNavigate }
     const fetchInspections = async () => {
         setLoading(true);
         try {
-            const [p2hRes, aparRes, hydrantRes] = await Promise.all([
+            const [p2hRes, aparRes, hydrantRes, eyewashRes, smokeDetectorRes] = await Promise.all([
                 fetch('/api/p2h'),
                 fetch('/api/apar'),
-                fetch('/api/hydrant')
+                fetch('/api/hydrant'),
+                fetch('/api/eyewash'),
+                fetch('/api/smoke-detector')
             ]);
 
             const p2hData = await p2hRes.json();
             const aparData = await aparRes.json();
             const hydrantData = await hydrantRes.json();
+            const eyewashData = await eyewashRes.json();
+            const smokeDetectorData = await smokeDetectorRes.json();
 
             const combined = [
                 ...p2hData.map((item: any) => ({ ...item, type: 'P2H', title: `${item.unitNumber} - ${item.vehicleType}` })),
                 ...aparData.map((item: any) => ({ ...item, type: 'APAR', title: `APAR ${item.tagNumber || ''} - ${item.capacity}` })),
-                ...hydrantData.map((item: any) => ({ ...item, type: 'Hydrant', title: `Hydrant ${item.location}` }))
+                ...hydrantData.map((item: any) => ({ ...item, type: 'Hydrant', title: `Hydrant ${item.location}` })),
+                ...eyewashData.map((item: any) => ({ ...item, type: 'Eye Wash', title: `Eye Wash ${item.regNumber} - ${item.location}` })),
+                ...smokeDetectorData.map((item: any) => ({ ...item, type: 'Smoke Detector', title: `Smoke Detector ${item.subLokasi}` }))
             ];
 
             // Sort by date newest
@@ -56,6 +62,8 @@ export const InspectionScreen: React.FC<InspectionScreenProps> = ({ onNavigate }
         if (tab === 'APAR') return 'from-red-500 to-rose-600';
         if (tab === 'Hydrant') return 'from-blue-500 to-cyan-500';
         if (tab === 'Gear') return 'from-blue-600 to-indigo-600';
+        if (tab === 'Eye Wash') return 'from-amber-500 to-yellow-600';
+        if (tab === 'Smoke Detector') return 'from-purple-500 to-violet-600';
         return 'from-emerald-500 to-teal-600';
     };
 
@@ -85,7 +93,7 @@ export const InspectionScreen: React.FC<InspectionScreenProps> = ({ onNavigate }
                     </div>
 
                     {/* Glass Tabs */}
-                    <div className="grid grid-cols-4 p-1 bg-white/10 backdrop-blur-md rounded-[24px] border border-white/10 mb-6 overflow-x-auto">
+                    <div className="grid grid-cols-6 p-1 bg-white/10 backdrop-blur-md rounded-[24px] border border-white/10 mb-6 overflow-x-auto">
                         <button
                             onClick={() => setActiveTab('P2H')}
                             className={`py-3 rounded-[20px] text-[10px] font-bold flex flex-col items-center justify-center gap-1 transition-all duration-300 ${activeTab === 'P2H' ? 'bg-emerald-500 text-white shadow-lg' : 'text-slate-300 hover:text-white hover:bg-white/5'}`}
@@ -109,6 +117,18 @@ export const InspectionScreen: React.FC<InspectionScreenProps> = ({ onNavigate }
                             className={`py-3 rounded-[20px] text-[10px] font-bold flex flex-col items-center justify-center gap-1 transition-all duration-300 ${activeTab === 'Hydrant' ? 'bg-sky-500 text-white shadow-lg' : 'text-slate-300 hover:text-white hover:bg-white/5'}`}
                         >
                             <span className="text-[10px]">💧</span> Hydrant
+                        </button>
+                        <button
+                            onClick={() => setActiveTab('Eye Wash')}
+                            className={`py-3 rounded-[20px] text-[10px] font-bold flex flex-col items-center justify-center gap-1 transition-all duration-300 ${activeTab === 'Eye Wash' ? 'bg-amber-500 text-white shadow-lg' : 'text-slate-300 hover:text-white hover:bg-white/5'}`}
+                        >
+                            <span className="text-[10px]">👁️</span> Eye Wash
+                        </button>
+                        <button
+                            onClick={() => setActiveTab('Smoke Detector')}
+                            className={`py-3 rounded-[20px] text-[10px] font-bold flex flex-col items-center justify-center gap-1 transition-all duration-300 ${activeTab === 'Smoke Detector' ? 'bg-purple-500 text-white shadow-lg' : 'text-slate-300 hover:text-white hover:bg-white/5'}`}
+                        >
+                            <span className="text-[10px]">🔔</span> Smoke
                         </button>
                     </div>
 
@@ -139,6 +159,8 @@ export const InspectionScreen: React.FC<InspectionScreenProps> = ({ onNavigate }
                         if (activeTab === 'P2H') onNavigate('p2h-form');
                         else if (activeTab === 'APAR') onNavigate('apar-form');
                         else if (activeTab === 'Hydrant') onNavigate('hydrant-form');
+                        else if (activeTab === 'Eye Wash') onNavigate('eyewash-form');
+                        else if (activeTab === 'Smoke Detector') onNavigate('smoke-detector-form');
                         else onNavigate('p2h-form'); // Default
                     }}
                     className={`w-full p-1 rounded-[32px] bg-gradient-to-br ${getTabColor(activeTab)} shadow-xl shadow-slate-200 group active:scale-[0.98] transition-all`}
