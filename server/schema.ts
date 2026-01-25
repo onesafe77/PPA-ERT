@@ -95,3 +95,52 @@ export const picaReports = pgTable('pica_reports', {
     userId: integer('user_id').references(() => users.id),
     createdAt: timestamp('created_at').defaultNow(),
 });
+
+// Eye Wash Inspection Table
+export const eyeWashInspections = pgTable('eyewash_inspections', {
+    id: serial('id').primaryKey(),
+    date: timestamp('date').notNull(),
+    periodeMonth: integer('periode_month').notNull(),
+    periodeYear: integer('periode_year').notNull(),
+    location: text('location').notNull(),
+    regNumber: text('reg_number').notNull(),
+    inspector: text('inspector').notNull(),
+    checklistData: text('checklist_data'), // JSON: {isi: true/false, karetPenutup: true/false, ...}
+    kondisiKeseluruhan: text('kondisi_keseluruhan').notNull(),
+    keterangan: text('keterangan'),
+    photos: text('photos'), // JSON array of base64
+    diketahuiOleh: text('diketahui_oleh'),
+    diPeriksaOleh: text('diperiksa_oleh'),
+    signatureDiketahui: text('signature_diketahui'),
+    signatureDiPeriksa: text('signature_diperiksa'),
+    userId: integer('user_id').references(() => users.id),
+    createdAt: timestamp('created_at').defaultNow(),
+});
+
+// Smoke Detector Inspection Table
+export const smokeDetectorInspections = pgTable('smoke_detector_inspections', {
+    id: serial('id').primaryKey(),
+    date: timestamp('date').notNull(),
+    periodeMonth: integer('periode_month').notNull(),
+    periodeYear: integer('periode_year').notNull(),
+    subLokasi: text('sub_lokasi').notNull(),
+    pic: text('pic').notNull(),
+    photos: text('photos'),
+    diketahuiOleh: text('diketahui_oleh'),
+    diPeriksaOleh: text('diperiksa_oleh'),
+    signatureDiketahui: text('signature_diketahui'),
+    signatureDiPeriksa: text('signature_diperiksa'),
+    userId: integer('user_id').references(() => users.id),
+    createdAt: timestamp('created_at').defaultNow(),
+});
+
+// Smoke Detector Units Table
+export const smokeDetectorUnits = pgTable('smoke_detector_units', {
+    id: serial('id').primaryKey(),
+    inspectionId: integer('inspection_id').references(() => smokeDetectorInspections.id),
+    nomorDetector: text('nomor_detector').notNull(),
+    fungsiKontrol: text('fungsi_kontrol').notNull(),
+    fungsiSensor: text('fungsi_sensor').notNull(),
+    fungsiFireAlarm: text('fungsi_fire_alarm').notNull(),
+    keterangan: text('keterangan'),
+});

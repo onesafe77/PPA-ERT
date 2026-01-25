@@ -1,8 +1,9 @@
+
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import { db } from './db';
-import { users, inspections, chatLogs, p2hInspections, schedules, aparInspections, hydrantInspections, picaReports } from './schema';
+import { users, inspections, chatLogs, p2hInspections, schedules, aparInspections, hydrantInspections, picaReports, eyeWashInspections, smokeDetectorInspections, smokeDetectorUnits } from './schema';
 import { eq, desc } from 'drizzle-orm';
 import OpenAI from 'openai';
 
@@ -304,6 +305,128 @@ app.get('/api/hydrant', async (req, res) => {
     }
 });
 
+// --- Eye Wash Inspection Routes ---
+app.post('/api/eyewash', async (req, res) => {
+    try {
+        const {
+            date, periodeMonth, periodeYear, location, regNumber, inspector,
+            checklistData, kondisiKeseluruhan, keterangan, photos,
+            diketahuiOleh, diPeriksaOleh, signatureDiketahui, signatureDiPeriksa,
+            userId
+        } = req.body;
+
+        await db.insert(eyeWashInspections).values({
+            date: new Date(date),
+            periodeMonth,
+            periodeYear,
+            location,
+            regNumber,
+            inspector,
+            checklistData,
+            kondisiKeseluruhan,
+            keterangan,
+            photos,
+            diketahuiOleh,
+            diPeriksaOleh,
+            signatureDiketahui,
+            signatureDiPeriksa,
+            userId
+        });
+
+        const result = await db.select().from(eyeWashInspections).orderBy(desc(eyeWashInspections.id)).limit(1);
+        res.json(result[0] || { id: Date.now(), success: true });
+    } catch (error) {
+        console.error('Eye Wash Create Error:', error);
+        res.status(500).json({ error: 'Failed to create Eye Wash inspection' });
+    }
+});
+
+app.get('/api/eyewash', async (req, res) => {
+    try {
+        const data = await db.select().from(eyeWashInspections).orderBy(desc(eyeWashInspections.id));
+        res.json(data || []);
+    } catch (error: any) {
+        if (error?.cause?.message?.includes('Cannot read properties of null')) {
+            res.json([]);
+            return;
+        }
+        console.error('Eye Wash Fetch Error:', error);
+        res.status(500).json({ error: 'Failed to fetch Eye Wash inspections' });
+    }
+});
+
+// --- Smoke Detector Inspection Routes ---
+app.post('/api/smoke-detector', async (req, res) => {
+    try {
+        const {
+            date, periodeMonth, periodeYear, subLokasi, pic, photos,
+            diketahuiOleh, diPeriksaOleh, signatureDiketahui, signatureDiPeriksa,
+            units, userId
+        } = req.body;
+
+        // Insert main inspection
+        await db.insert(smokeDetectorInspections).values({
+            date: new Date(date),
+            periodeMonth,
+            periodeYear,
+            subLokasi,
+            pic,
+            photos,
+            diketahuiOleh,
+            diPeriksaOleh,
+            signatureDiketahui,
+            signatureDiPeriksa,
+            userId
+        });
+
+        const mainResult = await db.select().from(smokeDetectorInspections).orderBy(desc(smokeDetectorInspections.id)).limit(1);
+        const inspectionId = mainResult[0]?.id;
+
+        // Insert units
+        if (inspectionId && units && units.length > 0) {
+            for (const unit of units) {
+                await db.insert(smokeDetectorUnits).values({
+                    inspectionId,
+                    nomorDetector: unit.nomorDetector,
+                    fungsiKontrol: unit.fungsiKontrol,
+                    fungsiSensor: unit.fungsiSensor,
+                    fungsiFireAlarm: unit.fungsiFireAlarm,
+                    keterangan: unit.keterangan || ''
+                });
+            }
+        }
+
+        res.json(mainResult[0] || { id: Date.now(), success: true });
+    } catch (error) {
+        console.error('Smoke Detector Create Error:', error);
+        res.status(500).json({ error: 'Failed to create Smoke Detector inspection' });
+    }
+});
+
+app.get('/api/smoke-detector', async (req, res) => {
+    try {
+        const inspections = await db.select().from(smokeDetectorInspections).orderBy(desc(smokeDetectorInspections.id));
+
+        // Fetch units for each inspection
+        const inspectionsWithUnits = await Promise.all(
+            inspections.map(async (insp) => {
+                const units = await db.select().from(smokeDetectorUnits)
+                    .where(eq(smokeDetectorUnits.inspectionId, insp.id));
+                return { ...insp, units };
+            })
+        );
+
+        res.json(inspectionsWithUnits || []);
+    } catch (error: any) {
+        if (error?.cause?.message?.includes('Cannot read properties of null')) {
+            res.json([]);
+            return;
+        }
+        console.error('Smoke Detector Fetch Error:', error);
+        res.status(500).json({ error: 'Failed to fetch Smoke Detector inspections' });
+    }
+});
+
 // --- PICA Routes ---
 app.post('/api/pica', async (req, res) => {
     try {
@@ -331,6 +454,111 @@ app.get('/api/pica', async (req, res) => {
         res.json(data);
     } catch (error) {
         res.status(500).json({ error: 'Failed to fetch PICA reports' });
+    }
+});
+
+// --- Eye Wash Inspection Routes ---
+app.post('/api/eyewash', async (req, res) => {
+    try {
+        const { date, periodeMonth, periodeYear, location, regNumber, inspector, checklistData, kondisiKeseluruhan, keterangan, photos, diketahuiOleh, diPeriksaOleh, signatureDiketahui, signatureDiPeriksa, userId } = req.body;
+
+        await db.insert(eyeWashInspections).values({
+            date: new Date(date),
+            periodeMonth,
+            periodeYear,
+            location,
+            regNumber,
+            inspector,
+            checklistData,
+            kondisiKeseluruhan,
+            keterangan,
+            photos,
+            diketahuiOleh,
+            diPeriksaOleh,
+            signatureDiketahui,
+            signatureDiPeriksa,
+            userId
+        });
+
+        const result = await db.select().from(eyeWashInspections).orderBy(desc(eyeWashInspections.id)).limit(1);
+        res.json(result[0] || { id: Date.now(), success: true });
+    } catch (error) {
+        console.error('Eye Wash Create Error:', error);
+        res.status(500).json({ error: 'Failed to create Eye Wash inspection' });
+    }
+});
+
+app.get('/api/eyewash', async (req, res) => {
+    try {
+        const data = await db.select().from(eyeWashInspections).orderBy(desc(eyeWashInspections.createdAt));
+        res.json(data);
+    } catch (error) {
+        console.error('Eye Wash Fetch Error:', error);
+        res.status(500).json({ error: 'Failed to fetch Eye Wash inspections' });
+    }
+});
+
+// --- Smoke Detector Inspection Routes ---
+app.post('/api/smoke-detector', async (req, res) => {
+    try {
+        const { date, periodeMonth, periodeYear, subLokasi, pic, photos, diketahuiOleh, diPeriksaOleh, signatureDiketahui, signatureDiPeriksa, userId, units } = req.body;
+
+        // 1. Insert Main Inspection Record
+        const inspectionResult = await db.insert(smokeDetectorInspections).values({
+            date: new Date(date),
+            periodeMonth,
+            periodeYear,
+            subLokasi,
+            pic,
+            photos, // JSON string
+            diketahuiOleh,
+            diPeriksaOleh,
+            signatureDiketahui,
+            signatureDiPeriksa,
+            userId
+        }).returning();
+
+        const inspectionId = inspectionResult[0].id;
+
+        // 2. Insert Units
+        if (units && Array.isArray(units) && units.length > 0) {
+            const unitsToInsert = units.map((u: any) => ({
+                inspectionId,
+                nomorDetector: u.nomorDetector,
+                fungsiKontrol: u.fungsiKontrol,
+                fungsiSensor: u.fungsiSensor,
+                fungsiFireAlarm: u.fungsiFireAlarm,
+                keterangan: u.keterangan || ''
+            }));
+
+            await db.insert(smokeDetectorUnits).values(unitsToInsert);
+        }
+
+        res.json({ ...inspectionResult[0], success: true });
+    } catch (error) {
+        console.error('Smoke Detector Create Error:', error);
+        res.status(500).json({ error: 'Failed to create Smoke Detector inspection' });
+    }
+});
+
+app.get('/api/smoke-detector', async (req, res) => {
+    try {
+        // Fetch inspections
+        const inspections = await db.select().from(smokeDetectorInspections).orderBy(desc(smokeDetectorInspections.createdAt));
+
+        // Fetch units for each inspection (or fetch all and map in memory for efficiency if needed, but simplistic approach here)
+        // For simplicity in list view, we might not need units, but if detailed view is required, we can join or separate fetch.
+        // Let's attach units for now.
+
+        const dataWithUnits = await Promise.all(inspections.map(async (inps) => {
+            const units = await db.select().from(smokeDetectorUnits).where(eq(smokeDetectorUnits.inspectionId, inps.id));
+            return { ...inps, units, type: 'Smoke Detector' };
+        }));
+
+        res.json(dataWithUnits);
+    } catch (error) {
+        console.error('Smoke Detector Fetch Error:', error);
+        res.status(500).json({ error: 'Failed to fetch Smoke Detector inspections' });
     }
 });
 

@@ -16,6 +16,8 @@ import { NotificationScreen } from './screens/NotificationScreen';
 import { APARInspectionScreen } from './screens/APARInspectionScreen';
 import { HydrantInspectionScreen } from './screens/HydrantInspectionScreen';
 import { PicaFormScreen } from './screens/PicaFormScreen';
+import { EyeWashInspectionScreen } from './screens/EyeWashInspectionScreen';
+import { SmokeDetectorInspectionScreen } from './screens/SmokeDetectorInspectionScreen';
 import { ScreenName } from './types';
 
 interface UserData {
@@ -30,7 +32,7 @@ function App() {
   const [user, setUser] = useState<UserData | null>(null);
 
   // Helper to determine if we should show navigation
-  const showNav = !['landing', 'login', 'p2h-form', 'qr-scan', 'apar-form', 'hydrant-form', 'pica-form'].includes(currentScreen);
+  const showNav = !['landing', 'login', 'p2h-form', 'qr-scan', 'apar-form', 'hydrant-form', 'pica-form', 'eyewash-form', 'smoke-detector-form'].includes(currentScreen);
 
   const handleLoginSuccess = (userData: UserData) => {
     setUser(userData);
@@ -72,6 +74,10 @@ function App() {
         return <HydrantInspectionScreen onNavigate={setCurrentScreen} user={user} />;
       case 'pica-form':
         return <PicaFormScreen onNavigate={setCurrentScreen} user={user} />;
+      case 'eyewash-form':
+        return <EyeWashInspectionScreen onNavigate={setCurrentScreen} user={user} />;
+      case 'smoke-detector-form':
+        return <SmokeDetectorInspectionScreen onNavigate={setCurrentScreen} user={user} />;
       default:
         return <Landing onNavigate={setCurrentScreen} />;
     }
