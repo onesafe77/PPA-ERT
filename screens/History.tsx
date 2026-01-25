@@ -4,7 +4,8 @@ import { generateP2HPDF, generateAPARPDF, generateHydrantPDF } from '../utils/pd
 
 interface Inspection {
   id: number;
-  type: 'P2H' | 'APAR' | 'HYDRANT';
+  type: 'P2H' | 'APAR' | 'HYDRANT' | 'SMOKE_DETECTOR' | 'EYEWASH';
+  // P2H fields
   // P2H fields
   unitNumber?: string;
   vehicleType?: string;
@@ -23,13 +24,15 @@ interface Inspection {
   // Date fields
   date?: string;
   createdAt: string;
+  photo?: string; // Single photo from P2H/Hydrant item (if we process items)
+  photos?: string; // JSON string of photos from Smoke/EyeWash
 }
 
 export const HistoryScreen: React.FC = () => {
   const [inspections, setInspections] = useState<Inspection[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
-  const [filterType, setFilterType] = useState<'ALL' | 'P2H' | 'APAR' | 'HYDRANT'>('ALL');
+  const [filterType, setFilterType] = useState<'ALL' | 'P2H' | 'APAR' | 'HYDRANT' | 'SMOKE_DETECTOR' | 'EYEWASH'>('ALL');
   const [showFilterMenu, setShowFilterMenu] = useState(false);
 
   useEffect(() => {
@@ -50,17 +53,21 @@ export const HistoryScreen: React.FC = () => {
         }
       };
 
-      const [p2hData, aparData, hydrantData] = await Promise.all([
+      const [p2hData, aparData, hydrantData, smokeData, eyeWashData] = await Promise.all([
         fetchWithFallback('/api/p2h'),
         fetchWithFallback('/api/apar'),
-        fetchWithFallback('/api/hydrant')
+        fetchWithFallback('/api/hydrant'),
+        fetchWithFallback('/api/smoke-detector'),
+        fetchWithFallback('/api/eyewash')
       ]);
 
       // Combine and add type field
       const combined: Inspection[] = [
         ...p2hData.map((item: any) => ({ ...item, type: 'P2H' as const })),
         ...aparData.map((item: any) => ({ ...item, type: 'APAR' as const })),
-        ...hydrantData.map((item: any) => ({ ...item, type: 'HYDRANT' as const }))
+        ...hydrantData.map((item: any) => ({ ...item, type: 'HYDRANT' as const })),
+        ...smokeData.map((item: any) => ({ ...item, type: 'SMOKE_DETECTOR' as const })),
+        ...eyeWashData.map((item: any) => ({ ...item, type: 'EYEWASH' as const }))
       ];
 
       // Sort by id (newest first) - more reliable than dates
@@ -105,6 +112,10 @@ export const HistoryScreen: React.FC = () => {
         console.error('Error generating Hydrant PDF:', err);
         alert('Gagal mengunduh PDF Hydrant');
       }
+    } else if (inspection.type === 'SMOKE_DETECTOR') {
+      alert('PDF Smoke Detector belum tersedia di History');
+    } else if (inspection.type === 'EYEWASH') {
+      alert('PDF Eye Wash belum tersedia di History');
     }
   };
 
@@ -123,13 +134,54 @@ export const HistoryScreen: React.FC = () => {
       minute: '2-digit'
     });
   };
-
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'APPROVED': return 'bg-emerald-500';
       case 'NOT_READY': return 'bg-red-500';
       default: return 'bg-amber-500';
     }
+  };
+
+  const getPhotoPreview = (item: Inspection) => {
+    // 1. Check for 'photos' array string (Smoke/EyeWash)
+    if (item.photos) {
+      try {
+        const parsed = JSON.parse(item.photos);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          return parsed[0];
+        }
+      } catch (e) { /* ignore */ }
+    }
+
+    // 2. Check for 'photo' string (P2H)
+    if (item.photo) return item.photo;
+
+    // 3. Check inside checklistData (items often have photos in Hydrant/APAR)
+    try {
+      const checklist = JSON.parse(item.checklistData || '{}');
+      if (checklist.photo) return checklist.photo; // P2H sometimes here
+      if (checklist.items && Array.isArray(checklist.items)) {
+        // Find first item with photo
+        const itemWithPhoto = checklist.items.find((i: any) => i.photo);
+        if (itemWithPhoto) return itemWithPhoto.photo;
+      }
+    } catch (e) { /* ignore */ }
+
+    return null;
+  };
+
+  const PhotoThumbnail = ({ src }: { src: string | null }) => {
+    if (!src) return (
+      <div className="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center text-slate-300">
+        <FileText size={16} />
+      </div>
+    );
+
+    return (
+      <div className="w-12 h-12 bg-slate-100 rounded-lg overflow-hidden border border-slate-200">
+        <img src={src} alt="Preview" className="w-full h-full object-cover" />
+      </div>
+    );
   };
 
   const getStatusPill = (status: string) => {
@@ -168,21 +220,28 @@ export const HistoryScreen: React.FC = () => {
               <div className="flex gap-2 items-center">
                 <span className={`text-[10px] font-bold px-2 py-0.5 rounded-md border ${item.type === 'P2H' ? 'bg-blue-50 text-blue-600 border-blue-100' :
                   item.type === 'APAR' ? 'bg-red-50 text-red-600 border-red-100' :
-                    'bg-cyan-50 text-cyan-600 border-cyan-100'
+                    item.type === 'HYDRANT' ? 'bg-cyan-50 text-cyan-600 border-cyan-100' :
+                      item.type === 'SMOKE_DETECTOR' ? 'bg-purple-50 text-purple-600 border-purple-100' :
+                        'bg-amber-50 text-amber-600 border-amber-100'
                   }`}>
-                  {item.type}
+                  {item.type.replace('_', ' ')}
                 </span>
                 <span className="text-[10px] text-slate-400 font-medium flex items-center gap-1">
                   #{item.id}
                 </span>
               </div>
+
+              {/* Photo Preview Mobile */}
+              <div className="mr-auto ml-2">
+                <PhotoThumbnail src={getPhotoPreview(item)} />
+              </div>
+
               <button
                 onClick={() => handleDownloadPDF(item)}
-                className={`w-8 h-8 rounded-lg flex items-center justify-center transition-colors ${item.type === 'P2H'
-                    ? 'bg-emerald-50 text-emerald-600 hover:bg-emerald-100'
-                    : item.type === 'APAR'
-                      ? 'bg-red-50 text-red-600 hover:bg-red-100'
-                      : 'bg-cyan-50 text-cyan-600 hover:bg-cyan-100'
+                className={`w-8 h-8 rounded-lg flex items-center justify-center transition-colors ${item.type === 'P2H' ? 'bg-emerald-50 text-emerald-600 hover:bg-emerald-100' :
+                  item.type === 'APAR' ? 'bg-red-50 text-red-600 hover:bg-red-100' :
+                    item.type === 'HYDRANT' ? 'bg-cyan-50 text-cyan-600 hover:bg-cyan-100' :
+                      'bg-slate-50 text-slate-600 hover:bg-slate-100'
                   }`}
                 title="Download PDF"
               >
@@ -194,11 +253,14 @@ export const HistoryScreen: React.FC = () => {
               {item.type === 'P2H' && `${item.unitNumber} - ${item.vehicleType}`}
               {item.type === 'APAR' && `APAR ${item.tagNumber || item.unitNumber || ''} - ${item.capacity || ''}`}
               {item.type === 'HYDRANT' && `Hydrant - ${item.location}`}
+              {item.type === 'SMOKE_DETECTOR' && `Smoke Detector - ${item.location || '-'}`}
+              {item.type === 'EYEWASH' && `Eye Wash - ${item.location}`}
             </h3>
             <p className="text-xs text-slate-400 mb-3">
               {item.type === 'P2H' && `Operator: ${item.operatorName || '-'}`}
               {item.type === 'APAR' && `PIC: ${item.pic || '-'} | Kondisi: ${item.condition || '-'}`}
               {item.type === 'HYDRANT' && `PIC: ${item.pic || '-'} | Shift: ${item.shift || '-'}`}
+              {(item.type === 'SMOKE_DETECTOR' || item.type === 'EYEWASH') && `PIC: ${item.pic || '-'}`}
             </p>
 
             <div className="flex justify-between items-end">
@@ -242,6 +304,7 @@ export const HistoryScreen: React.FC = () => {
           <thead>
             <tr className="bg-white border-b border-slate-100 text-slate-500 text-xs uppercase tracking-wider">
               <th className="px-6 py-4 font-bold w-16">ID</th>
+              <th className="px-6 py-4 font-bold w-20">Foto</th>
               <th className="px-6 py-4 font-bold w-32">Tipe</th>
               <th className="px-6 py-4 font-bold">Detail Unit / Lokasi</th>
               <th className="px-6 py-4 font-bold">PIC / Operator</th>
@@ -255,11 +318,16 @@ export const HistoryScreen: React.FC = () => {
               <tr key={`${item.type}-${item.id}`} className="hover:bg-slate-50/80 transition-colors group">
                 <td className="px-6 py-4 text-slate-400 font-medium">#{item.id}</td>
                 <td className="px-6 py-4">
+                  <PhotoThumbnail src={getPhotoPreview(item)} />
+                </td>
+                <td className="px-6 py-4">
                   <span className={`text-[10px] font-bold px-2 py-1 rounded-md border ${item.type === 'P2H' ? 'bg-blue-50 text-blue-600 border-blue-100' :
                     item.type === 'APAR' ? 'bg-red-50 text-red-600 border-red-100' :
-                      'bg-cyan-50 text-cyan-600 border-cyan-100'
+                      item.type === 'HYDRANT' ? 'bg-cyan-50 text-cyan-600 border-cyan-100' :
+                        item.type === 'SMOKE_DETECTOR' ? 'bg-purple-50 text-purple-600 border-purple-100' :
+                          'bg-amber-50 text-amber-600 border-amber-100'
                     }`}>
-                    {item.type}
+                    {item.type.replace('_', ' ')}
                   </span>
                 </td>
                 <td className="px-6 py-4">
@@ -267,6 +335,8 @@ export const HistoryScreen: React.FC = () => {
                     {item.type === 'P2H' && `${item.unitNumber} - ${item.vehicleType}`}
                     {item.type === 'APAR' && `APAR ${item.tagNumber || item.unitNumber}`}
                     {item.type === 'HYDRANT' && `Hydrant Area ${item.location}`}
+                    {item.type === 'SMOKE_DETECTOR' && `Smoke Detector - ${item.location}`}
+                    {item.type === 'EYEWASH' && `Eye Wash - ${item.location}`}
                   </span>
                   <span className="text-xs text-slate-400">
                     {item.type === 'APAR' && item.capacity}
@@ -348,17 +418,17 @@ export const HistoryScreen: React.FC = () => {
           </div>
 
           {showFilterMenu && (
-            <div className="mt-3 bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl p-2 flex gap-2 max-w-md ml-auto">
-              {['ALL', 'P2H', 'APAR', 'HYDRANT'].map((type) => (
+            <div className="mt-3 bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl p-2 flex flex-wrap gap-2 max-w-lg ml-auto">
+              {['ALL', 'P2H', 'APAR', 'HYDRANT', 'SMOKE_DETECTOR', 'EYEWASH'].map((type) => (
                 <button
                   key={type}
                   onClick={() => { setFilterType(type as any); setShowFilterMenu(false); }}
-                  className={`flex-1 px-4 py-2 rounded-xl text-sm font-bold transition-all ${filterType === type
-                      ? 'bg-white text-indigo-600 shadow-md'
-                      : 'text-white/80 hover:bg-white/10'
+                  className={`flex-1 min-w-[100px] px-4 py-2 rounded-xl text-xs font-bold transition-all ${filterType === type
+                    ? 'bg-white text-indigo-600 shadow-md'
+                    : 'text-white/80 hover:bg-white/10'
                     }`}
                 >
-                  {type === 'ALL' ? 'Semua' : type}
+                  {type === 'ALL' ? 'Semua' : type.replace('_', ' ')}
                 </button>
               ))}
             </div>

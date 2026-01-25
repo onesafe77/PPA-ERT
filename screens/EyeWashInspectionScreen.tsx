@@ -1,9 +1,11 @@
 import React, { useState, useRef } from 'react';
+import { useLocalStorage } from '../utils/useLocalStorage';
 import { ArrowLeft, ArrowRight, Save, ChevronDown, Camera, X, Check, ClipboardList, PenTool, Eye } from 'lucide-react';
 import { ScreenName } from '../types';
 import { LoadingOverlay } from '../components/LoadingOverlay';
 import { generateEyeWashPDF } from '../utils/pdfGenerator';
 import { SignaturePad } from '../components/SignaturePad';
+import { PhotoCapture } from '../components/PhotoCapture';
 
 interface EyeWashFormProps {
     onNavigate: (screen: ScreenName) => void;
@@ -37,54 +39,44 @@ const EYEWASH_CHECKLIST_ITEMS = [
 
 export const EyeWashInspectionScreen: React.FC<EyeWashFormProps> = ({ onNavigate, user }) => {
     const [loading, setLoading] = useState(false);
-    const [currentStep, setCurrentStep] = useState(1);
+    const [currentStep, setCurrentStep] = useLocalStorage('eyewash_step', 1);
 
     // Step 1 fields
-    const [location, setLocation] = useState('');
-    const [regNumber, setRegNumber] = useState('');
-    const [inspector, setInspector] = useState(user?.name || '');
-    const [periodeMonth, setPeriodeMonth] = useState(new Date().getMonth());
-    const [periodeYear, setPeriodeYear] = useState(new Date().getFullYear());
-    const [tanggalInspeksi, setTanggalInspeksi] = useState(
-        new Date().toISOString().split('T')[0]
-    );
+    const [location, setLocation] = useLocalStorage('eyewash_location', '');
+    const [regNumber, setRegNumber] = useLocalStorage('eyewash_regNumber', '');
+    const [inspector, setInspector] = useLocalStorage('eyewash_inspector', user?.name || '');
+    const [periodeMonth, setPeriodeMonth] = useLocalStorage('eyewash_month', new Date().getMonth());
+    const [periodeYear, setPeriodeYear] = useLocalStorage('eyewash_year', new Date().getFullYear());
+    const [tanggalInspeksi, setTanggalInspeksi] = useLocalStorage('eyewash_date', new Date().toISOString().split('T')[0]);
 
     const MONTH_NAMES = ['JANUARI', 'FEBRUARI', 'MARET', 'APRIL', 'MEI', 'JUNI', 'JULI', 'AGUSTUS', 'SEPTEMBER', 'OKTOBER', 'NOVEMBER', 'DESEMBER'];
 
     // Step 2 fields
-    const [checks, setChecks] = useState<Record<string, boolean>>({});
-    const [kondisiKeseluruhan, setKondisiKeseluruhan] = useState<'LAYAK' | 'TIDAK LAYAK'>('LAYAK');
-    const [keterangan, setKeterangan] = useState('');
+    const [checks, setChecks] = useLocalStorage<Record<string, boolean>>('eyewash_checks', {});
+    const [kondisiKeseluruhan, setKondisiKeseluruhan] = useLocalStorage<'LAYAK' | 'TIDAK LAYAK'>('eyewash_condition', 'LAYAK');
+    const [keterangan, setKeterangan] = useLocalStorage('eyewash_notes', '');
 
     // Step 3 fields
-    const [photos, setPhotos] = useState<string[]>([]);
-    const [diketahuiOleh, setDiketahuiOleh] = useState('');
-    const [diPeriksaOleh, setDiPeriksaOleh] = useState('');
-    const [signatureDiketahui, setSignatureDiketahui] = useState('');
-    const [signatureDiPeriksa, setSignatureDiPeriksa] = useState('');
+    const [photos, setPhotos] = useLocalStorage<string[]>('eyewash_photos', []);
+    const [diketahuiOleh, setDiketahuiOleh] = useLocalStorage('eyewash_signer_known', '');
+    const [diPeriksaOleh, setDiPeriksaOleh] = useLocalStorage('eyewash_signer_checked', '');
+    const [signatureDiketahui, setSignatureDiketahui] = useLocalStorage('eyewash_sig_known', '');
+    const [signatureDiPeriksa, setSignatureDiPeriksa] = useLocalStorage('eyewash_sig_checked', '');
 
-    const fileInputRef = useRef<HTMLInputElement>(null);
+
 
     const handleCheckItem = (item: string, value: boolean) => {
         setChecks(prev => ({ ...prev, [item]: value }));
     };
 
-    const handlePhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const files = e.target.files;
-        if (!files) return;
-
-        if (photos.length + files.length > 5) {
-            alert('Maksimal 5 foto');
-            return;
+    const handlePhotoCaptured = (base64: string) => {
+        if (base64) {
+            if (photos.length >= 5) {
+                alert('Maksimal 5 foto');
+                return;
+            }
+            setPhotos(prev => [...prev, base64]);
         }
-
-        Array.from(files).forEach(file => {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setPhotos(prev => [...prev, reader.result as string]);
-            };
-            reader.readAsDataURL(file);
-        });
     };
 
     const removePhoto = (index: number) => {
@@ -146,6 +138,38 @@ export const EyeWashInspectionScreen: React.FC<EyeWashFormProps> = ({ onNavigate
             if (result.id) {
                 alert('Inspeksi Eye Wash berhasil disimpan!');
 
+                // Clear storage
+                localStorage.removeItem('eyewash_step');
+                localStorage.removeItem('eyewash_location');
+                localStorage.removeItem('eyewash_regNumber');
+                localStorage.removeItem('eyewash_inspector');
+                localStorage.removeItem('eyewash_month');
+                localStorage.removeItem('eyewash_year');
+                localStorage.removeItem('eyewash_date');
+                localStorage.removeItem('eyewash_checks');
+                localStorage.removeItem('eyewash_condition');
+                localStorage.removeItem('eyewash_notes');
+                localStorage.removeItem('eyewash_photos');
+                localStorage.removeItem('eyewash_signer_known');
+                localStorage.removeItem('eyewash_signer_checked');
+                localStorage.removeItem('eyewash_sig_known');
+                localStorage.removeItem('eyewash_sig_checked');
+
+                // Reset local state
+                setCurrentStep(1);
+                setLocation('');
+                setRegNumber('');
+                // setInspector(''); 
+                setChecks({});
+                setKondisiKeseluruhan('LAYAK');
+                setKeterangan('');
+                setPhotos([]);
+                setDiketahuiOleh('');
+                setDiPeriksaOleh('');
+                setSignatureDiketahui('');
+                setSignatureDiPeriksa('');
+
+
                 // Generate PDF
                 await generateEyeWashPDF({
                     id: result.id,
@@ -181,13 +205,12 @@ export const EyeWashInspectionScreen: React.FC<EyeWashFormProps> = ({ onNavigate
         <div className="flex items-center justify-center gap-2 py-3 bg-white/10">
             {[1, 2, 3].map((step) => (
                 <div key={step} className="flex items-center">
-                    <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold transition-all ${
-                        currentStep === step
-                            ? 'bg-white text-amber-600'
-                            : currentStep > step
-                                ? 'bg-green-500 text-white'
-                                : 'bg-white/30 text-white'
-                    }`}>
+                    <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold transition-all ${currentStep === step
+                        ? 'bg-white text-amber-600'
+                        : currentStep > step
+                            ? 'bg-green-500 text-white'
+                            : 'bg-white/30 text-white'
+                        }`}>
                         {currentStep > step ? <Check size={16} /> : step}
                     </div>
                     {step < 3 && (
@@ -324,12 +347,40 @@ export const EyeWashInspectionScreen: React.FC<EyeWashFormProps> = ({ onNavigate
                                 </div>
                             </div>
 
-                            <button
-                                onClick={() => goToStep(2)}
-                                className="w-full mt-6 py-3 bg-gradient-to-r from-amber-500 to-yellow-600 text-white rounded-xl font-bold flex items-center justify-center gap-2 hover:shadow-lg transition-shadow"
-                            >
-                                Lanjut ke Pemeriksaan <ArrowRight size={20} />
-                            </button>
+                            <div className="flex gap-3 mt-6">
+                                <button
+                                    onClick={() => {
+                                        if (confirm('Apakah Anda yakin ingin mereset formulir? Semua data tersimpan akan dihapus.')) {
+                                            localStorage.removeItem('eyewash_step');
+                                            localStorage.removeItem('eyewash_location');
+                                            localStorage.removeItem('eyewash_regNumber');
+                                            localStorage.removeItem('eyewash_inspector');
+                                            localStorage.removeItem('eyewash_month');
+                                            localStorage.removeItem('eyewash_year');
+                                            localStorage.removeItem('eyewash_date');
+                                            localStorage.removeItem('eyewash_checks');
+                                            localStorage.removeItem('eyewash_condition');
+                                            localStorage.removeItem('eyewash_notes');
+                                            localStorage.removeItem('eyewash_photos');
+                                            localStorage.removeItem('eyewash_signer_known');
+                                            localStorage.removeItem('eyewash_signer_checked');
+                                            localStorage.removeItem('eyewash_sig_known');
+                                            localStorage.removeItem('eyewash_sig_checked');
+                                            window.location.reload();
+                                        }
+                                    }}
+                                    className="w-1/3 py-3 bg-red-100 hover:bg-red-200 text-red-600 rounded-xl font-bold flex items-center justify-center gap-2 transition-colors"
+                                >
+                                    <X size={20} />
+                                    Reset
+                                </button>
+                                <button
+                                    onClick={() => goToStep(2)}
+                                    className="flex-1 py-3 bg-gradient-to-r from-amber-500 to-yellow-600 text-white rounded-xl font-bold flex items-center justify-center gap-2 hover:shadow-lg transition-shadow"
+                                >
+                                    Lanjut ke Pemeriksaan <ArrowRight size={20} />
+                                </button>
+                            </div>
                         </div>
                     </div>
                 )}
@@ -464,24 +515,14 @@ export const EyeWashInspectionScreen: React.FC<EyeWashFormProps> = ({ onNavigate
                                 ))}
 
                                 {photos.length < 5 && (
-                                    <button
-                                        onClick={() => fileInputRef.current?.click()}
-                                        className="h-32 border-2 border-dashed border-slate-300 rounded-xl bg-slate-50 flex flex-col items-center justify-center gap-2 hover:bg-slate-100 transition-colors"
-                                    >
-                                        <Camera size={24} className="text-slate-400" />
-                                        <span className="text-xs font-bold text-slate-400">Tambah Foto</span>
-                                    </button>
+                                    <div className="col-span-2">
+                                        <PhotoCapture
+                                            label="TAMBAH FOTO"
+                                            onPhotoCaptured={handlePhotoCaptured}
+                                        />
+                                    </div>
                                 )}
                             </div>
-
-                            <input
-                                ref={fileInputRef}
-                                type="file"
-                                accept="image/*"
-                                multiple
-                                onChange={handlePhotoUpload}
-                                className="hidden"
-                            />
 
                             {photos.length < 3 && (
                                 <p className="text-xs text-amber-600 bg-amber-50 px-3 py-2 rounded-lg mb-4">

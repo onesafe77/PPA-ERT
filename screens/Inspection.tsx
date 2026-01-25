@@ -8,7 +8,7 @@ interface InspectionScreenProps {
 }
 
 export const InspectionScreen: React.FC<InspectionScreenProps> = ({ onNavigate }) => {
-    const [activeTab, setActiveTab] = useState<'P2H' | 'Gear' | 'APAR' | 'Hydrant' | 'Eye Wash' | 'Smoke Detector'>('P2H');
+    const [activeTab, setActiveTab] = useState<'P2H & GEAR' | 'APAR' | 'Hydrant' | 'Eye Wash' | 'Smoke Detector'>('P2H & GEAR');
     const [inspections, setInspections] = useState<any[]>([]);
     const [loading, setLoading] = useState(false);
 
@@ -34,7 +34,7 @@ export const InspectionScreen: React.FC<InspectionScreenProps> = ({ onNavigate }
             const smokeDetectorData = await smokeDetectorRes.json();
 
             const combined = [
-                ...p2hData.map((item: any) => ({ ...item, type: 'P2H', title: `${item.unitNumber} - ${item.vehicleType}` })),
+                ...p2hData.map((item: any) => ({ ...item, type: 'P2H & GEAR', title: `${item.unitNumber} - ${item.vehicleType}` })),
                 ...aparData.map((item: any) => ({ ...item, type: 'APAR', title: `APAR ${item.tagNumber || ''} - ${item.capacity}` })),
                 ...hydrantData.map((item: any) => ({ ...item, type: 'Hydrant', title: `Hydrant ${item.location}` })),
                 ...eyewashData.map((item: any) => ({ ...item, type: 'Eye Wash', title: `Eye Wash ${item.regNumber} - ${item.location}` })),
@@ -61,7 +61,7 @@ export const InspectionScreen: React.FC<InspectionScreenProps> = ({ onNavigate }
     const getTabColor = (tab: string) => {
         if (tab === 'APAR') return 'from-red-500 to-rose-600';
         if (tab === 'Hydrant') return 'from-blue-500 to-cyan-500';
-        if (tab === 'Gear') return 'from-blue-600 to-indigo-600';
+        if (tab === 'P2H & GEAR') return 'from-emerald-500 to-teal-600';
         if (tab === 'Eye Wash') return 'from-amber-500 to-yellow-600';
         if (tab === 'Smoke Detector') return 'from-purple-500 to-violet-600';
         return 'from-emerald-500 to-teal-600';
@@ -93,18 +93,12 @@ export const InspectionScreen: React.FC<InspectionScreenProps> = ({ onNavigate }
                     </div>
 
                     {/* Glass Tabs */}
-                    <div className="grid grid-cols-6 p-1 bg-white/10 backdrop-blur-md rounded-[24px] border border-white/10 mb-6 overflow-x-auto">
+                    <div className="grid grid-cols-5 p-1 bg-white/10 backdrop-blur-md rounded-[24px] border border-white/10 mb-6 overflow-x-auto">
                         <button
-                            onClick={() => setActiveTab('P2H')}
-                            className={`py-3 rounded-[20px] text-[10px] font-bold flex flex-col items-center justify-center gap-1 transition-all duration-300 ${activeTab === 'P2H' ? 'bg-emerald-500 text-white shadow-lg' : 'text-slate-300 hover:text-white hover:bg-white/5'}`}
+                            onClick={() => setActiveTab('P2H & GEAR')}
+                            className={`py-3 rounded-[20px] text-[10px] font-bold flex flex-col items-center justify-center gap-1 transition-all duration-300 ${activeTab === 'P2H & GEAR' ? 'bg-emerald-500 text-white shadow-lg' : 'text-slate-300 hover:text-white hover:bg-white/5'}`}
                         >
-                            <Truck size={14} /> P2H
-                        </button>
-                        <button
-                            onClick={() => setActiveTab('Gear')}
-                            className={`py-3 rounded-[20px] text-[10px] font-bold flex flex-col items-center justify-center gap-1 transition-all duration-300 ${activeTab === 'Gear' ? 'bg-blue-500 text-white shadow-lg' : 'text-slate-300 hover:text-white hover:bg-white/5'}`}
-                        >
-                            <Wrench size={14} /> Gear
+                            <Truck size={14} /> P2H & GEAR
                         </button>
                         <button
                             onClick={() => setActiveTab('APAR')}
@@ -138,7 +132,7 @@ export const InspectionScreen: React.FC<InspectionScreenProps> = ({ onNavigate }
                             <Search size={20} className="text-slate-400 mr-3" />
                             <input
                                 type="text"
-                                placeholder={activeTab === 'P2H' ? "Cari No. Unit..." : "Cari Kode Alat..."}
+                                placeholder={activeTab === 'P2H & GEAR' ? "Cari No. Unit..." : "Cari Kode Alat..."}
                                 className="bg-transparent border-none text-white placeholder-slate-400 text-sm w-full focus:ring-0 p-0"
                             />
                         </div>
@@ -156,7 +150,7 @@ export const InspectionScreen: React.FC<InspectionScreenProps> = ({ onNavigate }
                 <button
                     onClick={() => {
                         if (!onNavigate) return;
-                        if (activeTab === 'P2H') onNavigate('p2h-form');
+                        if (activeTab === 'P2H & GEAR') onNavigate('p2h-form');
                         else if (activeTab === 'APAR') onNavigate('apar-form');
                         else if (activeTab === 'Hydrant') onNavigate('hydrant-form');
                         else if (activeTab === 'Eye Wash') onNavigate('eyewash-form');

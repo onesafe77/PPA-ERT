@@ -73,7 +73,7 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, user }) => {
                 <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/10 rounded-full blur-2xl -mr-10 -mt-10" />
                 <div className="flex flex-col items-start relative z-10">
                     <span className="text-white font-bold text-lg mb-1">Mulai Inspeksi</span>
-                    <span className="text-slate-400 text-xs font-medium">Buat form P2H baru</span>
+                    <span className="text-slate-400 text-xs font-medium">Buat form P2H & GEAR baru</span>
                 </div>
                 <div className="w-10 h-10 bg-emerald-500 text-white rounded-xl flex items-center justify-center shadow-lg shadow-emerald-500/40 group-hover:scale-110 transition-transform">
                     <FilePlus size={20} />
@@ -261,7 +261,7 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, user }) => {
                                     >
                                         <div className="flex flex-col items-start">
                                             <span className="font-bold text-sm">Inspeksi Baru</span>
-                                            <span className="text-xs text-slate-400">Form P2H</span>
+                                            <span className="text-xs text-slate-400">Form P2H & GEAR</span>
                                         </div>
                                         <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center group-hover:scale-110 transition-transform">
                                             <FilePlus size={16} />

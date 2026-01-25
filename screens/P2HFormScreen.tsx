@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
-import { ArrowLeft, Save, Check, X } from 'lucide-react';
+import { useLocalStorage } from '../utils/useLocalStorage';
+import { ArrowLeft, Save, Check, X, Trash2 } from 'lucide-react';
 import { ScreenName } from '../types';
 import { LoadingOverlay } from '../components/LoadingOverlay';
 import { SignaturePad } from '../components/SignaturePad';
+import { PhotoCapture } from '../components/PhotoCapture';
 
 interface P2HFormProps {
     onNavigate: (screen: ScreenName) => void;
@@ -40,16 +42,17 @@ interface CheckItem {
 
 export const P2HFormScreen: React.FC<P2HFormProps> = ({ onNavigate, user }) => {
     const [loading, setLoading] = useState(false);
-    const [nama, setNama] = useState(user?.name || '');
+    const [nama, setNama] = useLocalStorage('p2h_nama', user?.name || '');
     const [tanggal] = useState(new Date().toISOString().split('T')[0]);
-    const [hm, setHm] = useState('');
-    const [unit, setUnit] = useState('');
-    const [shift, setShift] = useState('');
-    const [simper, setSimper] = useState('');
-    const [checks, setChecks] = useState<Record<string, CheckItem>>({});
-    const [kerusakanLain, setKerusakanLain] = useState('');
-    const [signatureUser, setSignatureUser] = useState('');
-    const [signatureDriver, setSignatureDriver] = useState('');
+    const [hm, setHm] = useLocalStorage('p2h_hm', '');
+    const [unit, setUnit] = useLocalStorage('p2h_unit', '');
+    const [shift, setShift] = useLocalStorage('p2h_shift', '');
+    const [simper, setSimper] = useLocalStorage('p2h_simper', '');
+    const [checks, setChecks] = useLocalStorage<Record<string, CheckItem>>('p2h_checks', {});
+    const [kerusakanLain, setKerusakanLain] = useLocalStorage('p2h_kerusakanLain', '');
+    const [photo, setPhoto] = useLocalStorage('p2h_photo', '');
+    const [signatureUser, setSignatureUser] = useLocalStorage('p2h_signatureUser', '');
+    const [signatureDriver, setSignatureDriver] = useLocalStorage('p2h_signatureDriver', '');
     const [showTindakanFor, setShowTindakanFor] = useState<string | null>(null);
 
     const handleCheck = (item: string, status: CheckStatus) => {
@@ -88,6 +91,7 @@ export const P2HFormScreen: React.FC<P2HFormProps> = ({ onNavigate, user }) => {
                         simper,
                         checks,
                         kerusakanLain,
+                        photo, // Save photo
                         signatureUser,
                         signatureDriver
                     }),
@@ -99,6 +103,19 @@ export const P2HFormScreen: React.FC<P2HFormProps> = ({ onNavigate, user }) => {
             const data = await response.json();
             if (data.id) {
                 alert('✅ Inspeksi P2H berhasil disimpan!');
+
+                // Clear storage
+                localStorage.removeItem('p2h_nama');
+                localStorage.removeItem('p2h_hm');
+                localStorage.removeItem('p2h_unit');
+                localStorage.removeItem('p2h_shift');
+                localStorage.removeItem('p2h_simper');
+                localStorage.removeItem('p2h_checks');
+                localStorage.removeItem('p2h_kerusakanLain');
+                localStorage.removeItem('p2h_photo');
+                localStorage.removeItem('p2h_signatureUser');
+                localStorage.removeItem('p2h_signatureDriver');
+
                 onNavigate('history');
             } else {
                 alert('Gagal menyimpan: ' + (data.error || 'Unknown error'));
@@ -297,6 +314,15 @@ export const P2HFormScreen: React.FC<P2HFormProps> = ({ onNavigate, user }) => {
                     />
                 </div>
 
+                {/* Foto Dokumentasi */}
+                <div className="bg-white rounded-xl p-4 shadow-sm">
+                    <PhotoCapture
+                        label="FOTO DOKUMENTASI (Tambahan)"
+                        onPhotoCaptured={setPhoto}
+                        initialImage={photo}
+                    />
+                </div>
+
                 {/* Tanda Tangan User & Driver */}
                 <div className="bg-white rounded-xl p-4 shadow-sm">
                     <div className="grid grid-cols-2 gap-4">
@@ -312,13 +338,36 @@ export const P2HFormScreen: React.FC<P2HFormProps> = ({ onNavigate, user }) => {
                 </div>
 
                 {/* Submit Button */}
-                <button
-                    onClick={handleSubmit}
-                    className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-4 rounded-xl shadow-lg active:scale-[0.98] transition-all flex items-center justify-center gap-3"
-                >
-                    <Save size={20} />
-                    Simpan Inspeksi P2H
-                </button>
+                <div className="flex gap-3">
+                    <button
+                        onClick={() => {
+                            if (confirm('Reset formulir P2H? Data akan dihapus.')) {
+                                localStorage.removeItem('p2h_nama');
+                                localStorage.removeItem('p2h_hm');
+                                localStorage.removeItem('p2h_unit');
+                                localStorage.removeItem('p2h_shift');
+                                localStorage.removeItem('p2h_simper');
+                                localStorage.removeItem('p2h_checks');
+                                localStorage.removeItem('p2h_kerusakanLain');
+                                localStorage.removeItem('p2h_photo');
+                                localStorage.removeItem('p2h_signatureUser');
+                                localStorage.removeItem('p2h_signatureDriver');
+                                window.location.reload();
+                            }
+                        }}
+                        className="w-1/3 bg-red-100 hover:bg-red-200 text-red-600 font-bold py-4 rounded-xl shadow-sm active:scale-[0.98] transition-all flex items-center justify-center gap-2"
+                    >
+                        <Trash2 size={20} />
+                        Reset
+                    </button>
+                    <button
+                        onClick={handleSubmit}
+                        className="flex-1 bg-red-600 hover:bg-red-700 text-white font-bold py-4 rounded-xl shadow-lg active:scale-[0.98] transition-all flex items-center justify-center gap-3"
+                    >
+                        <Save size={20} />
+                        Simpan Inspeksi P2H
+                    </button>
+                </div>
             </div>
         </div >
     );

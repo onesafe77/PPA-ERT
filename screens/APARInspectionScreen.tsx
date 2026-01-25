@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
-import { ArrowLeft, ArrowRight, Save, ChevronDown, Plus, Trash2, FileText, Check, ClipboardList, PenTool } from 'lucide-react';
+import { useLocalStorage } from '../utils/useLocalStorage';
+import { ArrowLeft, ArrowRight, Save, ChevronDown, Plus, Trash2, FileText, Check, ClipboardList, PenTool, Camera, X } from 'lucide-react';
 import { ScreenName } from '../types';
 import { LoadingOverlay } from '../components/LoadingOverlay';
 import { generateAPARPDF } from '../utils/pdfGenerator';
 import { SignaturePad } from '../components/SignaturePad';
+import { PhotoCapture } from '../components/PhotoCapture';
 
 interface APARFormProps {
     onNavigate: (screen: ScreenName) => void;
@@ -18,6 +20,7 @@ interface APARUnit {
     checks: Record<string, boolean>;
     condition: 'LAYAK' | 'TIDAK LAYAK';
     notes: string;
+
 }
 
 const APAR_ITEMS = ['Handle', 'Lock Pin', 'Seal Segel', 'Tabung', 'Hose Nozzle', 'Braket'];
@@ -57,12 +60,12 @@ const APAR_LOCATIONS = [
 
 export const APARInspectionScreen: React.FC<APARFormProps> = ({ onNavigate, user }) => {
     const [loading, setLoading] = useState(false);
-    const [currentStep, setCurrentStep] = useState(1);
+    const [currentStep, setCurrentStep] = useLocalStorage('apar_step', 1);
 
-    const [location, setLocation] = useState('');
-    const [pic, setPic] = useState(user?.name || '');
-    const [periodeMonth, setPeriodeMonth] = useState(new Date().getMonth());
-    const [periodeYear, setPeriodeYear] = useState(new Date().getFullYear());
+    const [location, setLocation] = useLocalStorage('apar_location', '');
+    const [pic, setPic] = useLocalStorage('apar_pic', user?.name || '');
+    const [periodeMonth, setPeriodeMonth] = useLocalStorage('apar_month', new Date().getMonth());
+    const [periodeYear, setPeriodeYear] = useLocalStorage('apar_year', new Date().getFullYear());
 
     const MONTH_NAMES = ['JANUARI', 'FEBRUARI', 'MARET', 'APRIL', 'MEI', 'JUNI', 'JULI', 'AGUSTUS', 'SEPTEMBER', 'OKTOBER', 'NOVEMBER', 'DESEMBER'];
 
@@ -72,14 +75,17 @@ export const APARInspectionScreen: React.FC<APARFormProps> = ({ onNavigate, user
     const [checks, setChecks] = useState<Record<string, boolean>>({});
     const [condition, setCondition] = useState<'LAYAK' | 'TIDAK LAYAK'>('LAYAK');
     const [notes, setNotes] = useState('');
+    const [photo, setPhoto] = useState('');
 
-    const [units, setUnits] = useState<APARUnit[]>([]);
-    const [nextId, setNextId] = useState(1);
+    const [units, setUnits] = useLocalStorage<APARUnit[]>('apar_units', []);
+    const [nextId, setNextId] = useLocalStorage('apar_nextId', 1);
 
-    const [diketahuiOleh, setDiketahuiOleh] = useState('');
-    const [diPeriksaOleh, setDiPeriksaOleh] = useState('');
-    const [signatureDiketahui, setSignatureDiketahui] = useState('');
-    const [signatureDiPeriksa, setSignatureDiPeriksa] = useState('');
+    const [diketahuiOleh, setDiketahuiOleh] = useLocalStorage('apar_signer_known', '');
+    const [diPeriksaOleh, setDiPeriksaOleh] = useLocalStorage('apar_signer_checked', '');
+    const [signatureDiketahui, setSignatureDiketahui] = useLocalStorage('apar_sig_known', '');
+
+    const [signatureDiPeriksa, setSignatureDiPeriksa] = useLocalStorage('apar_sig_checked', '');
+    const [sessionPhotos, setSessionPhotos] = useLocalStorage<string[]>('apar_photos', []);
 
     const handleCheck = (item: string) => {
         setChecks(prev => ({ ...prev, [item]: !prev[item] }));
@@ -148,7 +154,13 @@ export const APARInspectionScreen: React.FC<APARFormProps> = ({ onNavigate, user
         setLoading(true);
         try {
             const results = [];
-            for (const unit of units) {
+            for (const [index, unit] of units.entries()) {
+                // Attach session photos to the first unit's checklistData for persistence
+                const checklistPayload: any = { ...unit.checks };
+                if (index === 0 && sessionPhotos.length > 0) {
+                    checklistPayload.photos = sessionPhotos;
+                }
+
                 const response = await fetch('/api/apar', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -158,7 +170,7 @@ export const APARInspectionScreen: React.FC<APARFormProps> = ({ onNavigate, user
                         unitNumber: unit.unitNumber,
                         capacity: unit.capacity,
                         tagNumber: unit.tagNumber,
-                        checklistData: JSON.stringify(unit.checks),
+                        checklistData: JSON.stringify(checklistPayload),
                         condition: unit.condition,
                         notes: unit.notes,
                         pic: diPeriksaOleh,
@@ -173,7 +185,33 @@ export const APARInspectionScreen: React.FC<APARFormProps> = ({ onNavigate, user
 
             if (results.length === units.length) {
                 alert(`${results.length} unit APAR berhasil disimpan!`);
-                
+
+                // Clear local storage session
+                localStorage.removeItem('apar_step');
+                localStorage.removeItem('apar_location');
+                localStorage.removeItem('apar_pic');
+                localStorage.removeItem('apar_month');
+                localStorage.removeItem('apar_year');
+                localStorage.removeItem('apar_units');
+                localStorage.removeItem('apar_nextId');
+                localStorage.removeItem('apar_signer_known');
+                localStorage.removeItem('apar_signer_checked');
+                localStorage.removeItem('apar_sig_known');
+                localStorage.removeItem('apar_sig_checked');
+                localStorage.removeItem('apar_photos');
+
+                // Reset state
+                setCurrentStep(1);
+                setUnits([]);
+                setSessionPhotos([]);
+                setLocation('');
+                // setPic('');
+                setDiketahuiOleh('');
+                setDiPeriksaOleh('');
+                setSignatureDiketahui('');
+                setSignatureDiPeriksa('');
+
+
                 const unitsForPDF = units.map((u, idx) => ({
                     no: idx + 1,
                     unitNumber: u.unitNumber,
@@ -194,7 +232,8 @@ export const APARInspectionScreen: React.FC<APARFormProps> = ({ onNavigate, user
                     signatureDiPeriksa,
                     periodeInspeksi: `${MONTH_NAMES[periodeMonth]} ${periodeYear}`,
                     createdAt: new Date().toISOString(),
-                    units: unitsForPDF
+                    units: unitsForPDF,
+                    photos: sessionPhotos
                 } as any);
 
                 onNavigate('history');
@@ -213,13 +252,12 @@ export const APARInspectionScreen: React.FC<APARFormProps> = ({ onNavigate, user
         <div className="flex items-center justify-center gap-2 py-3 bg-white/10">
             {[1, 2, 3].map((step) => (
                 <div key={step} className="flex items-center">
-                    <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold transition-all ${
-                        currentStep === step 
-                            ? 'bg-white text-red-600' 
-                            : currentStep > step 
-                                ? 'bg-green-500 text-white' 
-                                : 'bg-white/30 text-white'
-                    }`}>
+                    <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold transition-all ${currentStep === step
+                        ? 'bg-white text-red-600'
+                        : currentStep > step
+                            ? 'bg-green-500 text-white'
+                            : 'bg-white/30 text-white'
+                        }`}>
                         {currentStep > step ? <Check size={16} /> : step}
                     </div>
                     {step < 3 && (
@@ -331,14 +369,39 @@ export const APARInspectionScreen: React.FC<APARFormProps> = ({ onNavigate, user
                             </div>
                         </div>
 
-                        <button
-                            onClick={() => goToStep(2)}
-                            disabled={!location || !pic}
-                            className="w-full bg-red-600 hover:bg-red-700 disabled:bg-slate-300 text-white font-bold py-4 rounded-xl shadow-lg active:scale-[0.98] transition-all flex items-center justify-center gap-3 mt-6"
-                        >
-                            Lanjut ke Tambah Unit
-                            <ArrowRight size={20} />
-                        </button>
+                        <div className="flex gap-3 mt-6">
+                            <button
+                                onClick={() => {
+                                    if (confirm('Apakah Anda yakin ingin mereset formulir? Semua data tersimpan akan dihapus.')) {
+                                        localStorage.removeItem('apar_step');
+                                        localStorage.removeItem('apar_location');
+                                        localStorage.removeItem('apar_pic');
+                                        localStorage.removeItem('apar_month');
+                                        localStorage.removeItem('apar_year');
+                                        localStorage.removeItem('apar_units');
+                                        localStorage.removeItem('apar_nextId');
+                                        localStorage.removeItem('apar_signer_known');
+                                        localStorage.removeItem('apar_signer_checked');
+                                        localStorage.removeItem('apar_sig_known');
+                                        localStorage.removeItem('apar_sig_checked');
+                                        localStorage.removeItem('apar_photos');
+                                        window.location.reload();
+                                    }
+                                }}
+                                className="w-1/3 bg-red-100 hover:bg-red-200 text-red-600 font-bold py-4 rounded-xl shadow-sm active:scale-[0.98] transition-all flex items-center justify-center gap-2"
+                            >
+                                <Trash2 size={20} />
+                                Reset
+                            </button>
+                            <button
+                                onClick={() => goToStep(2)}
+                                disabled={!location || !pic}
+                                className="flex-1 bg-red-600 hover:bg-red-700 disabled:bg-slate-300 text-white font-bold py-4 rounded-xl shadow-lg active:scale-[0.98] transition-all flex items-center justify-center gap-3"
+                            >
+                                Lanjut ke Tambah Unit
+                                <ArrowRight size={20} />
+                            </button>
+                        </div>
                     </div>
                 )}
 
@@ -437,6 +500,7 @@ export const APARInspectionScreen: React.FC<APARFormProps> = ({ onNavigate, user
                                     />
                                 </div>
                             </div>
+
 
                             <button
                                 onClick={handleAddUnit}
@@ -581,6 +645,49 @@ export const APARInspectionScreen: React.FC<APARFormProps> = ({ onNavigate, user
                             </div>
                         </div>
 
+
+
+                        <div className="bg-white rounded-xl p-5 shadow-sm mb-4">
+                            <div className="flex items-center gap-3 mb-4">
+                                <div className="w-12 h-12 bg-cyan-100 rounded-xl flex items-center justify-center">
+                                    <Camera size={24} className="text-cyan-600" />
+                                </div>
+                                <div>
+                                    <h2 className="font-bold text-slate-800 text-lg">Dokumentasi Foto</h2>
+                                    <p className="text-slate-500 text-sm">Upload foto dokumentasi (Max 5)</p>
+                                </div>
+                                <span className="ml-auto text-xs font-bold text-slate-400 bg-slate-100 px-3 py-1 rounded-full">{sessionPhotos.length}/5</span>
+                            </div>
+
+                            <div className="grid grid-cols-2 gap-3">
+                                {sessionPhotos.map((photo, idx) => (
+                                    <div key={idx} className="relative rounded-xl overflow-hidden border-2 border-slate-200 group">
+                                        <img src={photo} alt={`Foto ${idx + 1}`} className="w-full h-32 object-cover" />
+                                        <button
+                                            onClick={() => setSessionPhotos(prev => prev.filter((_, i) => i !== idx))}
+                                            className="absolute top-2 right-2 w-7 h-7 bg-red-500 text-white rounded-full flex items-center justify-center shadow-lg transition-all"
+                                        >
+                                            <X size={14} />
+                                        </button>
+                                        <div className="absolute bottom-0 left-0 right-0 bg-black/50 text-white text-[10px] font-bold text-center py-1">
+                                            Foto {idx + 1}
+                                        </div>
+                                    </div>
+                                ))}
+
+                                {sessionPhotos.length < 5 && (
+                                    <div className="col-span-2">
+                                        <PhotoCapture
+                                            label="TAMBAH FOTO DOKUMENTASI"
+                                            onPhotoCaptured={(base64) => {
+                                                if (base64) setSessionPhotos(prev => [...prev, base64]);
+                                            }}
+                                        />
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+
                         <div className="bg-white rounded-xl p-5 shadow-sm">
                             <div className="flex items-center gap-3 mb-4">
                                 <div className="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center">
@@ -604,7 +711,7 @@ export const APARInspectionScreen: React.FC<APARFormProps> = ({ onNavigate, user
                                             className="w-full h-10 px-3 bg-slate-50 border border-slate-200 rounded-lg text-sm font-medium focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500 transition-all"
                                         />
                                     </div>
-                                    <SignaturePad 
+                                    <SignaturePad
                                         label="TANDA TANGAN DIKETAHUI OLEH"
                                         onSignatureChange={setSignatureDiketahui}
                                     />
@@ -620,7 +727,7 @@ export const APARInspectionScreen: React.FC<APARFormProps> = ({ onNavigate, user
                                             className="w-full h-10 px-3 bg-slate-50 border border-slate-200 rounded-lg text-sm font-medium focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500 transition-all"
                                         />
                                     </div>
-                                    <SignaturePad 
+                                    <SignaturePad
                                         label="TANDA TANGAN DI PERIKSA OLEH"
                                         onSignatureChange={setSignatureDiPeriksa}
                                     />
@@ -646,9 +753,10 @@ export const APARInspectionScreen: React.FC<APARFormProps> = ({ onNavigate, user
                             </button>
                         </div>
                     </div>
-                )}
+                )
+                }
 
-            </div>
-        </div>
+            </div >
+        </div >
     );
 };

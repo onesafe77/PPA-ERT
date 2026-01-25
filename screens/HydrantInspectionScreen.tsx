@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
-import { ArrowLeft, ArrowRight, Save, ChevronDown, Plus, Trash2, FileText, Check, ClipboardList, PenTool, Droplets } from 'lucide-react';
+import { useLocalStorage } from '../utils/useLocalStorage';
+import { ArrowLeft, ArrowRight, Save, ChevronDown, Plus, Trash2, FileText, Check, ClipboardList, PenTool, Droplets, Camera, X } from 'lucide-react';
 import { ScreenName } from '../types';
 import { LoadingOverlay } from '../components/LoadingOverlay';
 import { generateHydrantPDF } from '../utils/pdfGenerator';
 import { SignaturePad } from '../components/SignaturePad';
+import { PhotoCapture } from '../components/PhotoCapture';
 
 interface HydrantFormProps {
     onNavigate: (screen: ScreenName) => void;
@@ -18,6 +20,7 @@ interface HydrantLineItem {
     checks: Record<string, boolean>;
     condition: 'L' | 'TL';
     notes: string;
+
 }
 
 const HYDRANT_AREAS = [
@@ -64,12 +67,14 @@ const KOMPONEN_OPTIONS: Record<string, { subKomponen: string[], deskripsi: Recor
 
 export const HydrantInspectionScreen: React.FC<HydrantFormProps> = ({ onNavigate, user }) => {
     const [loading, setLoading] = useState(false);
-    const [currentStep, setCurrentStep] = useState(1);
+    const [currentStep, setCurrentStep] = useLocalStorage('hydrant_step', 1);
+    const LINES = ['LINE 1', 'LINE 2', 'LINE 3', 'LINE 4', 'LINE 5'];
+    const activeLine = currentStep >= 2 && currentStep <= 6 ? LINES[currentStep - 2] : '';
 
-    const [areaInspeksi, setAreaInspeksi] = useState('');
-    const [pic, setPic] = useState(user?.name || '');
-    const [periodeMonth, setPeriodeMonth] = useState(new Date().getMonth());
-    const [periodeYear, setPeriodeYear] = useState(new Date().getFullYear());
+    const [areaInspeksi, setAreaInspeksi] = useLocalStorage('hydrant_area', '');
+    const [pic, setPic] = useLocalStorage('hydrant_pic', user?.name || '');
+    const [periodeMonth, setPeriodeMonth] = useLocalStorage('hydrant_month', new Date().getMonth());
+    const [periodeYear, setPeriodeYear] = useLocalStorage('hydrant_year', new Date().getFullYear());
 
     const MONTH_NAMES = ['JANUARI', 'FEBRUARI', 'MARET', 'APRIL', 'MEI', 'JUNI', 'JULI', 'AGUSTUS', 'SEPTEMBER', 'OKTOBER', 'NOVEMBER', 'DESEMBER'];
 
@@ -80,14 +85,16 @@ export const HydrantInspectionScreen: React.FC<HydrantFormProps> = ({ onNavigate
     const [checks, setChecks] = useState<Record<string, boolean>>({});
     const [condition, setCondition] = useState<'L' | 'TL'>('L');
     const [notes, setNotes] = useState('');
+    const [photo, setPhoto] = useState('');
 
-    const [items, setItems] = useState<HydrantLineItem[]>([]);
-    const [nextId, setNextId] = useState(1);
+    const [items, setItems] = useLocalStorage<HydrantLineItem[]>('hydrant_items', []);
+    const [nextId, setNextId] = useLocalStorage('hydrant_nextId', 1);
 
-    const [diketahuiOleh, setDiketahuiOleh] = useState('');
-    const [diPeriksaOleh, setDiPeriksaOleh] = useState('');
-    const [signatureDiketahui, setSignatureDiketahui] = useState('');
-    const [signatureDiPeriksa, setSignatureDiPeriksa] = useState('');
+    const [diketahuiOleh, setDiketahuiOleh] = useLocalStorage('hydrant_signer_known', '');
+    const [diPeriksaOleh, setDiPeriksaOleh] = useLocalStorage('hydrant_signer_checked', '');
+    const [signatureDiketahui, setSignatureDiketahui] = useLocalStorage('hydrant_sig_known', '');
+    const [signatureDiPeriksa, setSignatureDiPeriksa] = useLocalStorage('hydrant_sig_checked', '');
+    const [sessionPhotos, setSessionPhotos] = useLocalStorage<string[]>('hydrant_photos', []);
 
     const currentDeskripsi = KOMPONEN_OPTIONS[komponenUnit]?.deskripsi[subKomponen] || [];
 
@@ -110,7 +117,7 @@ export const HydrantInspectionScreen: React.FC<HydrantFormProps> = ({ onNavigate
 
         const newItem: HydrantLineItem = {
             id: nextId,
-            lineNumber,
+            lineNumber: activeLine,
             komponenUnit,
             subKomponen: `${subKomponen} ${unitNumber}`,
             checks: { ...checks },
@@ -128,13 +135,13 @@ export const HydrantInspectionScreen: React.FC<HydrantFormProps> = ({ onNavigate
     };
 
     const goToStep = (step: number) => {
-        if (step === 2 && (!areaInspeksi || !pic)) {
-            alert('Mohon lengkapi Area Inspeksi dan nama PIC');
-            return;
-        }
-        if (step === 3 && items.length === 0) {
-            alert('Mohon tambahkan minimal 1 item pemeriksaan');
-            return;
+        if (step > currentStep) {
+            // Validation before moving forward
+            if (currentStep === 1 && (!areaInspeksi || !pic)) {
+                alert('Mohon lengkapi Area Inspeksi dan nama PIC');
+                return;
+            }
+            // Optional: require at least one item per line? For now, allow skipping lines (maybe no hydrant there).
         }
         setCurrentStep(step);
     };
@@ -163,6 +170,7 @@ export const HydrantInspectionScreen: React.FC<HydrantFormProps> = ({ onNavigate
                         condition: item.condition,
                         notes: item.notes
                     })),
+                    photos: sessionPhotos,
                     periodeInspeksi: `${MONTH_NAMES[periodeMonth]} ${periodeYear}`,
                     diketahuiOleh,
                     diPeriksaOleh,
@@ -183,7 +191,34 @@ export const HydrantInspectionScreen: React.FC<HydrantFormProps> = ({ onNavigate
 
             if (data.id) {
                 alert('Inspeksi Hydrant berhasil disimpan!');
-                
+
+                // Clear local storage session
+                localStorage.removeItem('hydrant_step');
+                localStorage.removeItem('hydrant_area');
+                localStorage.removeItem('hydrant_pic');
+                localStorage.removeItem('hydrant_month');
+                localStorage.removeItem('hydrant_year');
+                localStorage.removeItem('hydrant_items');
+                localStorage.removeItem('hydrant_nextId');
+                localStorage.removeItem('hydrant_signer_known');
+                localStorage.removeItem('hydrant_signer_checked');
+                localStorage.removeItem('hydrant_sig_known');
+                localStorage.removeItem('hydrant_sig_checked');
+                localStorage.removeItem('hydrant_photos');
+
+                // Reset state manually to ensure UI updates immediately
+                setCurrentStep(1);
+                setItems([]);
+                setSessionPhotos([]);
+                setChecks({});
+                setAreaInspeksi('');
+                // setPic(''); // Keep PIC maybe? Or reset. Let's reset to default or keep user name.
+                setDiketahuiOleh('');
+                setDiPeriksaOleh('');
+                setSignatureDiketahui('');
+                setSignatureDiPeriksa('');
+
+
                 await generateHydrantPDF({
                     id: data.id,
                     location: areaInspeksi,
@@ -202,7 +237,8 @@ export const HydrantInspectionScreen: React.FC<HydrantFormProps> = ({ onNavigate
                         checks: item.checks,
                         condition: item.condition,
                         notes: item.notes
-                    }))
+                    })),
+                    photos: sessionPhotos
                 });
 
                 onNavigate('history');
@@ -218,23 +254,29 @@ export const HydrantInspectionScreen: React.FC<HydrantFormProps> = ({ onNavigate
     };
 
     const StepIndicator = () => (
-        <div className="flex items-center justify-center gap-2 py-3 bg-white/10">
-            {[1, 2, 3].map((step) => (
-                <div key={step} className="flex items-center">
-                    <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold transition-all ${
-                        currentStep === step 
-                            ? 'bg-white text-cyan-600' 
-                            : currentStep > step 
-                                ? 'bg-green-500 text-white' 
-                                : 'bg-white/30 text-white'
-                    }`}>
-                        {currentStep > step ? <Check size={16} /> : step}
+        <div className="flex items-center justify-center gap-1 py-3 bg-white/10 overflow-x-auto px-4">
+            {[1, 2, 3, 4, 5, 6, 7].map((step) => {
+                let label = '';
+                if (step === 1) label = 'Info';
+                else if (step === 7) label = 'Review';
+                else label = `L${step - 1}`; // L1, L2...
+
+                return (
+                    <div key={step} className="flex items-center flex-shrink-0">
+                        <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-all border-2 ${currentStep === step
+                            ? 'bg-white text-cyan-600 border-white'
+                            : currentStep > step
+                                ? 'bg-green-500 text-white border-green-500'
+                                : 'bg-transparent text-white/50 border-white/30'
+                            }`}>
+                            {currentStep > step ? <Check size={14} /> : label}
+                        </div>
+                        {step < 7 && (
+                            <div className={`w-4 h-0.5 mx-0.5 rounded ${currentStep > step ? 'bg-green-500' : 'bg-white/20'}`} />
+                        )}
                     </div>
-                    {step < 3 && (
-                        <div className={`w-8 h-1 mx-1 rounded ${currentStep > step ? 'bg-green-500' : 'bg-white/30'}`} />
-                    )}
-                </div>
-            ))}
+                );
+            })}
         </div>
     );
 
@@ -254,8 +296,8 @@ export const HydrantInspectionScreen: React.FC<HydrantFormProps> = ({ onNavigate
                         <h1 className="text-lg font-bold text-white">INSPEKSI HYDRANT</h1>
                         <p className="text-cyan-100 text-xs">
                             {currentStep === 1 && 'Langkah 1: Informasi Inspeksi'}
-                            {currentStep === 2 && 'Langkah 2: Tambah Item Pemeriksaan'}
-                            {currentStep === 3 && 'Langkah 3: Review & Tanda Tangan'}
+                            {currentStep >= 2 && currentStep <= 6 && `Langkah ${currentStep}: Inspeksi ${activeLine}`}
+                            {currentStep === 7 && 'Langkah 7: Review & Tanda Tangan'}
                         </p>
                     </div>
                     {items.length > 0 && (
@@ -339,18 +381,44 @@ export const HydrantInspectionScreen: React.FC<HydrantFormProps> = ({ onNavigate
                             </div>
                         </div>
 
-                        <button
-                            onClick={() => goToStep(2)}
-                            disabled={!areaInspeksi || !pic}
-                            className="w-full bg-cyan-600 hover:bg-cyan-700 disabled:bg-slate-300 text-white font-bold py-4 rounded-xl shadow-lg active:scale-[0.98] transition-all flex items-center justify-center gap-3 mt-6"
-                        >
-                            Lanjut ke Tambah Item
-                            <ArrowRight size={20} />
-                        </button>
+                        <div className="flex gap-3 mt-6">
+                            <button
+                                onClick={() => {
+                                    if (confirm('Apakah Anda yakin ingin mereset formulir? Semua data tersimpan akan dihapus.')) {
+                                        localStorage.removeItem('hydrant_step');
+                                        localStorage.removeItem('hydrant_area');
+                                        localStorage.removeItem('hydrant_pic');
+                                        localStorage.removeItem('hydrant_month');
+                                        localStorage.removeItem('hydrant_year');
+                                        localStorage.removeItem('hydrant_items');
+                                        localStorage.removeItem('hydrant_nextId');
+                                        localStorage.removeItem('hydrant_signer_known');
+                                        localStorage.removeItem('hydrant_signer_checked');
+                                        localStorage.removeItem('hydrant_sig_known');
+                                        localStorage.removeItem('hydrant_sig_checked');
+                                        localStorage.removeItem('hydrant_photos');
+                                        window.location.reload();
+                                    }
+                                }}
+                                className="w-1/3 bg-red-100 hover:bg-red-200 text-red-600 font-bold py-4 rounded-xl shadow-sm active:scale-[0.98] transition-all flex items-center justify-center gap-2"
+                            >
+                                <Trash2 size={20} />
+                                Reset
+                            </button>
+                            <button
+                                onClick={() => goToStep(2)}
+                                disabled={!areaInspeksi || !pic}
+                                className="flex-1 bg-cyan-600 hover:bg-cyan-700 disabled:bg-slate-300 text-white font-bold py-4 rounded-xl shadow-lg active:scale-[0.98] transition-all flex items-center justify-center gap-3"
+                            >
+                                Lanjut ke Tambah Item
+                                <ArrowRight size={20} />
+                            </button>
+                        </div>
                     </div>
                 )}
 
-                {currentStep === 2 && (
+                {/* Dynamic Line Steps (2-6) */}
+                {currentStep >= 2 && currentStep <= 6 && (
                     <div className="space-y-4 max-w-5xl mx-auto w-full">
                         <div className="bg-white rounded-xl p-4 shadow-sm space-y-4">
                             <div className="flex items-center gap-3 mb-2">
@@ -358,7 +426,7 @@ export const HydrantInspectionScreen: React.FC<HydrantFormProps> = ({ onNavigate
                                     <Plus size={20} className="text-orange-600" />
                                 </div>
                                 <div>
-                                    <h2 className="font-bold text-slate-800">Tambah Item Pemeriksaan</h2>
+                                    <h2 className="font-bold text-slate-800">Inspeksi {activeLine}</h2>
                                     <p className="text-slate-500 text-xs">Area: {areaInspeksi}</p>
                                 </div>
                                 <span className="text-xs text-slate-400 ml-auto bg-slate-100 px-3 py-1 rounded-full">Item ke-{items.length + 1}</span>
@@ -367,15 +435,12 @@ export const HydrantInspectionScreen: React.FC<HydrantFormProps> = ({ onNavigate
                             <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
                                 <div>
                                     <label className="text-[10px] font-bold text-slate-500 uppercase block mb-1">LINE</label>
-                                    <select
-                                        value={lineNumber}
-                                        onChange={(e) => setLineNumber(e.target.value)}
-                                        className="w-full h-10 px-3 bg-slate-50 border border-slate-200 rounded-lg text-sm font-medium focus:outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 transition-all"
-                                    >
-                                        {['LINE 1', 'LINE 2', 'LINE 3', 'LINE 4', 'LINE 5'].map(l => (
-                                            <option key={l} value={l}>{l}</option>
-                                        ))}
-                                    </select>
+                                    <input
+                                        type="text"
+                                        value={activeLine}
+                                        disabled
+                                        className="w-full h-10 px-3 bg-slate-100 border border-slate-200 rounded-lg text-sm font-bold text-slate-500 cursor-not-allowed"
+                                    />
                                 </div>
                                 <div>
                                     <label className="text-[10px] font-bold text-slate-500 uppercase block mb-1">KOMPONEN UNIT</label>
@@ -466,17 +531,42 @@ export const HydrantInspectionScreen: React.FC<HydrantFormProps> = ({ onNavigate
                                         className="w-full h-10 px-3 bg-slate-50 border border-slate-200 rounded-lg text-sm font-medium focus:outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 transition-all"
                                     />
                                 </div>
+                                <div className="md:col-span-2">
+                                </div>
                             </div>
 
                             <button
-                                onClick={handleAddItem}
+                                onClick={() => {
+                                    // Make sure to add current item logic if needed? 
+                                    // Use handleAddItem for the current form state to items list
+                                    const newLineItem: HydrantLineItem = {
+                                        id: nextId,
+                                        lineNumber: activeLine, // Use activeLine
+                                        komponenUnit,
+                                        subKomponen: `${subKomponen} ${unitNumber}`,
+                                        checks: { ...checks },
+                                        condition,
+                                        notes
+                                    };
+
+                                    // Basic validation before adding
+                                    if (!subKomponen) {
+                                        alert('Mohon lengkapi data item');
+                                        return;
+                                    }
+
+                                    setItems(prev => [...prev, newLineItem]);
+                                    setNextId(prev => prev + 1);
+                                    resetItemForm();
+                                }}
                                 className="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 rounded-xl shadow-md active:scale-[0.98] transition-all flex items-center justify-center gap-2"
                             >
                                 <Plus size={18} />
-                                Tambah ke Daftar
+                                Tambah Item ke {activeLine}
                             </button>
                         </div>
 
+                        {/* List Items Specific to Current Line for clarity? Or All? Let's show All but highlight current line maybe? Or just All. */}
                         {items.length > 0 && (
                             <div className="bg-white rounded-xl p-4 shadow-sm">
                                 <div className="flex items-center gap-3 mb-3">
@@ -528,25 +618,24 @@ export const HydrantInspectionScreen: React.FC<HydrantFormProps> = ({ onNavigate
 
                         <div className="flex gap-3">
                             <button
-                                onClick={() => setCurrentStep(1)}
+                                onClick={() => setCurrentStep(currentStep - 1)}
                                 className="flex-1 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold py-4 rounded-xl active:scale-[0.98] transition-all flex items-center justify-center gap-2"
                             >
                                 <ArrowLeft size={18} />
-                                Kembali
+                                {currentStep === 2 ? 'Info' : `Line ${currentStep - 2}`}
                             </button>
                             <button
-                                onClick={() => goToStep(3)}
-                                disabled={items.length === 0}
-                                className="flex-1 bg-cyan-600 hover:bg-cyan-700 disabled:bg-slate-300 text-white font-bold py-4 rounded-xl shadow-lg active:scale-[0.98] transition-all flex items-center justify-center gap-2"
+                                onClick={() => goToStep(currentStep + 1)}
+                                className="flex-1 bg-cyan-600 hover:bg-cyan-700 text-white font-bold py-4 rounded-xl shadow-lg active:scale-[0.98] transition-all flex items-center justify-center gap-2"
                             >
-                                Lanjut Review
+                                {currentStep === 6 ? 'Lanjut Review' : `Lanjut ke Line ${currentStep}`}
                                 <ArrowRight size={18} />
                             </button>
                         </div>
                     </div>
                 )}
 
-                {currentStep === 3 && (
+                {currentStep === 7 && (
                     <div className="space-y-4 max-w-3xl mx-auto w-full">
                         <div className="bg-white rounded-xl p-5 shadow-sm">
                             <div className="flex items-center gap-3 mb-4">
@@ -610,6 +699,49 @@ export const HydrantInspectionScreen: React.FC<HydrantFormProps> = ({ onNavigate
                             </div>
                         </div>
 
+                        <div className="bg-white rounded-xl p-5 shadow-sm mb-4">
+                            <div className="flex items-center gap-3 mb-4">
+                                <div className="w-12 h-12 bg-cyan-100 rounded-xl flex items-center justify-center">
+                                    <Camera size={24} className="text-cyan-600" />
+                                </div>
+                                <div>
+                                    <h2 className="font-bold text-slate-800 text-lg">Dokumentasi Foto</h2>
+                                    <p className="text-slate-500 text-sm">Upload foto dokumentasi (Max 5)</p>
+                                </div>
+                                <span className="ml-auto text-xs font-bold text-slate-400 bg-slate-100 px-3 py-1 rounded-full">{sessionPhotos.length}/5</span>
+                            </div>
+
+                            <div className="grid grid-cols-2 gap-3">
+                                {sessionPhotos.map((photo, idx) => (
+                                    <div key={idx} className="relative rounded-xl overflow-hidden border-2 border-slate-200 group">
+                                        <img src={photo} alt={`Foto ${idx + 1}`} className="w-full h-32 object-cover" />
+                                        <button
+                                            onClick={() => setSessionPhotos(prev => prev.filter((_, i) => i !== idx))}
+                                            className="absolute top-2 right-2 w-7 h-7 bg-red-500 text-white rounded-full flex items-center justify-center shadow-lg transition-all"
+                                        >
+                                            <X size={14} />
+                                        </button>
+                                        <div className="absolute bottom-0 left-0 right-0 bg-black/50 text-white text-[10px] font-bold text-center py-1">
+                                            Foto {idx + 1}
+                                        </div>
+                                    </div>
+                                ))}
+
+                                {sessionPhotos.length < 5 && (
+                                    <div className="col-span-2">
+                                        <PhotoCapture
+                                            label="TAMBAH FOTO DOKUMENTASI"
+                                            onPhotoCaptured={(base64) => {
+                                                if (base64) setSessionPhotos(prev => [...prev, base64]);
+                                            }}
+                                        />
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+
+
+
                         <div className="bg-white rounded-xl p-5 shadow-sm">
                             <div className="flex items-center gap-3 mb-4">
                                 <div className="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center">
@@ -633,7 +765,7 @@ export const HydrantInspectionScreen: React.FC<HydrantFormProps> = ({ onNavigate
                                             className="w-full h-10 px-3 bg-slate-50 border border-slate-200 rounded-lg text-sm font-medium focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500 transition-all"
                                         />
                                     </div>
-                                    <SignaturePad 
+                                    <SignaturePad
                                         label="TANDA TANGAN DIKETAHUI OLEH"
                                         onSignatureChange={setSignatureDiketahui}
                                     />
@@ -649,7 +781,7 @@ export const HydrantInspectionScreen: React.FC<HydrantFormProps> = ({ onNavigate
                                             className="w-full h-10 px-3 bg-slate-50 border border-slate-200 rounded-lg text-sm font-medium focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500 transition-all"
                                         />
                                     </div>
-                                    <SignaturePad 
+                                    <SignaturePad
                                         label="TANDA TANGAN DI PERIKSA OLEH"
                                         onSignatureChange={setSignatureDiPeriksa}
                                     />
@@ -659,11 +791,11 @@ export const HydrantInspectionScreen: React.FC<HydrantFormProps> = ({ onNavigate
 
                         <div className="flex gap-3">
                             <button
-                                onClick={() => setCurrentStep(2)}
+                                onClick={() => setCurrentStep(6)}
                                 className="flex-1 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold py-4 rounded-xl active:scale-[0.98] transition-all flex items-center justify-center gap-2"
                             >
                                 <ArrowLeft size={18} />
-                                Kembali
+                                Kembali ke Line 5
                             </button>
                             <button
                                 onClick={handleSubmitAll}
@@ -678,6 +810,7 @@ export const HydrantInspectionScreen: React.FC<HydrantFormProps> = ({ onNavigate
                 )}
 
             </div>
-        </div>
+        </div >
+
     );
 };

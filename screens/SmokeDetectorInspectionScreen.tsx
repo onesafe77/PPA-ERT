@@ -1,9 +1,11 @@
 import React, { useState, useRef } from 'react';
+import { useLocalStorage } from '../utils/useLocalStorage';
 import { ArrowLeft, ArrowRight, Save, ChevronDown, Camera, X, Check, ClipboardList, PenTool, Plus, Trash2, Bell } from 'lucide-react';
 import { ScreenName } from '../types';
 import { LoadingOverlay } from '../components/LoadingOverlay';
 import { generateSmokeDetectorPDF } from '../utils/pdfGenerator';
 import { SignaturePad } from '../components/SignaturePad';
+import { PhotoCapture } from '../components/PhotoCapture';
 
 interface SmokeDetectorFormProps {
     onNavigate: (screen: ScreenName) => void;
@@ -31,22 +33,20 @@ const SMOKE_DETECTOR_SUB_LOKASI = [
 
 export const SmokeDetectorInspectionScreen: React.FC<SmokeDetectorFormProps> = ({ onNavigate, user }) => {
     const [loading, setLoading] = useState(false);
-    const [currentStep, setCurrentStep] = useState(1);
+    const [currentStep, setCurrentStep] = useLocalStorage('smoke_step', 1);
 
     // Step 1 fields
-    const [subLokasi, setSubLokasi] = useState('');
-    const [pic, setPic] = useState(user?.name || '');
-    const [periodeMonth, setPeriodeMonth] = useState(new Date().getMonth());
-    const [periodeYear, setPeriodeYear] = useState(new Date().getFullYear());
-    const [tanggalInspeksi, setTanggalInspeksi] = useState(
-        new Date().toISOString().split('T')[0]
-    );
+    const [subLokasi, setSubLokasi] = useLocalStorage('smoke_subLokasi', '');
+    const [pic, setPic] = useLocalStorage('smoke_pic', user?.name || '');
+    const [periodeMonth, setPeriodeMonth] = useLocalStorage('smoke_month', new Date().getMonth());
+    const [periodeYear, setPeriodeYear] = useLocalStorage('smoke_year', new Date().getFullYear());
+    const [tanggalInspeksi, setTanggalInspeksi] = useLocalStorage('smoke_date', new Date().toISOString().split('T')[0]);
 
     const MONTH_NAMES = ['JANUARI', 'FEBRUARI', 'MARET', 'APRIL', 'MEI', 'JUNI', 'JULI', 'AGUSTUS', 'SEPTEMBER', 'OKTOBER', 'NOVEMBER', 'DESEMBER'];
 
     // Step 2 fields - Multi-unit
-    const [units, setUnits] = useState<SmokeDetectorUnit[]>([]);
-    const [nextId, setNextId] = useState(1);
+    const [units, setUnits] = useLocalStorage<SmokeDetectorUnit[]>('smoke_units', []);
+    const [nextId, setNextId] = useLocalStorage('smoke_nextId', 1);
     const [nomorDetector, setNomorDetector] = useState('');
     const [fungsiKontrol, setFungsiKontrol] = useState<'LAYAK' | 'TIDAK LAYAK'>('LAYAK');
     const [fungsiSensor, setFungsiSensor] = useState<'LAYAK' | 'TIDAK LAYAK'>('LAYAK');
@@ -54,13 +54,13 @@ export const SmokeDetectorInspectionScreen: React.FC<SmokeDetectorFormProps> = (
     const [keterangan, setKeterangan] = useState('');
 
     // Step 3 fields
-    const [photos, setPhotos] = useState<string[]>([]);
-    const [diketahuiOleh, setDiketahuiOleh] = useState('');
-    const [diPeriksaOleh, setDiPeriksaOleh] = useState('');
-    const [signatureDiketahui, setSignatureDiketahui] = useState('');
-    const [signatureDiPeriksa, setSignatureDiPeriksa] = useState('');
+    const [photos, setPhotos] = useLocalStorage<string[]>('smoke_photos', []);
+    const [diketahuiOleh, setDiketahuiOleh] = useLocalStorage('smoke_signer_known', '');
+    const [diPeriksaOleh, setDiPeriksaOleh] = useLocalStorage('smoke_signer_checked', '');
+    const [signatureDiketahui, setSignatureDiketahui] = useLocalStorage('smoke_sig_known', '');
+    const [signatureDiPeriksa, setSignatureDiPeriksa] = useLocalStorage('smoke_sig_checked', '');
 
-    const fileInputRef = useRef<HTMLInputElement>(null);
+
 
     const handleAddUnit = () => {
         if (!nomorDetector) {
@@ -96,22 +96,14 @@ export const SmokeDetectorInspectionScreen: React.FC<SmokeDetectorFormProps> = (
         setUnits(prev => prev.filter(u => u.id !== id));
     };
 
-    const handlePhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const files = e.target.files;
-        if (!files) return;
-
-        if (photos.length + files.length > 5) {
-            alert('Maksimal 5 foto');
-            return;
+    const handlePhotoCaptured = (base64: string) => {
+        if (base64) {
+            if (photos.length >= 5) {
+                alert('Maksimal 5 foto');
+                return;
+            }
+            setPhotos(prev => [...prev, base64]);
         }
-
-        Array.from(files).forEach(file => {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setPhotos(prev => [...prev, reader.result as string]);
-            };
-            reader.readAsDataURL(file);
-        });
     };
 
     const removePhoto = (index: number) => {
@@ -191,6 +183,33 @@ export const SmokeDetectorInspectionScreen: React.FC<SmokeDetectorFormProps> = (
             if (result.id) {
                 alert('Inspeksi Smoke Detector berhasil disimpan!');
 
+                // Clear storage
+                localStorage.removeItem('smoke_step');
+                localStorage.removeItem('smoke_subLokasi');
+                localStorage.removeItem('smoke_pic');
+                localStorage.removeItem('smoke_month');
+                localStorage.removeItem('smoke_year');
+                localStorage.removeItem('smoke_date');
+                localStorage.removeItem('smoke_units');
+                localStorage.removeItem('smoke_nextId');
+                localStorage.removeItem('smoke_photos');
+                localStorage.removeItem('smoke_signer_known');
+                localStorage.removeItem('smoke_signer_checked');
+                localStorage.removeItem('smoke_sig_known');
+                localStorage.removeItem('smoke_sig_checked');
+
+                // Reset state
+                setCurrentStep(1);
+                setUnits([]);
+                setPhotos([]);
+                setSubLokasi('');
+                // setPic('');
+                setDiketahuiOleh('');
+                setDiPeriksaOleh('');
+                setSignatureDiketahui('');
+                setSignatureDiPeriksa('');
+
+
                 // Generate PDF
                 await generateSmokeDetectorPDF({
                     id: result.id,
@@ -229,13 +248,12 @@ export const SmokeDetectorInspectionScreen: React.FC<SmokeDetectorFormProps> = (
         <div className="flex items-center justify-center gap-2 py-3 bg-white/10">
             {[1, 2, 3].map((step) => (
                 <div key={step} className="flex items-center">
-                    <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold transition-all ${
-                        currentStep === step
-                            ? 'bg-white text-purple-600'
-                            : currentStep > step
-                                ? 'bg-green-500 text-white'
-                                : 'bg-white/30 text-white'
-                    }`}>
+                    <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold transition-all ${currentStep === step
+                        ? 'bg-white text-purple-600'
+                        : currentStep > step
+                            ? 'bg-green-500 text-white'
+                            : 'bg-white/30 text-white'
+                        }`}>
                         {currentStep > step ? <Check size={16} /> : step}
                     </div>
                     {step < 3 && (
@@ -361,12 +379,38 @@ export const SmokeDetectorInspectionScreen: React.FC<SmokeDetectorFormProps> = (
                                 </div>
                             </div>
 
-                            <button
-                                onClick={() => goToStep(2)}
-                                className="w-full mt-6 py-3 bg-gradient-to-r from-purple-500 to-violet-600 text-white rounded-xl font-bold flex items-center justify-center gap-2 hover:shadow-lg transition-shadow"
-                            >
-                                Lanjut ke Tambah Unit <ArrowRight size={20} />
-                            </button>
+                            <div className="flex gap-3 mt-6">
+                                <button
+                                    onClick={() => {
+                                        if (confirm('Apakah Anda yakin ingin mereset formulir? Semua data tersimpan akan dihapus.')) {
+                                            localStorage.removeItem('smoke_step');
+                                            localStorage.removeItem('smoke_subLokasi');
+                                            localStorage.removeItem('smoke_pic');
+                                            localStorage.removeItem('smoke_month');
+                                            localStorage.removeItem('smoke_year');
+                                            localStorage.removeItem('smoke_date');
+                                            localStorage.removeItem('smoke_units');
+                                            localStorage.removeItem('smoke_nextId');
+                                            localStorage.removeItem('smoke_photos');
+                                            localStorage.removeItem('smoke_signer_known');
+                                            localStorage.removeItem('smoke_signer_checked');
+                                            localStorage.removeItem('smoke_sig_known');
+                                            localStorage.removeItem('smoke_sig_checked');
+                                            window.location.reload();
+                                        }
+                                    }}
+                                    className="w-1/3 py-3 bg-red-100 hover:bg-red-200 text-red-600 rounded-xl font-bold flex items-center justify-center gap-2 transition-colors"
+                                >
+                                    <Trash2 size={20} />
+                                    Reset
+                                </button>
+                                <button
+                                    onClick={() => goToStep(2)}
+                                    className="flex-1 py-3 bg-gradient-to-r from-purple-500 to-violet-600 text-white rounded-xl font-bold flex items-center justify-center gap-2 hover:shadow-lg transition-shadow"
+                                >
+                                    Lanjut ke Tambah Unit <ArrowRight size={20} />
+                                </button>
+                            </div>
                         </div>
                     </div>
                 )}
@@ -604,24 +648,14 @@ export const SmokeDetectorInspectionScreen: React.FC<SmokeDetectorFormProps> = (
                                 ))}
 
                                 {photos.length < 5 && (
-                                    <button
-                                        onClick={() => fileInputRef.current?.click()}
-                                        className="h-32 border-2 border-dashed border-slate-300 rounded-xl bg-slate-50 flex flex-col items-center justify-center gap-2 hover:bg-slate-100 transition-colors"
-                                    >
-                                        <Camera size={24} className="text-slate-400" />
-                                        <span className="text-xs font-bold text-slate-400">Tambah Foto</span>
-                                    </button>
+                                    <div className="col-span-2">
+                                        <PhotoCapture
+                                            label="TAMBAH FOTO"
+                                            onPhotoCaptured={handlePhotoCaptured}
+                                        />
+                                    </div>
                                 )}
                             </div>
-
-                            <input
-                                ref={fileInputRef}
-                                type="file"
-                                accept="image/*"
-                                multiple
-                                onChange={handlePhotoUpload}
-                                className="hidden"
-                            />
 
                             {photos.length < 3 && (
                                 <p className="text-xs text-amber-600 bg-amber-50 px-3 py-2 rounded-lg mb-4">

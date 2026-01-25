@@ -28,8 +28,26 @@ interface UserData {
 }
 
 function App() {
-  const [currentScreen, setCurrentScreen] = useState<ScreenName>('landing');
-  const [user, setUser] = useState<UserData | null>(null);
+  const [currentScreen, setCurrentScreen] = useState<ScreenName>(() => {
+    return (localStorage.getItem('currentScreen') as ScreenName) || 'landing';
+  });
+  const [user, setUser] = useState<UserData | null>(() => {
+    const savedUser = localStorage.getItem('user');
+    return savedUser ? JSON.parse(savedUser) : null;
+  });
+
+  // Persist state changes to localStorage
+  React.useEffect(() => {
+    localStorage.setItem('currentScreen', currentScreen);
+  }, [currentScreen]);
+
+  React.useEffect(() => {
+    if (user) {
+      localStorage.setItem('user', JSON.stringify(user));
+    } else {
+      localStorage.removeItem('user');
+    }
+  }, [user]);
 
   // Helper to determine if we should show navigation
   const showNav = !['landing', 'login', 'p2h-form', 'qr-scan', 'apar-form', 'hydrant-form', 'pica-form', 'eyewash-form', 'smoke-detector-form'].includes(currentScreen);
@@ -41,6 +59,8 @@ function App() {
 
   const handleLogout = () => {
     setUser(null);
+    localStorage.removeItem('user');
+    localStorage.removeItem('currentScreen');
     setCurrentScreen('landing');
   };
 

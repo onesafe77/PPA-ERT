@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { ArrowLeft, Camera, Calendar, AlertCircle, Save, X } from 'lucide-react';
+import { useLocalStorage } from '../utils/useLocalStorage';
+import { ArrowLeft, Camera, Calendar, AlertCircle, Save, X, Trash2 } from 'lucide-react';
 import { ScreenName } from '../types';
 
 interface PicaFormScreenProps {
@@ -8,10 +9,10 @@ interface PicaFormScreenProps {
 }
 
 export const PicaFormScreen: React.FC<PicaFormScreenProps> = ({ onNavigate, user }) => {
-    const [title, setTitle] = useState('');
-    const [description, setDescription] = useState('');
-    const [deadline, setDeadline] = useState('');
-    const [image, setImage] = useState<string | null>(null);
+    const [title, setTitle] = useLocalStorage('pica_title', '');
+    const [description, setDescription] = useLocalStorage('pica_description', '');
+    const [deadline, setDeadline] = useLocalStorage('pica_deadline', '');
+    const [image, setImage] = useLocalStorage<string | null>('pica_image', null);
     const [loading, setLoading] = useState(false);
 
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -47,6 +48,13 @@ export const PicaFormScreen: React.FC<PicaFormScreenProps> = ({ onNavigate, user
 
             if (response.ok) {
                 alert('Laporan PICA berhasil dibuat!');
+
+                // Clear storage
+                localStorage.removeItem('pica_title');
+                localStorage.removeItem('pica_description');
+                localStorage.removeItem('pica_deadline');
+                localStorage.removeItem('pica_image');
+
                 onNavigate('home');
             } else {
                 throw new Error('Gagal submit');
@@ -153,20 +161,36 @@ export const PicaFormScreen: React.FC<PicaFormScreenProps> = ({ onNavigate, user
                 </div>
 
                 {/* Submit Button */}
-                <button
-                    onClick={handleSubmit}
-                    disabled={loading}
-                    className="w-full py-4 bg-gradient-to-r from-slate-800 to-slate-900 text-white rounded-[20px] font-bold text-lg shadow-xl shadow-slate-300 active:scale-[0.98] transition-all flex items-center justify-center gap-2 disabled:opacity-70"
-                >
-                    {loading ? (
-                        <span>Menyimpan...</span>
-                    ) : (
-                        <>
-                            <Save size={20} />
-                            Simpan Laporan PICA
-                        </>
-                    )}
-                </button>
+                <div className="flex gap-3">
+                    <button
+                        onClick={() => {
+                            if (confirm('Reset formulir PICA? Data akan dihapus.')) {
+                                localStorage.removeItem('pica_title');
+                                localStorage.removeItem('pica_description');
+                                localStorage.removeItem('pica_deadline');
+                                localStorage.removeItem('pica_image');
+                                window.location.reload();
+                            }
+                        }}
+                        className="w-1/3 py-4 bg-red-100 text-red-600 rounded-[20px] font-bold text-lg shadow-sm active:scale-[0.98] transition-all flex items-center justify-center gap-2"
+                    >
+                        <Trash2 size={20} />
+                    </button>
+                    <button
+                        onClick={handleSubmit}
+                        disabled={loading}
+                        className="flex-1 py-4 bg-gradient-to-r from-slate-800 to-slate-900 text-white rounded-[20px] font-bold text-lg shadow-xl shadow-slate-300 active:scale-[0.98] transition-all flex items-center justify-center gap-2 disabled:opacity-70"
+                    >
+                        {loading ? (
+                            <span>Menyimpan...</span>
+                        ) : (
+                            <>
+                                <Save size={20} />
+                                Simpan Laporan PICA
+                            </>
+                        )}
+                    </button>
+                </div>
             </div>
         </div>
     );

@@ -302,6 +302,7 @@ interface APARData {
     date?: string;
     createdAt: string;
     units?: APARUnit[];
+    photos?: string[];
 }
 
 const APAR_ITEMS_PDF = ['Handle', 'Lock Pin', 'Seal Segel', 'Tabung', 'Hose Nozzle', 'Braket'];
@@ -335,17 +336,17 @@ export async function generateAPARPDF(data: APARData): Promise<void> {
     // ============ INFO SECTION ============
     doc.setFontSize(9);
     doc.setFont('helvetica', 'normal');
-    
+
     doc.text('Project / Site', margin, 28);
     doc.text(': PPA / BIB', margin + 28, 28);
-    
+
     doc.text('Periode Inspeksi', margin, 34);
     doc.text(`: ${periodeInspeksi}`, margin + 28, 34);
 
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(12);
     doc.text(data.location || 'LOKASI', pageWidth / 2, 28, { align: 'center' });
-    
+
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(8);
     doc.text('PPA-BIB-F-SHE-20A', pageWidth - margin, 34, { align: 'right' });
@@ -419,19 +420,19 @@ export async function generateAPARPDF(data: APARData): Promise<void> {
         ]],
         body: tableBody,
         theme: 'grid',
-        styles: { 
-            fontSize: 7, 
-            cellPadding: 2, 
-            lineColor: [0, 0, 0], 
-            lineWidth: 0.2, 
+        styles: {
+            fontSize: 7,
+            cellPadding: 2,
+            lineColor: [0, 0, 0],
+            lineWidth: 0.2,
             valign: 'middle',
             halign: 'center',
             textColor: [0, 0, 0]
         },
-        headStyles: { 
-            fillColor: [255, 255, 255], 
-            textColor: [0, 0, 0], 
-            fontStyle: 'bold', 
+        headStyles: {
+            fillColor: [255, 255, 255],
+            textColor: [0, 0, 0],
+            fontStyle: 'bold',
             halign: 'center',
             valign: 'middle',
             fontSize: 7
@@ -461,7 +462,7 @@ export async function generateAPARPDF(data: APARData): Promise<void> {
     doc.setFontSize(8);
     doc.setFont('helvetica', 'bold');
     doc.text('Keterangan', margin, y);
-    
+
     doc.setFont('helvetica', 'normal');
     y += 4;
     doc.text('V', margin, y);
@@ -514,6 +515,44 @@ export async function generateAPARPDF(data: APARData): Promise<void> {
     }
     doc.text('(……………………...)', rightSigX, sigY + 28, { align: 'center' });
 
+    // ============ PHOTOS ON ADDITIONAL PAGES ============
+    if (data.photos && data.photos.length > 0) {
+        doc.addPage();
+        let photoY = 20;
+        doc.setFontSize(12);
+        doc.setFont('helvetica', 'bold');
+        doc.text('DOKUMENTASI FOTO', pageWidth / 2, photoY, { align: 'center' });
+        photoY += 10;
+
+        const photosPerRow = 2; // Landscape: 2 or 3 ok.
+        const photoWidth = 100;
+        const photoHeight = 75;
+        const spacing = 15;
+
+        data.photos.forEach((photo, idx) => {
+            if (!photo) return;
+            const col = idx % photosPerRow;
+            const row = Math.floor(idx / photosPerRow);
+
+            const x = margin + 20 + col * (photoWidth + spacing); // Centered roughly
+            const yPos = photoY + row * (photoHeight + spacing);
+
+            if (yPos + photoHeight > pageHeight - margin) {
+                doc.addPage();
+                photoY = 20;
+            }
+
+            try {
+                doc.addImage(photo, 'JPEG', x, yPos, photoWidth, photoHeight);
+                doc.setFontSize(9);
+                doc.setFont('helvetica', 'normal');
+                doc.text(`Foto ${idx + 1}`, x + photoWidth / 2, yPos + photoHeight + 5, { align: 'center' });
+            } catch (e) {
+                console.error('Failed to add photo:', e);
+            }
+        });
+    }
+
     // Save file
     const fileName = `CHECKLIST_INSPEKSI_APAR_${data.location?.replace(/\s/g, '_') || 'APAR'}_${periodeInspeksi.replace(/\s/g, '_')}.pdf`;
     doc.save(fileName);
@@ -541,6 +580,7 @@ interface HydrantData {
     periodeInspeksi?: string;
     createdAt: string;
     items: HydrantItem[];
+    photos?: string[];
 }
 
 const HYDRANT_DESKRIPSI: Record<string, string[]> = {
@@ -581,13 +621,13 @@ export async function generateHydrantPDF(data: HydrantData): Promise<void> {
     // ============ INFO SECTION ============
     doc.setFontSize(8);
     doc.setFont('helvetica', 'normal');
-    
+
     doc.text('Project / Site', margin, 26);
     doc.text(': PPA / BIB', margin + 24, 26);
-    
+
     doc.text('Periode Inspeksi', margin, 32);
     doc.text(`: ${periodeInspeksi}`, margin + 24, 32);
-    
+
     doc.text('Area Inspeksi', margin, 38);
     doc.text(`: ${data.location || '-'}`, margin + 24, 38);
 
@@ -614,7 +654,8 @@ export async function generateHydrantPDF(data: HydrantData): Promise<void> {
         ]);
 
         const lineItems = itemsByLine[line];
-        
+        let noCounter = 1; // RESET numbering for each line
+
         const itemsByKomponen: Record<string, HydrantItem[]> = {};
         lineItems.forEach(item => {
             const baseSubKomponen = item.subKomponen.replace(/\s+\d+$/, '');
@@ -666,18 +707,18 @@ export async function generateHydrantPDF(data: HydrantData): Promise<void> {
         ]],
         body: tableBody,
         theme: 'grid',
-        styles: { 
-            fontSize: 7, 
-            cellPadding: 1.5, 
-            lineColor: [0, 0, 0], 
-            lineWidth: 0.15, 
+        styles: {
+            fontSize: 7,
+            cellPadding: 1.5,
+            lineColor: [0, 0, 0],
+            lineWidth: 0.15,
             valign: 'middle',
             textColor: [0, 0, 0]
         },
-        headStyles: { 
-            fillColor: [255, 255, 255], 
-            textColor: [0, 0, 0], 
-            fontStyle: 'bold', 
+        headStyles: {
+            fillColor: [255, 255, 255],
+            textColor: [0, 0, 0],
+            fontStyle: 'bold',
             halign: 'center',
             valign: 'middle',
             fontSize: 7
@@ -698,7 +739,7 @@ export async function generateHydrantPDF(data: HydrantData): Promise<void> {
 
     // ============ KETERANGAN ============
     let y = (doc as any).lastAutoTable.finalY + 5;
-    
+
     if (y > pageHeight - 50) {
         doc.addPage();
         y = 20;
@@ -707,7 +748,7 @@ export async function generateHydrantPDF(data: HydrantData): Promise<void> {
     doc.setFontSize(7);
     doc.setFont('helvetica', 'bold');
     doc.text('Ket.', margin, y);
-    
+
     doc.setFont('helvetica', 'normal');
     y += 4;
     doc.text('V', margin, y);
@@ -756,6 +797,44 @@ export async function generateHydrantPDF(data: HydrantData): Promise<void> {
         doc.setFont('helvetica', 'normal');
     }
     doc.text('(……………………...)', rightSigX, sigY + 25, { align: 'center' });
+
+    // ============ PHOTOS ON ADDITIONAL PAGES ============
+    if (data.photos && data.photos.length > 0) {
+        doc.addPage();
+        let photoY = 20;
+        doc.setFontSize(12);
+        doc.setFont('helvetica', 'bold');
+        doc.text('DOKUMENTASI FOTO', pageWidth / 2, photoY, { align: 'center' });
+        photoY += 10;
+
+        const photosPerRow = 2;
+        const photoWidth = 100;
+        const photoHeight = 75;
+        const spacing = 15;
+
+        data.photos.forEach((photo, idx) => {
+            if (!photo) return;
+            const col = idx % photosPerRow;
+            const row = Math.floor(idx / photosPerRow);
+
+            const x = margin + 20 + col * (photoWidth + spacing);
+            const yPos = photoY + row * (photoHeight + spacing);
+
+            if (yPos + photoHeight > pageHeight - margin) {
+                doc.addPage();
+                photoY = 20;
+            }
+
+            try {
+                doc.addImage(photo, 'JPEG', x, yPos, photoWidth, photoHeight);
+                doc.setFontSize(9);
+                doc.setFont('helvetica', 'normal');
+                doc.text(`Foto ${idx + 1}`, x + photoWidth / 2, yPos + photoHeight + 5, { align: 'center' });
+            } catch (e) {
+                console.error('Failed to add photo:', e);
+            }
+        });
+    }
 
     // Save file
     const fileName = `CHECKLIST_INSPEKSI_HYDRANT_${data.location?.replace(/[^a-zA-Z0-9]/g, '_') || 'HYDRANT'}_${periodeInspeksi.replace(/\s/g, '_')}.pdf`;
