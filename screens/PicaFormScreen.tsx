@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useLocalStorage } from '../utils/useLocalStorage';
 import { ArrowLeft, Camera, Calendar, AlertCircle, Save, X, Trash2 } from 'lucide-react';
+import { PhotoCapture } from '../components/PhotoCapture';
 import { ScreenName } from '../types';
 
 interface PicaFormScreenProps {
@@ -12,19 +13,9 @@ export const PicaFormScreen: React.FC<PicaFormScreenProps> = ({ onNavigate, user
     const [title, setTitle] = useLocalStorage('pica_title', '');
     const [description, setDescription] = useLocalStorage('pica_description', '');
     const [deadline, setDeadline] = useLocalStorage('pica_deadline', '');
-    const [image, setImage] = useLocalStorage<string | null>('pica_image', null);
-    const [loading, setLoading] = useState(false);
 
-    const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setImage(reader.result as string);
-            };
-            reader.readAsDataURL(file);
-        }
-    };
+    const [photos, setPhotos] = useLocalStorage<string[]>('pica_photos', []);
+    const [loading, setLoading] = useState(false);
 
     const handleSubmit = async () => {
         if (!title || !description || !deadline) {
@@ -40,7 +31,8 @@ export const PicaFormScreen: React.FC<PicaFormScreenProps> = ({ onNavigate, user
                 body: JSON.stringify({
                     title,
                     description,
-                    imageData: image,
+                    imageData: photos[0] || null, // Backwards compatibility if needed, using first photo
+                    photos,
                     deadline,
                     userId: user?.id
                 })
@@ -53,7 +45,7 @@ export const PicaFormScreen: React.FC<PicaFormScreenProps> = ({ onNavigate, user
                 localStorage.removeItem('pica_title');
                 localStorage.removeItem('pica_description');
                 localStorage.removeItem('pica_deadline');
-                localStorage.removeItem('pica_image');
+                localStorage.removeItem('pica_photos');
 
                 onNavigate('home');
             } else {
@@ -124,25 +116,36 @@ export const PicaFormScreen: React.FC<PicaFormScreenProps> = ({ onNavigate, user
                     <div className="flex items-center gap-2 mb-4">
                         <Camera className="text-blue-500" size={20} />
                         <h3 className="font-bold text-slate-800">Bukti Foto</h3>
+                        <span className="text-xs font-bold text-slate-400 bg-slate-100 px-2 py-1 rounded-full ml-auto">{photos.length}/5</span>
                     </div>
 
-                    {image ? (
-                        <div className="relative rounded-xl overflow-hidden border border-slate-200">
-                            <img src={image} alt="Preview" className="w-full h-48 object-cover" />
-                            <button
-                                onClick={() => setImage(null)}
-                                className="absolute top-2 right-2 w-8 h-8 bg-red-500 text-white rounded-full flex items-center justify-center shadow-lg"
-                            >
-                                <X size={16} />
-                            </button>
-                        </div>
-                    ) : (
-                        <label className="flex flex-col items-center justify-center h-32 border-2 border-dashed border-slate-300 rounded-xl bg-slate-50 cursor-pointer hover:bg-slate-100 transition-colors">
-                            <Camera size={32} className="text-slate-400 mb-2" />
-                            <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Tap to Upload</span>
-                            <input type="file" accept="image/*" onChange={handleImageChange} className="hidden" />
-                        </label>
-                    )}
+                    <div className="grid grid-cols-2 gap-3">
+                        {photos.map((photo, idx) => (
+                            <div key={idx} className="relative rounded-xl overflow-hidden border border-slate-200 group">
+                                <img src={photo} alt={`Preview ${idx + 1}`} className="w-full h-32 object-cover" />
+                                <button
+                                    onClick={() => setPhotos(prev => prev.filter((_, i) => i !== idx))}
+                                    className="absolute top-2 right-2 w-7 h-7 bg-red-500 text-white rounded-full flex items-center justify-center shadow-lg active:scale-90 transition-transform"
+                                >
+                                    <X size={14} />
+                                </button>
+                                <div className="absolute bottom-0 left-0 right-0 bg-black/50 text-white text-[10px] font-bold text-center py-1">
+                                    Foto {idx + 1}
+                                </div>
+                            </div>
+                        ))}
+
+                        {photos.length < 5 && (
+                            <div className={photos.length === 0 ? "col-span-2" : "col-span-1"}>
+                                <PhotoCapture
+                                    label="AMBIL FOTO"
+                                    onPhotoCaptured={(base64) => {
+                                        if (base64) setPhotos(prev => [...prev, base64]);
+                                    }}
+                                />
+                            </div>
+                        )}
+                    </div>
                 </div>
 
                 {/* 3. Target Penyelesaian */}
@@ -168,7 +171,7 @@ export const PicaFormScreen: React.FC<PicaFormScreenProps> = ({ onNavigate, user
                                 localStorage.removeItem('pica_title');
                                 localStorage.removeItem('pica_description');
                                 localStorage.removeItem('pica_deadline');
-                                localStorage.removeItem('pica_image');
+                                localStorage.removeItem('pica_photos');
                                 window.location.reload();
                             }
                         }}

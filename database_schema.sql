@@ -104,6 +104,7 @@ CREATE TABLE IF NOT EXISTS pica_reports (
     title VARCHAR(255) NOT NULL,
     description TEXT NOT NULL,
     image_data LONGTEXT,
+    photos LONGTEXT,
     deadline TIMESTAMP,
     status VARCHAR(50) DEFAULT 'OPEN',
     user_id INT,

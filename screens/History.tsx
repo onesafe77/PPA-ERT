@@ -143,25 +143,34 @@ export const HistoryScreen: React.FC = () => {
   };
 
   const getPhotoPreview = (item: Inspection) => {
-    // 1. Check for 'photos' array string (Smoke/EyeWash)
+    // 1. Check for 'photos' array string (PICA in new scheme, Smoke, Eyewash)
     if (item.photos) {
       try {
         const parsed = JSON.parse(item.photos);
-        if (Array.isArray(parsed) && parsed.length > 0) {
-          return parsed[0];
-        }
-      } catch (e) { /* ignore */ }
+        if (Array.isArray(parsed) && parsed.length > 0) return parsed[0];
+      } catch (e) {
+        // PICA photos might be just a text field in earlier versions, but we defined it as JSON string
+      }
     }
 
-    // 2. Check for 'photo' string (P2H)
+    // 2. Check for 'photo' string (Legacy P2H) or 'imageData' (Legacy PICA)
     if (item.photo) return item.photo;
+    // @ts-ignore
+    if (item.imageData) return item.imageData;
 
-    // 3. Check inside checklistData (items often have photos in Hydrant/APAR)
+    // 3. Check inside checklistData (APAR, Hydrant, P2H)
     try {
       const checklist = JSON.parse(item.checklistData || '{}');
-      if (checklist.photo) return checklist.photo; // P2H sometimes here
+
+      // P2H & Hydrant now use 'photos' array in checklist
+      if (checklist.photos && Array.isArray(checklist.photos) && checklist.photos.length > 0) {
+        return checklist.photos[0];
+      }
+
+      if (checklist.photo) return checklist.photo; // Legacy P2H
+
+      // Hydrant/APAR legacy items check
       if (checklist.items && Array.isArray(checklist.items)) {
-        // Find first item with photo
         const itemWithPhoto = checklist.items.find((i: any) => i.photo);
         if (itemWithPhoto) return itemWithPhoto.photo;
       }

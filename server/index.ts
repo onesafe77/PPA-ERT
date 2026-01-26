@@ -430,11 +430,12 @@ app.get('/api/smoke-detector', async (req, res) => {
 // --- PICA Routes ---
 app.post('/api/pica', async (req, res) => {
     try {
-        const { title, description, imageData, deadline, userId } = req.body;
+        const { title, description, imageData, photos, deadline, userId } = req.body;
         await db.insert(picaReports).values({
             title,
             description,
-            imageData,
+            imageData, // Legacy
+            photos: photos ? JSON.stringify(photos) : null, // Store as JSON string
             deadline: deadline ? new Date(deadline) : null,
             userId,
             status: 'OPEN'

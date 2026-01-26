@@ -50,7 +50,7 @@ export const P2HFormScreen: React.FC<P2HFormProps> = ({ onNavigate, user }) => {
     const [simper, setSimper] = useLocalStorage('p2h_simper', '');
     const [checks, setChecks] = useLocalStorage<Record<string, CheckItem>>('p2h_checks', {});
     const [kerusakanLain, setKerusakanLain] = useLocalStorage('p2h_kerusakanLain', '');
-    const [photo, setPhoto] = useLocalStorage('p2h_photo', '');
+    const [photos, setPhotos] = useLocalStorage<string[]>('p2h_photos', []);
     const [signatureUser, setSignatureUser] = useLocalStorage('p2h_signatureUser', '');
     const [signatureDriver, setSignatureDriver] = useLocalStorage('p2h_signatureDriver', '');
     const [showTindakanFor, setShowTindakanFor] = useState<string | null>(null);
@@ -91,7 +91,7 @@ export const P2HFormScreen: React.FC<P2HFormProps> = ({ onNavigate, user }) => {
                         simper,
                         checks,
                         kerusakanLain,
-                        photo, // Save photo
+                        photos, // Save photos array
                         signatureUser,
                         signatureDriver
                     }),
@@ -112,7 +112,7 @@ export const P2HFormScreen: React.FC<P2HFormProps> = ({ onNavigate, user }) => {
                 localStorage.removeItem('p2h_simper');
                 localStorage.removeItem('p2h_checks');
                 localStorage.removeItem('p2h_kerusakanLain');
-                localStorage.removeItem('p2h_photo');
+                localStorage.removeItem('p2h_photos');
                 localStorage.removeItem('p2h_signatureUser');
                 localStorage.removeItem('p2h_signatureDriver');
 
@@ -316,11 +316,29 @@ export const P2HFormScreen: React.FC<P2HFormProps> = ({ onNavigate, user }) => {
 
                 {/* Foto Dokumentasi */}
                 <div className="bg-white rounded-xl p-4 shadow-sm">
-                    <PhotoCapture
-                        label="FOTO DOKUMENTASI (Tambahan)"
-                        onPhotoCaptured={setPhoto}
-                        initialImage={photo}
-                    />
+                    <div className="grid grid-cols-2 gap-3">
+                        {photos.map((p, idx) => (
+                            <div key={idx} className="relative rounded-xl overflow-hidden border border-slate-200 group">
+                                <img src={p} alt={`Foto ${idx + 1}`} className="w-full h-32 object-cover" />
+                                <button
+                                    onClick={() => setPhotos(prev => prev.filter((_, i) => i !== idx))}
+                                    className="absolute top-2 right-2 w-7 h-7 bg-red-500 text-white rounded-full flex items-center justify-center shadow-lg"
+                                >
+                                    <X size={14} />
+                                </button>
+                            </div>
+                        ))}
+                        {photos.length < 5 && (
+                            <div className={photos.length === 0 ? "col-span-2" : "col-span-1"}>
+                                <PhotoCapture
+                                    label="FOTO DOKUMENTASI (Tambahan)"
+                                    onPhotoCaptured={(base64) => {
+                                        if (base64) setPhotos(prev => [...prev, base64]);
+                                    }}
+                                />
+                            </div>
+                        )}
+                    </div>
                 </div>
 
                 {/* Tanda Tangan User & Driver */}
@@ -349,7 +367,7 @@ export const P2HFormScreen: React.FC<P2HFormProps> = ({ onNavigate, user }) => {
                                 localStorage.removeItem('p2h_simper');
                                 localStorage.removeItem('p2h_checks');
                                 localStorage.removeItem('p2h_kerusakanLain');
-                                localStorage.removeItem('p2h_photo');
+                                localStorage.removeItem('p2h_photos');
                                 localStorage.removeItem('p2h_signatureUser');
                                 localStorage.removeItem('p2h_signatureDriver');
                                 window.location.reload();

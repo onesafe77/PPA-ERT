@@ -92,6 +92,7 @@ export const picaReports = pgTable('pica_reports', {
     imageData: text('image_data'), // Base64 or URL
     deadline: timestamp('deadline'),
     status: text('status').default('OPEN'), // OPEN, CLOSED
+    photos: text('photos'), // JSON string of array for multiple photos
     userId: integer('user_id').references(() => users.id),
     createdAt: timestamp('created_at').defaultNow(),
 });
