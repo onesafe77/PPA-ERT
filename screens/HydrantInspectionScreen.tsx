@@ -73,8 +73,7 @@ export const HydrantInspectionScreen: React.FC<HydrantFormProps> = ({ onNavigate
 
     const [areaInspeksi, setAreaInspeksi] = useLocalStorage('hydrant_area', '');
     const [pic, setPic] = useLocalStorage('hydrant_pic', user?.name || '');
-    const [periodeMonth, setPeriodeMonth] = useLocalStorage('hydrant_month', new Date().getMonth());
-    const [periodeYear, setPeriodeYear] = useLocalStorage('hydrant_year', new Date().getFullYear());
+
 
     const MONTH_NAMES = ['JANUARI', 'FEBRUARI', 'MARET', 'APRIL', 'MEI', 'JUNI', 'JULI', 'AGUSTUS', 'SEPTEMBER', 'OKTOBER', 'NOVEMBER', 'DESEMBER'];
 
@@ -171,7 +170,7 @@ export const HydrantInspectionScreen: React.FC<HydrantFormProps> = ({ onNavigate
                         notes: item.notes
                     })),
                     photos: sessionPhotos,
-                    periodeInspeksi: `${MONTH_NAMES[periodeMonth]} ${periodeYear}`,
+                    periodeInspeksi: `${MONTH_NAMES[new Date().getMonth()]} ${new Date().getFullYear()}`,
                     diketahuiOleh,
                     diPeriksaOleh,
                     signatureDiketahui,
@@ -196,8 +195,7 @@ export const HydrantInspectionScreen: React.FC<HydrantFormProps> = ({ onNavigate
                 localStorage.removeItem('hydrant_step');
                 localStorage.removeItem('hydrant_area');
                 localStorage.removeItem('hydrant_pic');
-                localStorage.removeItem('hydrant_month');
-                localStorage.removeItem('hydrant_year');
+
                 localStorage.removeItem('hydrant_items');
                 localStorage.removeItem('hydrant_nextId');
                 localStorage.removeItem('hydrant_signer_known');
@@ -227,7 +225,7 @@ export const HydrantInspectionScreen: React.FC<HydrantFormProps> = ({ onNavigate
                     diPeriksaOleh,
                     signatureDiketahui,
                     signatureDiPeriksa,
-                    periodeInspeksi: `${MONTH_NAMES[periodeMonth]} ${periodeYear}`,
+                    periodeInspeksi: `${MONTH_NAMES[new Date().getMonth()]} ${new Date().getFullYear()}`,
                     createdAt: new Date().toISOString(),
                     items: items.map((item, idx) => ({
                         no: idx + 1,
@@ -350,35 +348,7 @@ export const HydrantInspectionScreen: React.FC<HydrantFormProps> = ({ onNavigate
                                     className="w-full h-12 px-4 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium focus:outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 transition-all"
                                 />
                             </div>
-                            <div>
-                                <label className="text-xs font-bold text-slate-600 uppercase block mb-2">PERIODE INSPEKSI</label>
-                                <div className="flex gap-3">
-                                    <div className="relative flex-1">
-                                        <select
-                                            value={periodeMonth}
-                                            onChange={(e) => setPeriodeMonth(Number(e.target.value))}
-                                            className="w-full h-12 px-4 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium focus:outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 transition-all appearance-none cursor-pointer"
-                                        >
-                                            {MONTH_NAMES.map((month, idx) => (
-                                                <option key={month} value={idx}>{month}</option>
-                                            ))}
-                                        </select>
-                                        <ChevronDown size={20} className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
-                                    </div>
-                                    <div className="relative w-28">
-                                        <select
-                                            value={periodeYear}
-                                            onChange={(e) => setPeriodeYear(Number(e.target.value))}
-                                            className="w-full h-12 px-4 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium focus:outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 transition-all appearance-none cursor-pointer"
-                                        >
-                                            {[2024, 2025, 2026, 2027, 2028].map((year) => (
-                                                <option key={year} value={year}>{year}</option>
-                                            ))}
-                                        </select>
-                                        <ChevronDown size={20} className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
-                                    </div>
-                                </div>
-                            </div>
+
                         </div>
 
                         <div className="flex gap-3 mt-6">
@@ -388,8 +358,7 @@ export const HydrantInspectionScreen: React.FC<HydrantFormProps> = ({ onNavigate
                                         localStorage.removeItem('hydrant_step');
                                         localStorage.removeItem('hydrant_area');
                                         localStorage.removeItem('hydrant_pic');
-                                        localStorage.removeItem('hydrant_month');
-                                        localStorage.removeItem('hydrant_year');
+
                                         localStorage.removeItem('hydrant_items');
                                         localStorage.removeItem('hydrant_nextId');
                                         localStorage.removeItem('hydrant_signer_known');

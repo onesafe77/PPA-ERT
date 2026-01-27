@@ -318,6 +318,7 @@ export async function generateAPARPDF(data: APARData): Promise<void> {
     const monthNames = ['JANUARI', 'FEBRUARI', 'MARET', 'APRIL', 'MEI', 'JUNI', 'JULI', 'AGUSTUS', 'SEPTEMBER', 'OKTOBER', 'NOVEMBER', 'DESEMBER'];
     const periodeInspeksi = data.periodeInspeksi || `${monthNames[inspectionDate.getMonth()]} ${inspectionDate.getFullYear()}`;
     const tanggalInspeksi = inspectionDate.toLocaleDateString('id-ID', { day: '2-digit', month: '2-digit', year: 'numeric' });
+    const fullDate = inspectionDate.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
 
     // ============ LOGO PT. PPA ============
     try {
@@ -481,7 +482,7 @@ export async function generateAPARPDF(data: APARData): Promise<void> {
 
     doc.setFontSize(9);
     doc.setFont('helvetica', 'normal');
-    doc.text(`Girimulya,        ${periodeInspeksi}`, rightSigX - 10, sigY - 10, { align: 'center' });
+    doc.text(`Girimulya,        ${fullDate}`, rightSigX - 10, sigY - 10, { align: 'center' });
 
     doc.text('Diketahui Oleh,', leftSigX, sigY, { align: 'center' });
     doc.text('Di Periksa Oleh,', rightSigX, sigY, { align: 'center' });
@@ -603,6 +604,7 @@ export async function generateHydrantPDF(data: HydrantData): Promise<void> {
     const monthNames = ['JANUARI', 'FEBRUARI', 'MARET', 'APRIL', 'MEI', 'JUNI', 'JULI', 'AGUSTUS', 'SEPTEMBER', 'OKTOBER', 'NOVEMBER', 'DESEMBER'];
     const inspectionDate = new Date(data.createdAt);
     const periodeInspeksi = data.periodeInspeksi || `${monthNames[inspectionDate.getMonth()]} ${inspectionDate.getFullYear()}`;
+    const fullDate = inspectionDate.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
 
     // ============ LOGO PT. PPA ============
     try {
@@ -764,7 +766,7 @@ export async function generateHydrantPDF(data: HydrantData): Promise<void> {
 
     doc.setFontSize(8);
     doc.setFont('helvetica', 'normal');
-    doc.text(`Girimulya,        ${periodeInspeksi}`, rightSigX, sigY - 8, { align: 'center' });
+    doc.text(`Girimulya,        ${fullDate}`, rightSigX, sigY - 8, { align: 'center' });
 
     doc.text('Diketahui Oleh,', leftSigX, sigY, { align: 'center' });
     doc.text('Di Periksa Oleh,', rightSigX, sigY, { align: 'center' });
@@ -971,7 +973,7 @@ export async function generateEyeWashPDF(data: EyeWashData): Promise<void> {
     const rightSigX = pageWidth - 60;
 
     doc.setFontSize(9);
-    doc.text(`Girimulya,        ${data.periodeInspeksi}`, rightSigX, y - 8, { align: 'center' });
+    doc.text(`Girimulya,        ${data.tanggalInspeksi}`, rightSigX, y - 8, { align: 'center' });
 
     doc.text('Diketahui Oleh,', leftSigX, y, { align: 'center' });
     doc.text('Diperiksa Oleh,', rightSigX, y, { align: 'center' });
@@ -1176,7 +1178,7 @@ export async function generateSmokeDetectorPDF(data: SmokeDetectorData): Promise
     const rightSigX = pageWidth - 80;
 
     doc.setFontSize(8);
-    doc.text(`Girimulya,        ${data.periodeInspeksi}`, rightSigX, y - 8, { align: 'center' });
+    doc.text(`Girimulya,        ${data.tanggalInspeksi}`, rightSigX, y - 8, { align: 'center' });
 
     doc.text('Diketahui Oleh,', leftSigX, y, { align: 'center' });
     doc.text('Diperiksa Oleh,', rightSigX, y, { align: 'center' });

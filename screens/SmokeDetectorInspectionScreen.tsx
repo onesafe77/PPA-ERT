@@ -38,9 +38,7 @@ export const SmokeDetectorInspectionScreen: React.FC<SmokeDetectorFormProps> = (
     // Step 1 fields
     const [subLokasi, setSubLokasi] = useLocalStorage('smoke_subLokasi', '');
     const [pic, setPic] = useLocalStorage('smoke_pic', user?.name || '');
-    const [periodeMonth, setPeriodeMonth] = useLocalStorage('smoke_month', new Date().getMonth());
-    const [periodeYear, setPeriodeYear] = useLocalStorage('smoke_year', new Date().getFullYear());
-    const [tanggalInspeksi, setTanggalInspeksi] = useLocalStorage('smoke_date', new Date().toISOString().split('T')[0]);
+
 
     const MONTH_NAMES = ['JANUARI', 'FEBRUARI', 'MARET', 'APRIL', 'MEI', 'JUNI', 'JULI', 'AGUSTUS', 'SEPTEMBER', 'OKTOBER', 'NOVEMBER', 'DESEMBER'];
 
@@ -111,7 +109,7 @@ export const SmokeDetectorInspectionScreen: React.FC<SmokeDetectorFormProps> = (
     };
 
     const goToStep = (step: number) => {
-        if (step === 2 && (!subLokasi || !pic || !tanggalInspeksi)) {
+        if (step === 2 && (!subLokasi || !pic)) {
             alert('Mohon lengkapi semua field pada Langkah 1');
             return;
         }
@@ -119,10 +117,7 @@ export const SmokeDetectorInspectionScreen: React.FC<SmokeDetectorFormProps> = (
             alert('Mohon tambahkan minimal 1 unit smoke detector');
             return;
         }
-        if (step === 3 && photos.length < 3) {
-            alert('Mohon upload minimal 3 foto');
-            return;
-        }
+
         setCurrentStep(step);
     };
 
@@ -138,10 +133,7 @@ export const SmokeDetectorInspectionScreen: React.FC<SmokeDetectorFormProps> = (
             alert('Mohon tambahkan minimal 1 unit smoke detector');
             return;
         }
-        if (photos.length < 3) {
-            alert('Mohon upload minimal 3 foto');
-            return;
-        }
+
         if (!diketahuiOleh || !diPeriksaOleh) {
             alert('Mohon isi nama Diketahui Oleh dan Diperiksa Oleh');
             return;
@@ -157,9 +149,9 @@ export const SmokeDetectorInspectionScreen: React.FC<SmokeDetectorFormProps> = (
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    date: new Date(tanggalInspeksi),
-                    periodeMonth,
-                    periodeYear,
+                    date: new Date(),
+                    periodeMonth: new Date().getMonth(),
+                    periodeYear: new Date().getFullYear(),
                     subLokasi,
                     pic,
                     photos: JSON.stringify(photos),
@@ -187,9 +179,7 @@ export const SmokeDetectorInspectionScreen: React.FC<SmokeDetectorFormProps> = (
                 localStorage.removeItem('smoke_step');
                 localStorage.removeItem('smoke_subLokasi');
                 localStorage.removeItem('smoke_pic');
-                localStorage.removeItem('smoke_month');
-                localStorage.removeItem('smoke_year');
-                localStorage.removeItem('smoke_date');
+
                 localStorage.removeItem('smoke_units');
                 localStorage.removeItem('smoke_nextId');
                 localStorage.removeItem('smoke_photos');
@@ -215,8 +205,8 @@ export const SmokeDetectorInspectionScreen: React.FC<SmokeDetectorFormProps> = (
                     id: result.id,
                     subLokasi,
                     pic,
-                    periodeInspeksi: `${MONTH_NAMES[periodeMonth]} ${periodeYear}`,
-                    tanggalInspeksi: new Date(tanggalInspeksi).toLocaleDateString('id-ID'),
+                    periodeInspeksi: `${MONTH_NAMES[new Date().getMonth()]} ${new Date().getFullYear()}`,
+                    tanggalInspeksi: new Date().toLocaleDateString('id-ID'),
                     units: units.map(u => ({
                         nomorDetector: u.nomorDetector,
                         fungsiKontrol: u.fungsiKontrol,
@@ -324,48 +314,7 @@ export const SmokeDetectorInspectionScreen: React.FC<SmokeDetectorFormProps> = (
                                     </div>
                                 </div>
 
-                                <div className="grid grid-cols-2 gap-3">
-                                    <div>
-                                        <label className="block text-sm font-bold text-slate-700 mb-2">Periode Bulan</label>
-                                        <div className="relative">
-                                            <select
-                                                value={periodeMonth}
-                                                onChange={(e) => setPeriodeMonth(parseInt(e.target.value))}
-                                                className="w-full p-3 border border-slate-300 rounded-xl appearance-none bg-white pr-10"
-                                            >
-                                                {MONTH_NAMES.map((month, idx) => (
-                                                    <option key={idx} value={idx}>{month}</option>
-                                                ))}
-                                            </select>
-                                            <ChevronDown size={16} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <label className="block text-sm font-bold text-slate-700 mb-2">Tahun</label>
-                                        <div className="relative">
-                                            <select
-                                                value={periodeYear}
-                                                onChange={(e) => setPeriodeYear(parseInt(e.target.value))}
-                                                className="w-full p-3 border border-slate-300 rounded-xl appearance-none bg-white pr-10"
-                                            >
-                                                {[2024, 2025, 2026, 2027].map(year => (
-                                                    <option key={year} value={year}>{year}</option>
-                                                ))}
-                                            </select>
-                                            <ChevronDown size={16} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
-                                        </div>
-                                    </div>
-                                </div>
 
-                                <div>
-                                    <label className="block text-sm font-bold text-slate-700 mb-2">Tanggal Inspeksi</label>
-                                    <input
-                                        type="date"
-                                        value={tanggalInspeksi}
-                                        onChange={(e) => setTanggalInspeksi(e.target.value)}
-                                        className="w-full p-3 border border-slate-300 rounded-xl"
-                                    />
-                                </div>
 
                                 <div>
                                     <label className="block text-sm font-bold text-slate-700 mb-2">Nama PIC</label>
@@ -386,9 +335,7 @@ export const SmokeDetectorInspectionScreen: React.FC<SmokeDetectorFormProps> = (
                                             localStorage.removeItem('smoke_step');
                                             localStorage.removeItem('smoke_subLokasi');
                                             localStorage.removeItem('smoke_pic');
-                                            localStorage.removeItem('smoke_month');
-                                            localStorage.removeItem('smoke_year');
-                                            localStorage.removeItem('smoke_date');
+
                                             localStorage.removeItem('smoke_units');
                                             localStorage.removeItem('smoke_nextId');
                                             localStorage.removeItem('smoke_photos');
@@ -657,11 +604,7 @@ export const SmokeDetectorInspectionScreen: React.FC<SmokeDetectorFormProps> = (
                                 )}
                             </div>
 
-                            {photos.length < 3 && (
-                                <p className="text-xs text-amber-600 bg-amber-50 px-3 py-2 rounded-lg mb-4">
-                                    ⚠️ Mohon upload minimal {3 - photos.length} foto lagi
-                                </p>
-                            )}
+
                         </div>
 
                         <div className="bg-white rounded-xl p-5 shadow-sm">
@@ -702,7 +645,7 @@ export const SmokeDetectorInspectionScreen: React.FC<SmokeDetectorFormProps> = (
                                 <h3 className="font-bold text-slate-700 mb-2">Review Data</h3>
                                 <div className="text-sm text-slate-600 space-y-1">
                                     <p>Sub Lokasi: <span className="font-bold">{subLokasi || '-'}</span></p>
-                                    <p>Tanggal: <span className="font-bold">{new Date(tanggalInspeksi).toLocaleDateString('id-ID')}</span></p>
+                                    <p>Tanggal: <span className="font-bold">{new Date().toLocaleDateString('id-ID')}</span></p>
                                     <p>Total Unit: <span className="font-bold">{units.length}</span></p>
                                     <p>Unit Layak: <span className="font-bold text-green-600">{totalLayak}</span></p>
                                     <p>Unit Tidak Layak: <span className="font-bold text-red-600">{totalTidakLayak}</span></p>
