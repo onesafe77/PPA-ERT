@@ -3,7 +3,7 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import { db } from './db';
-import { users, inspections, chatLogs, p2hInspections, schedules, aparInspections, hydrantInspections, picaReports, eyeWashInspections, smokeDetectorInspections, smokeDetectorUnits } from './schema';
+import { users, inspections, chatLogs, p2hInspections, schedules, aparInspections, hydrantInspections, picaReports, eyeWashInspections, smokeDetectorInspections, smokeDetectorUnits, equipmentInspections, equipmentInspectionItems } from './schema';
 import { eq, desc } from 'drizzle-orm';
 import OpenAI from 'openai';
 
@@ -36,7 +36,8 @@ const app = express();
 const port = process.env.PORT || 3001;
 
 app.use(cors());
-app.use(express.json());
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 
 // Root route for checking server status (only if api is requested, otherwise let static handler work? No, express order matters)
 // We will serve static files AFTER API routes, or use a specific route.
@@ -430,13 +431,16 @@ app.get('/api/smoke-detector', async (req, res) => {
 // --- PICA Routes ---
 app.post('/api/pica', async (req, res) => {
     try {
-        const { title, description, imageData, photos, deadline, userId } = req.body;
+        const { category, title, description, location, imageData, photos, deadline, priority, userId } = req.body;
         await db.insert(picaReports).values({
+            category: category || 'APAR',
             title,
             description,
+            location,
             imageData, // Legacy
             photos: photos ? JSON.stringify(photos) : null, // Store as JSON string
             deadline: deadline ? new Date(deadline) : null,
+            priority: priority || 'MEDIUM',
             userId,
             status: 'OPEN'
         });
@@ -560,6 +564,71 @@ app.get('/api/smoke-detector', async (req, res) => {
     } catch (error) {
         console.error('Smoke Detector Fetch Error:', error);
         res.status(500).json({ error: 'Failed to fetch Smoke Detector inspections' });
+    }
+});
+
+// ============ EQUIPMENT INSPECTION ENDPOINTS ============
+
+// POST /api/equipment-inspection - Create new equipment inspection
+app.post('/api/equipment-inspection', async (req, res) => {
+    try {
+        const { location, period, inspectorName, approverName, category, items } = req.body;
+
+        // Calculate stats
+        const totalItems = items.length;
+        const layakCount = items.filter((i: any) => i.condition === 'LAYAK').length;
+        const tidakLayakCount = items.filter((i: any) => i.condition === 'TIDAK_LAYAK').length;
+
+        // Insert inspection record
+        const [inspection] = await db.insert(equipmentInspections).values({
+            date: new Date(),
+            period,
+            location,
+            category,
+            inspectorName,
+            approverName: approverName || null,
+            totalItems,
+            layakCount,
+            tidakLayakCount,
+        }).returning();
+
+        // Insert items
+        if (items.length > 0) {
+            await db.insert(equipmentInspectionItems).values(
+                items.map((item: any) => ({
+                    inspectionId: inspection.id,
+                    name: item.name,
+                    tagNumber: item.tagNumber,
+                    brand: item.brand || null,
+                    category: item.category,
+                    condition: item.condition,
+                    notes: item.notes || null,
+                }))
+            );
+        }
+
+        res.status(201).json({ success: true, id: inspection.id });
+    } catch (error) {
+        console.error('Equipment Inspection Error:', error);
+        res.status(500).json({ error: 'Failed to save equipment inspection' });
+    }
+});
+
+// GET /api/equipment-inspection - Get all equipment inspections
+app.get('/api/equipment-inspection', async (req, res) => {
+    try {
+        const inspectionsList = await db.select().from(equipmentInspections).orderBy(desc(equipmentInspections.createdAt));
+
+        // Get items for each inspection
+        const dataWithItems = await Promise.all(inspectionsList.map(async (insp) => {
+            const items = await db.select().from(equipmentInspectionItems).where(eq(equipmentInspectionItems.inspectionId, insp.id));
+            return { ...insp, items, type: 'Equipment' };
+        }));
+
+        res.json(dataWithItems);
+    } catch (error) {
+        console.error('Equipment Inspection Fetch Error:', error);
+        res.status(500).json({ error: 'Failed to fetch equipment inspections' });
     }
 });
 

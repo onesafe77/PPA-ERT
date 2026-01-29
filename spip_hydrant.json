@@ -1,0 +1,31 @@
+[
+  [
+    "NO",
+    "AREA",
+    "LOKASI",
+    "NO. LAMBUNG",
+    "NO. REGISTER"
+  ],
+  [],
+  [
+    1,
+    "GUDANG HANDAK",
+    "GUDANG HANDAK LAMA",
+    "HS.01",
+    "HYDRANT.01"
+  ],
+  [
+    3,
+    "FUEL STORAGE ",
+    "FUEL STORAGE/MESS BARU",
+    "HS.02",
+    "HYDRANT.02"
+  ],
+  [
+    4,
+    "GUDANG HANDAK",
+    "EMULSION PLANT",
+    "HS.03",
+    "HYDRANT.03"
+  ]
+]

@@ -1,0 +1,6897 @@
+[
+  [
+    "NO",
+    "NAMA ALAT / INSTALASI",
+    "AREA",
+    "LOKASI",
+    "KAPASITAS",
+    "NO. LAMBUNG",
+    "NO.REGISTER"
+  ],
+  [],
+  [
+    1,
+    "APAR BANGUNAN",
+    "MAIN OFFICE",
+    "Main Office",
+    "6 Kg",
+    1,
+    "APR-001"
+  ],
+  [
+    2,
+    "APAR BANGUNAN",
+    "MAIN OFFICE",
+    "Main Office",
+    "6 Kg",
+    2,
+    "APR-002"
+  ],
+  [
+    3,
+    "APAR BANGUNAN",
+    "MAIN OFFICE",
+    "Main Office (Server IT)",
+    "6 Kg",
+    3,
+    "APR-003"
+  ],
+  [
+    4,
+    "APAR BANGUNAN",
+    "MAIN OFFICE",
+    "Main Office",
+    "6 Kg",
+    4,
+    "APR-004"
+  ],
+  [
+    5,
+    "APAR BANGUNAN",
+    "MAIN OFFICE",
+    "Main Office",
+    "6 Kg",
+    5,
+    "APR-005"
+  ],
+  [
+    6,
+    "APAR BANGUNAN",
+    "MAIN OFFICE",
+    "Main Office",
+    "6 Kg",
+    6,
+    "APR-006"
+  ],
+  [
+    7,
+    "APAR BANGUNAN",
+    "MAIN OFFICE",
+    "Main Office",
+    "6 Kg",
+    7,
+    "APR-007"
+  ],
+  [
+    8,
+    "APAR BANGUNAN",
+    "MAIN OFFICE",
+    "Main Office",
+    "6 Kg",
+    8,
+    "APR-008"
+  ],
+  [
+    9,
+    "APAR BANGUNAN",
+    "MAIN OFFICE",
+    "Main Office",
+    "6 Kg",
+    9,
+    "APR-009"
+  ],
+  [
+    10,
+    "APAR BANGUNAN",
+    "MAIN OFFICE",
+    "Office SS6 (Depan)",
+    "6 Kg",
+    1,
+    "APR-010"
+  ],
+  [
+    11,
+    "APAR BANGUNAN",
+    "MAIN OFFICE",
+    "Office SS6 (Belakang)",
+    "6 Kg",
+    2,
+    "APR-011"
+  ],
+  [
+    12,
+    "APAR BANGUNAN",
+    "MAIN OFFICE",
+    "Office SHE",
+    "6 Kg",
+    1,
+    "APR-012"
+  ],
+  [
+    13,
+    "APAR BANGUNAN",
+    "MAIN OFFICE",
+    "Office SHE",
+    "6 Kg",
+    2,
+    "APR-013"
+  ],
+  [
+    14,
+    "APAR BANGUNAN",
+    "MAIN OFFICE",
+    "Office SHE",
+    "6 Kg",
+    3,
+    "APR-014"
+  ],
+  [
+    15,
+    "APAR BANGUNAN",
+    "MAIN OFFICE",
+    "Klinik Office",
+    "6 Kg",
+    4,
+    "APR-015"
+  ],
+  [
+    16,
+    "APAR BANGUNAN",
+    "MAIN OFFICE",
+    "Station ERT Lama",
+    "6 Kg",
+    5,
+    "APR-016"
+  ],
+  [
+    17,
+    "APAR BANGUNAN",
+    "MAIN OFFICE",
+    "PPA Mart Main Office",
+    "6 Kg",
+    1,
+    "APR-017"
+  ],
+  [
+    18,
+    "APAR BANGUNAN",
+    "MAIN OFFICE",
+    "Office Survey Engineering",
+    "6 Kg",
+    1,
+    "APR-018"
+  ],
+  [
+    19,
+    "APAR BANGUNAN",
+    "MAIN OFFICE",
+    "Office Survey Engineering",
+    "6 Kg",
+    2,
+    "APR-019"
+  ],
+  [
+    20,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Aula Induksi",
+    "6 Kg",
+    1,
+    "APR-020"
+  ],
+  [
+    21,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Aula Induksi",
+    "6 Kg",
+    2,
+    "APR-021"
+  ],
+  [
+    22,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess A.1",
+    "6 Kg",
+    1,
+    "APR-022"
+  ],
+  [
+    23,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess A.1",
+    "6 Kg",
+    2,
+    "APR-023"
+  ],
+  [
+    24,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess A.1",
+    "6 Kg",
+    3,
+    "APR-024"
+  ],
+  [
+    25,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess A.1",
+    "6 Kg",
+    4,
+    "APR-025"
+  ],
+  [
+    26,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess A.1",
+    "6 Kg",
+    5,
+    "APR-026"
+  ],
+  [
+    27,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess A.2",
+    "6 Kg",
+    1,
+    "APR-027"
+  ],
+  [
+    28,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess A.2",
+    "6 Kg",
+    2,
+    "APR-028"
+  ],
+  [
+    29,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess A.2",
+    "6 Kg",
+    3,
+    "APR-029"
+  ],
+  [
+    30,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess A.2",
+    "6 Kg",
+    4,
+    "APR-030"
+  ],
+  [
+    31,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess A.2",
+    "6 Kg",
+    5,
+    "APR-031"
+  ],
+  [
+    32,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess A.3",
+    "6 Kg",
+    1,
+    "APR-032"
+  ],
+  [
+    33,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess A.3",
+    "6 Kg",
+    2,
+    "APR-033"
+  ],
+  [
+    34,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess A.3",
+    "6 Kg",
+    3,
+    "APR-034"
+  ],
+  [
+    35,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess A.3",
+    "6 Kg",
+    4,
+    "APR-035"
+  ],
+  [
+    36,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess A.3",
+    "6 Kg",
+    5,
+    "APR-036"
+  ],
+  [
+    37,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess A.4",
+    "6 Kg",
+    1,
+    "APR-037"
+  ],
+  [
+    38,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess A.4",
+    "6 Kg",
+    2,
+    "APR-038"
+  ],
+  [
+    39,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess A.4",
+    "6 Kg",
+    3,
+    "APR-039"
+  ],
+  [
+    40,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess A.4",
+    "6 Kg",
+    4,
+    "APR-040"
+  ],
+  [
+    41,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess A.4",
+    "6 Kg",
+    5,
+    "APR-041"
+  ],
+  [
+    42,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess A.5",
+    "6 Kg",
+    1,
+    "APR-042"
+  ],
+  [
+    43,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess A.5",
+    "6 Kg",
+    2,
+    "APR-043"
+  ],
+  [
+    44,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess A.5",
+    "6 Kg",
+    3,
+    "APR-044"
+  ],
+  [
+    45,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess A.5",
+    "6 Kg",
+    4,
+    "APR-045"
+  ],
+  [
+    46,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess A.5",
+    "6 Kg",
+    5,
+    "APR-046"
+  ],
+  [
+    47,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess A.6",
+    "6 Kg",
+    1,
+    "APR-047"
+  ],
+  [
+    48,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess A.6",
+    "6 Kg",
+    2,
+    "APR-048"
+  ],
+  [
+    49,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess A.6",
+    "6 Kg",
+    3,
+    "APR-049"
+  ],
+  [
+    50,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess A.6",
+    "6 Kg",
+    4,
+    "APR-050"
+  ],
+  [
+    51,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess A.6",
+    "6 Kg",
+    5,
+    "APR-051"
+  ],
+  [
+    52,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess A.7",
+    "6 Kg",
+    1,
+    "APR-052"
+  ],
+  [
+    53,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess A.7",
+    "6 Kg",
+    2,
+    "APR-053"
+  ],
+  [
+    54,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess A.7",
+    "6 Kg",
+    3,
+    "APR-054"
+  ],
+  [
+    55,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess A.7",
+    "6 Kg",
+    4,
+    "APR-055"
+  ],
+  [
+    56,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess A.7",
+    "6 Kg",
+    5,
+    "APR-056"
+  ],
+  [
+    57,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess A.8",
+    "6 Kg",
+    1,
+    "APR-057"
+  ],
+  [
+    58,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess A.8",
+    "6 Kg",
+    2,
+    "APR-058"
+  ],
+  [
+    59,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess A.8",
+    "6 Kg",
+    3,
+    "APR-059"
+  ],
+  [
+    60,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess A.8",
+    "6 Kg",
+    4,
+    "APR-060"
+  ],
+  [
+    61,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess A.8",
+    "6 Kg",
+    5,
+    "APR-061"
+  ],
+  [
+    62,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess A.9",
+    "6 Kg",
+    1,
+    "APR-062"
+  ],
+  [
+    63,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess A.9",
+    "6 Kg",
+    2,
+    "APR-063"
+  ],
+  [
+    64,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess A.9",
+    "6 Kg",
+    3,
+    "APR-064"
+  ],
+  [
+    65,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess A.9",
+    "6 Kg",
+    4,
+    "APR-065"
+  ],
+  [
+    66,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess A.9",
+    "6 Kg",
+    5,
+    "APR-066"
+  ],
+  [
+    67,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess A.10",
+    "6 Kg",
+    1,
+    "APR-067"
+  ],
+  [
+    68,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess A.10",
+    "6 Kg",
+    2,
+    "APR-068"
+  ],
+  [
+    69,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess A.10",
+    "6 Kg",
+    3,
+    "APR-069"
+  ],
+  [
+    70,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess A.10",
+    "6 Kg",
+    4,
+    "APR-070"
+  ],
+  [
+    71,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess A.10",
+    "6 Kg",
+    5,
+    "APR-071"
+  ],
+  [
+    72,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess B.1",
+    "6 Kg",
+    1,
+    "APR-072"
+  ],
+  [
+    73,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess B.1",
+    "6 Kg",
+    2,
+    "APR-073"
+  ],
+  [
+    74,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess B.1",
+    "6 Kg",
+    3,
+    "APR-074"
+  ],
+  [
+    75,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess B.1",
+    "6 Kg",
+    4,
+    "APR-075"
+  ],
+  [
+    76,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess B.1",
+    "6 Kg",
+    5,
+    "APR-076"
+  ],
+  [
+    77,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess B.2",
+    "6 Kg",
+    1,
+    "APR-077"
+  ],
+  [
+    78,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess B.2",
+    "6 Kg",
+    2,
+    "APR-078"
+  ],
+  [
+    79,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess B.2",
+    "6 Kg",
+    3,
+    "APR-079"
+  ],
+  [
+    80,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess B.2",
+    "6 Kg",
+    4,
+    "APR-080"
+  ],
+  [
+    81,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess B.2",
+    "6 Kg",
+    5,
+    "APR-081"
+  ],
+  [
+    82,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess B.3",
+    "6 Kg",
+    1,
+    "APR-082"
+  ],
+  [
+    83,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess B.3",
+    "6 Kg",
+    2,
+    "APR-083"
+  ],
+  [
+    84,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess B.3",
+    "6 Kg",
+    3,
+    "APR-084"
+  ],
+  [
+    85,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess B.3",
+    "6 Kg",
+    4,
+    "APR-085"
+  ],
+  [
+    86,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess B.3",
+    "6 Kg",
+    5,
+    "APR-086"
+  ],
+  [
+    87,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess B.4",
+    "6 Kg",
+    1,
+    "APR-087"
+  ],
+  [
+    88,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess B.4",
+    "6 Kg",
+    2,
+    "APR-088"
+  ],
+  [
+    89,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess B.4",
+    "6 Kg",
+    3,
+    "APR-089"
+  ],
+  [
+    90,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess B.4",
+    "6 Kg",
+    4,
+    "APR-090"
+  ],
+  [
+    91,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess B.4",
+    "6 Kg",
+    5,
+    "APR-091"
+  ],
+  [
+    92,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess B.5",
+    "6 Kg",
+    1,
+    "APR-092"
+  ],
+  [
+    93,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess B.5",
+    "6 Kg",
+    2,
+    "APR-093"
+  ],
+  [
+    94,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess B.5",
+    "6 Kg",
+    3,
+    "APR-094"
+  ],
+  [
+    95,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess B.5",
+    "6 Kg",
+    4,
+    "APR-095"
+  ],
+  [
+    96,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess B.5",
+    "6 Kg",
+    5,
+    "APR-096"
+  ],
+  [
+    97,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess B.6",
+    "6 Kg",
+    1,
+    "APR-097"
+  ],
+  [
+    98,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess B.6",
+    "6 Kg",
+    2,
+    "APR-098"
+  ],
+  [
+    99,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess B.6",
+    "6 Kg",
+    3,
+    "APR-099"
+  ],
+  [
+    100,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess B.6",
+    "6 Kg",
+    4,
+    "APR-100"
+  ],
+  [
+    101,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess B.6",
+    "6 Kg",
+    5,
+    "APR-101"
+  ],
+  [
+    102,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess B.7",
+    "6 Kg",
+    1,
+    "APR-102"
+  ],
+  [
+    103,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess B.7",
+    "6 Kg",
+    2,
+    "APR-103"
+  ],
+  [
+    104,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess B.7",
+    "6 Kg",
+    3,
+    "APR-104"
+  ],
+  [
+    105,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess B.7",
+    "6 Kg",
+    4,
+    "APR-105"
+  ],
+  [
+    106,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess B.7",
+    "6 Kg",
+    5,
+    "APR-106"
+  ],
+  [
+    107,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess B.8",
+    "6 Kg",
+    1,
+    "APR-107"
+  ],
+  [
+    108,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess B.8",
+    "6 Kg",
+    2,
+    "APR-108"
+  ],
+  [
+    109,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess B.8",
+    "6 Kg",
+    3,
+    "APR-109"
+  ],
+  [
+    110,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess B.8",
+    "6 Kg",
+    4,
+    "APR-110"
+  ],
+  [
+    111,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess B.8",
+    "6 Kg",
+    5,
+    "APR-111"
+  ],
+  [
+    112,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess B.9",
+    "6 Kg",
+    1,
+    "APR-112"
+  ],
+  [
+    113,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess B.9",
+    "6 Kg",
+    2,
+    "APR-113"
+  ],
+  [
+    114,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess B.9",
+    "6 Kg",
+    3,
+    "APR-114"
+  ],
+  [
+    115,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess B.9",
+    "6 Kg",
+    4,
+    "APR-115"
+  ],
+  [
+    116,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess B.9",
+    "6 Kg",
+    5,
+    "APR-116"
+  ],
+  [
+    117,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess B.10",
+    "6 Kg",
+    1,
+    "APR-117"
+  ],
+  [
+    118,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess B.10",
+    "6 Kg",
+    2,
+    "APR-118"
+  ],
+  [
+    119,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess B.10",
+    "6 Kg",
+    3,
+    "APR-119"
+  ],
+  [
+    120,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess B.10",
+    "6 Kg",
+    4,
+    "APR-120"
+  ],
+  [
+    121,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess B.10",
+    "6 Kg",
+    5,
+    "APR-121"
+  ],
+  [
+    122,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess C.1",
+    "6 Kg",
+    1,
+    "APR-122"
+  ],
+  [
+    123,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess C.1",
+    "6 Kg",
+    2,
+    "APR-123"
+  ],
+  [
+    124,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess C.1",
+    "6 Kg",
+    3,
+    "APR-124"
+  ],
+  [
+    125,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess C.1",
+    "6 Kg",
+    4,
+    "APR-125"
+  ],
+  [
+    126,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess C.1",
+    "6 Kg",
+    5,
+    "APR-126"
+  ],
+  [
+    127,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess C.2",
+    "6 Kg",
+    1,
+    "APR-127"
+  ],
+  [
+    128,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess C.2",
+    "6 Kg",
+    2,
+    "APR-128"
+  ],
+  [
+    129,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess C.2",
+    "6 Kg",
+    3,
+    "APR-129"
+  ],
+  [
+    130,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess C.2",
+    "6 Kg",
+    4,
+    "APR-130"
+  ],
+  [
+    131,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess C.2",
+    "6 Kg",
+    5,
+    "APR-131"
+  ],
+  [
+    132,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess C.3",
+    "6 Kg",
+    1,
+    "APR-132"
+  ],
+  [
+    133,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess C.3",
+    "6 Kg",
+    2,
+    "APR-133"
+  ],
+  [
+    134,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess C.3",
+    "6 Kg",
+    3,
+    "APR-134"
+  ],
+  [
+    135,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess C.3",
+    "6 Kg",
+    4,
+    "APR-135"
+  ],
+  [
+    136,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess C.3",
+    "6 Kg",
+    5,
+    "APR-136"
+  ],
+  [
+    137,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess C.4",
+    "6 Kg",
+    1,
+    "APR-137"
+  ],
+  [
+    138,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess C.4",
+    "6 Kg",
+    2,
+    "APR-138"
+  ],
+  [
+    139,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess C.4",
+    "6 Kg",
+    3,
+    "APR-139"
+  ],
+  [
+    140,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess C.4",
+    "6 Kg",
+    4,
+    "APR-140"
+  ],
+  [
+    141,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess C.4",
+    "6 Kg",
+    5,
+    "APR-141"
+  ],
+  [
+    142,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess C.5",
+    "6 Kg",
+    1,
+    "APR-142"
+  ],
+  [
+    143,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess C.5",
+    "6 Kg",
+    2,
+    "APR-143"
+  ],
+  [
+    144,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess C.5",
+    "6 Kg",
+    3,
+    "APR-144"
+  ],
+  [
+    145,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess C.5",
+    "6 Kg",
+    4,
+    "APR-145"
+  ],
+  [
+    146,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess C.5",
+    "6 Kg",
+    5,
+    "APR-146"
+  ],
+  [
+    147,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess C.6",
+    "6 Kg",
+    1,
+    "APR-147"
+  ],
+  [
+    148,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess C.6",
+    "6 Kg",
+    2,
+    "APR-148"
+  ],
+  [
+    149,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess C.6",
+    "6 Kg",
+    3,
+    "APR-149"
+  ],
+  [
+    150,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess C.6",
+    "6 Kg",
+    4,
+    "APR-150"
+  ],
+  [
+    151,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess C.6",
+    "6 Kg",
+    5,
+    "APR-151"
+  ],
+  [
+    152,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess C.7",
+    "6 Kg",
+    1,
+    "APR-152"
+  ],
+  [
+    153,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess C.7",
+    "6 Kg",
+    2,
+    "APR-153"
+  ],
+  [
+    154,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess C.7",
+    "6 Kg",
+    3,
+    "APR-154"
+  ],
+  [
+    155,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess C.7",
+    "6 Kg",
+    4,
+    "APR-155"
+  ],
+  [
+    156,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess C.7",
+    "6 Kg",
+    5,
+    "APR-156"
+  ],
+  [
+    157,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess C.8",
+    "6 Kg",
+    1,
+    "APR-157"
+  ],
+  [
+    158,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess C.8",
+    "6 Kg",
+    2,
+    "APR-158"
+  ],
+  [
+    159,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess C.8",
+    "6 Kg",
+    3,
+    "APR-159"
+  ],
+  [
+    160,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess C.8",
+    "6 Kg",
+    4,
+    "APR-160"
+  ],
+  [
+    161,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess C.8",
+    "6 Kg",
+    5,
+    "APR-161"
+  ],
+  [
+    162,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess C.9",
+    "6 Kg",
+    1,
+    "APR-162"
+  ],
+  [
+    163,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess C.9",
+    "6 Kg",
+    2,
+    "APR-163"
+  ],
+  [
+    164,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess C.9",
+    "6 Kg",
+    3,
+    "APR-164"
+  ],
+  [
+    165,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess C.9",
+    "6 Kg",
+    4,
+    "APR-165"
+  ],
+  [
+    166,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess C.9",
+    "6 Kg",
+    5,
+    "APR-166"
+  ],
+  [
+    167,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess C.10",
+    "6 Kg",
+    1,
+    "APR-167"
+  ],
+  [
+    168,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess C.10",
+    "6 Kg",
+    2,
+    "APR-168"
+  ],
+  [
+    169,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess C.10",
+    "6 Kg",
+    3,
+    "APR-169"
+  ],
+  [
+    170,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess C.10",
+    "6 Kg",
+    4,
+    "APR-170"
+  ],
+  [
+    171,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess C.10",
+    "6 Kg",
+    5,
+    "APR-171"
+  ],
+  [
+    172,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess D.1",
+    "6 Kg",
+    1,
+    "APR-172"
+  ],
+  [
+    173,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess D.1",
+    "6 Kg",
+    2,
+    "APR-173"
+  ],
+  [
+    174,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess D.1",
+    "6 Kg",
+    3,
+    "APR-174"
+  ],
+  [
+    175,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess D.1",
+    "6 Kg",
+    4,
+    "APR-175"
+  ],
+  [
+    176,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess D.1",
+    "6 Kg",
+    5,
+    "APR-176"
+  ],
+  [
+    177,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess D.1 (Pantry)",
+    "6 Kg",
+    6,
+    "APR-177"
+  ],
+  [
+    178,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess D.2",
+    "6 Kg",
+    1,
+    "APR-178"
+  ],
+  [
+    179,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess D.2",
+    "6 Kg",
+    2,
+    "APR-179"
+  ],
+  [
+    180,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess D.2",
+    "6 Kg",
+    3,
+    "APR-180"
+  ],
+  [
+    181,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess D.2",
+    "6 Kg",
+    4,
+    "APR-181"
+  ],
+  [
+    182,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess D.2",
+    "6 Kg",
+    5,
+    "APR-182"
+  ],
+  [
+    183,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess D.3",
+    "6 Kg",
+    1,
+    "APR-183"
+  ],
+  [
+    184,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess D.3",
+    "6 Kg",
+    2,
+    "APR-184"
+  ],
+  [
+    185,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess D.3",
+    "6 Kg",
+    3,
+    "APR-185"
+  ],
+  [
+    186,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess D.3",
+    "6 Kg",
+    4,
+    "APR-186"
+  ],
+  [
+    187,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess D.3",
+    "6 Kg",
+    5,
+    "APR-187"
+  ],
+  [
+    188,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess D.4",
+    "6 Kg",
+    1,
+    "APR-188"
+  ],
+  [
+    189,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess D.4",
+    "6 Kg",
+    2,
+    "APR-189"
+  ],
+  [
+    190,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess D.4",
+    "6 Kg",
+    3,
+    "APR-190"
+  ],
+  [
+    191,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess D.4",
+    "6 Kg",
+    4,
+    "APR-191"
+  ],
+  [
+    192,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess D.4",
+    "6 Kg",
+    5,
+    "APR-192"
+  ],
+  [
+    193,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess D.5",
+    "6 Kg",
+    1,
+    "APR-193"
+  ],
+  [
+    194,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess D.5",
+    "6 Kg",
+    2,
+    "APR-194"
+  ],
+  [
+    195,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess D.5",
+    "6 Kg",
+    3,
+    "APR-195"
+  ],
+  [
+    196,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess D.5",
+    "6 Kg",
+    4,
+    "APR-196"
+  ],
+  [
+    197,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess D.5",
+    "6 Kg",
+    5,
+    "APR-197"
+  ],
+  [
+    198,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess D.6",
+    "6 Kg",
+    1,
+    "APR-198"
+  ],
+  [
+    199,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess D.6",
+    "6 Kg",
+    2,
+    "APR-199"
+  ],
+  [
+    200,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess D.6",
+    "6 Kg",
+    3,
+    "APR-200"
+  ],
+  [
+    201,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess D.6",
+    "6 Kg",
+    4,
+    "APR-201"
+  ],
+  [
+    202,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess D.6",
+    "6 Kg",
+    5,
+    "APR-202"
+  ],
+  [
+    203,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess D.7",
+    "6 Kg",
+    1,
+    "APR-203"
+  ],
+  [
+    204,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess D.7",
+    "6 Kg",
+    2,
+    "APR-204"
+  ],
+  [
+    205,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess D.7",
+    "6 Kg",
+    3,
+    "APR-205"
+  ],
+  [
+    206,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess D.7",
+    "6 Kg",
+    4,
+    "APR-206"
+  ],
+  [
+    207,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess D.7",
+    "6 Kg",
+    5,
+    "APR-207"
+  ],
+  [
+    208,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess D.8",
+    "6 Kg",
+    1,
+    "APR-208"
+  ],
+  [
+    209,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess D.8",
+    "6 Kg",
+    2,
+    "APR-209"
+  ],
+  [
+    210,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess D.8",
+    "6 Kg",
+    3,
+    "APR-210"
+  ],
+  [
+    211,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess D.8",
+    "6 Kg",
+    4,
+    "APR-211"
+  ],
+  [
+    212,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess D.8",
+    "6 Kg",
+    5,
+    "APR-212"
+  ],
+  [
+    213,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess D.8 (Pantry)",
+    "6 Kg",
+    6,
+    "APR-213"
+  ],
+  [
+    214,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess D.9",
+    "6 Kg",
+    1,
+    "APR-214"
+  ],
+  [
+    215,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess D.9",
+    "6 Kg",
+    2,
+    "APR-215"
+  ],
+  [
+    216,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess D.9",
+    "6 Kg",
+    3,
+    "APR-216"
+  ],
+  [
+    217,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess D.9",
+    "6 Kg",
+    4,
+    "APR-217"
+  ],
+  [
+    218,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess D.9",
+    "6 Kg",
+    5,
+    "APR-218"
+  ],
+  [
+    219,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess D.10",
+    "6 Kg",
+    1,
+    "APR-219"
+  ],
+  [
+    220,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess D.10",
+    "6 Kg",
+    2,
+    "APR-220"
+  ],
+  [
+    221,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess D.10",
+    "6 Kg",
+    3,
+    "APR-221"
+  ],
+  [
+    222,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess D.10",
+    "6 Kg",
+    4,
+    "APR-222"
+  ],
+  [
+    223,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess D.10",
+    "6 Kg",
+    5,
+    "APR-223"
+  ],
+  [
+    224,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess E1",
+    "6 Kg",
+    1,
+    "APR-224"
+  ],
+  [
+    225,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "mess E1",
+    "6 Kg",
+    2,
+    "APR-225"
+  ],
+  [
+    226,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess E1",
+    "6 Kg",
+    3,
+    "APR-226"
+  ],
+  [
+    227,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess E1",
+    "6 Kg",
+    4,
+    "APR-227"
+  ],
+  [
+    228,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess E1",
+    "6 Kg",
+    5,
+    "APR-228"
+  ],
+  [
+    229,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess E2",
+    "6 Kg",
+    1,
+    "APR-229"
+  ],
+  [
+    230,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess E2",
+    "6 Kg",
+    2,
+    "APR-230"
+  ],
+  [
+    231,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess E2",
+    "6 Kg",
+    3,
+    "APR-231"
+  ],
+  [
+    232,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess E2",
+    "6 Kg",
+    4,
+    "APR-232"
+  ],
+  [
+    233,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess E2",
+    "6 Kg",
+    5,
+    "APR-233"
+  ],
+  [
+    234,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess GL 1",
+    "6 Kg",
+    1,
+    "APR-234"
+  ],
+  [
+    235,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess GL 1",
+    "6 Kg",
+    2,
+    "APR-235"
+  ],
+  [
+    236,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess GL 1",
+    "6 Kg",
+    3,
+    "APR-236"
+  ],
+  [
+    237,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess GL 1",
+    "6 Kg",
+    4,
+    "APR-237"
+  ],
+  [
+    238,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess GL 1",
+    "6 Kg",
+    5,
+    "APR-238"
+  ],
+  [
+    239,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess GL 2",
+    "6 Kg",
+    1,
+    "APR-239"
+  ],
+  [
+    240,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess GL 2",
+    "6 Kg",
+    2,
+    "APR-240"
+  ],
+  [
+    241,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess GL 2",
+    "6 Kg",
+    3,
+    "APR-241"
+  ],
+  [
+    242,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess GL 2",
+    "6 Kg",
+    4,
+    "APR-242"
+  ],
+  [
+    243,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess GL 2",
+    "6 Kg",
+    5,
+    "APR-243"
+  ],
+  [
+    244,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess GL 3",
+    "6 Kg",
+    1,
+    "APR-244"
+  ],
+  [
+    245,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess GL 3",
+    "6 Kg",
+    2,
+    "APR-245"
+  ],
+  [
+    246,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess GL 3",
+    "6 Kg",
+    3,
+    "APR-246"
+  ],
+  [
+    247,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess GL 3",
+    "6 Kg",
+    4,
+    "APR-247"
+  ],
+  [
+    248,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess GL 3",
+    "6 Kg",
+    5,
+    "APR-248"
+  ],
+  [
+    249,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess GL 4",
+    "6 Kg",
+    1,
+    "APR-249"
+  ],
+  [
+    250,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess GL 4",
+    "6 Kg",
+    2,
+    "APR-250"
+  ],
+  [
+    251,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess GL 4",
+    "6 Kg",
+    3,
+    "APR-251"
+  ],
+  [
+    252,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess GL 4",
+    "6 Kg",
+    4,
+    "APR-252"
+  ],
+  [
+    253,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess GL 4",
+    "6 Kg",
+    5,
+    "APR-253"
+  ],
+  [
+    254,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess GL 4 (Pantry)",
+    "6 Kg",
+    6,
+    "APR-254"
+  ],
+  [
+    255,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess GL 5",
+    "6 Kg",
+    1,
+    "APR-255"
+  ],
+  [
+    256,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess GL 5",
+    "6 Kg",
+    2,
+    "APR-256"
+  ],
+  [
+    257,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess GL 5",
+    "6 Kg",
+    3,
+    "APR-257"
+  ],
+  [
+    258,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess GL 5",
+    "6 Kg",
+    4,
+    "APR-258"
+  ],
+  [
+    259,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess GL 5",
+    "6 Kg",
+    5,
+    "APR-259"
+  ],
+  [
+    260,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess GL 6",
+    "6 Kg",
+    1,
+    "APR-260"
+  ],
+  [
+    261,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess GL 6",
+    "6 Kg",
+    2,
+    "APR-261"
+  ],
+  [
+    262,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess GL 6",
+    "6 Kg",
+    3,
+    "APR-262"
+  ],
+  [
+    263,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess GL 6",
+    "6 Kg",
+    4,
+    "APR-263"
+  ],
+  [
+    264,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess GL 6",
+    "6 Kg",
+    5,
+    "APR-264"
+  ],
+  [
+    265,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess GL 6",
+    "6 Kg",
+    6,
+    "APR-265"
+  ],
+  [
+    266,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess GL 7",
+    "6 Kg",
+    1,
+    "APR-266"
+  ],
+  [
+    267,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess GL 7",
+    "6 Kg",
+    2,
+    "APR-267"
+  ],
+  [
+    268,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess GL 7",
+    "6 Kg",
+    3,
+    "APR-268"
+  ],
+  [
+    269,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess GL 7",
+    "6 Kg",
+    4,
+    "APR-269"
+  ],
+  [
+    270,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess GL 7",
+    "6 Kg",
+    5,
+    "APR-270"
+  ],
+  [
+    271,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess GL 7",
+    "6 Kg",
+    6,
+    "APR-271"
+  ],
+  [
+    272,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess GL 8",
+    "6 Kg",
+    1,
+    "APR-272"
+  ],
+  [
+    273,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess GL 8",
+    "6 Kg",
+    2,
+    "APR-273"
+  ],
+  [
+    274,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess GL 8",
+    "6 Kg",
+    3,
+    "APR-274"
+  ],
+  [
+    275,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess GL 8",
+    "6 Kg",
+    4,
+    "APR-275"
+  ],
+  [
+    276,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess GL 8",
+    "6 Kg",
+    5,
+    "APR-276"
+  ],
+  [
+    277,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess GL 9",
+    "6 Kg",
+    1,
+    "APR-277"
+  ],
+  [
+    278,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess GL 9",
+    "6 Kg",
+    2,
+    "APR-278"
+  ],
+  [
+    279,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess GL 9",
+    "6 Kg",
+    3,
+    "APR-279"
+  ],
+  [
+    280,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess GL 9",
+    "6 Kg",
+    4,
+    "APR-280"
+  ],
+  [
+    281,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess GL 9",
+    "6 Kg",
+    5,
+    "APR-281"
+  ],
+  [
+    282,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess GL 10",
+    "6 Kg",
+    1,
+    "APR-282"
+  ],
+  [
+    283,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess GL 10",
+    "6 Kg",
+    2,
+    "APR-283"
+  ],
+  [
+    284,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess GL 10",
+    "6 Kg",
+    3,
+    "APR-284"
+  ],
+  [
+    285,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess GL 10",
+    "6 Kg",
+    4,
+    "APR-285"
+  ],
+  [
+    286,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess GL 10",
+    "6 Kg",
+    5,
+    "APR-286"
+  ],
+  [
+    287,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess GL 11",
+    "3 Kg",
+    1,
+    "APR-287"
+  ],
+  [
+    288,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess GL 11",
+    "6 Kg",
+    2,
+    "APR-288"
+  ],
+  [
+    289,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess GL 11",
+    "6 Kg",
+    3,
+    "APR-289"
+  ],
+  [
+    290,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess GL 11",
+    "6 Kg",
+    4,
+    "APR-290"
+  ],
+  [
+    291,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess GL 11",
+    "6 Kg",
+    5,
+    "APR-291"
+  ],
+  [
+    292,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess GL 12",
+    "3 Kg",
+    1,
+    "APR-292"
+  ],
+  [
+    293,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess GL 12",
+    "6 Kg",
+    2,
+    "APR-293"
+  ],
+  [
+    294,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess GL 12",
+    "6 Kg",
+    3,
+    "APR-294"
+  ],
+  [
+    295,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess GL 12",
+    "6 Kg",
+    4,
+    "APR-295"
+  ],
+  [
+    296,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess GL 12",
+    "6 Kg",
+    5,
+    "APR-296"
+  ],
+  [
+    297,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess Mandala 01",
+    "6 Kg",
+    1,
+    "APR-297"
+  ],
+  [
+    298,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess Mandala 01",
+    "6 Kg",
+    2,
+    "APR-298"
+  ],
+  [
+    299,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess Mandala 01",
+    "6 Kg",
+    3,
+    "APR-299"
+  ],
+  [
+    300,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess Mandala 01",
+    "6 Kg",
+    4,
+    "APR-300"
+  ],
+  [
+    301,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess Mandala 01",
+    "6 Kg",
+    5,
+    "APR-301"
+  ],
+  [
+    302,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess Mandala 02",
+    "6 Kg",
+    1,
+    "APR-302"
+  ],
+  [
+    303,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess Mandala 02",
+    "6 Kg",
+    2,
+    "APR-303"
+  ],
+  [
+    304,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess Mandala 02",
+    "6 Kg",
+    3,
+    "APR-304"
+  ],
+  [
+    305,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess Mandala 02",
+    "6 Kg",
+    4,
+    "APR-305"
+  ],
+  [
+    306,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess Mandala 02",
+    "6 Kg",
+    5,
+    "APR-306"
+  ],
+  [
+    307,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess SS (Senior Staff)",
+    "6 Kg",
+    1,
+    "APR-307"
+  ],
+  [
+    308,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess SS (Senior Staff)",
+    "6 Kg",
+    2,
+    "APR-308"
+  ],
+  [
+    309,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess SS (Senior Staff)",
+    "6 Kg",
+    3,
+    "APR-309"
+  ],
+  [
+    310,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess SS (Senior Staff)",
+    "6 Kg",
+    4,
+    "APR-310"
+  ],
+  [
+    311,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess SS (Senior Staff)",
+    "6 Kg",
+    5,
+    "APR-311"
+  ],
+  [
+    312,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess Anggrek A (Wanita)",
+    "6 Kg",
+    1,
+    "APR-312"
+  ],
+  [
+    313,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess Anggrek A (Wanita)",
+    "6 Kg",
+    2,
+    "APR-313"
+  ],
+  [
+    314,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess Anggrek A (Wanita)",
+    "6 Kg",
+    3,
+    "APR-314"
+  ],
+  [
+    315,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess Anggrek A (Wanita)",
+    "6 Kg",
+    4,
+    "APR-315"
+  ],
+  [
+    316,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess Anggrek A (Wanita)",
+    "6 Kg",
+    5,
+    "APR-316"
+  ],
+  [
+    317,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess Anggrek B (Wanita)",
+    "6 Kg",
+    1,
+    "APR-317"
+  ],
+  [
+    318,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess Anggrek B (Wanita)",
+    "6 Kg",
+    2,
+    "APR-318"
+  ],
+  [
+    319,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess Anggrek B (Wanita)",
+    "6 Kg",
+    3,
+    "APR-319"
+  ],
+  [
+    320,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess Anggrek B (Wanita)",
+    "6 Kg",
+    4,
+    "APR-320"
+  ],
+  [
+    321,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess Anggrek B (Wanita)",
+    "6 Kg",
+    5,
+    "APR-321"
+  ],
+  [
+    322,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess Anggrek B (Wanita)",
+    "6 Kg",
+    6,
+    "APR-322"
+  ],
+  [
+    323,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess Tamu",
+    "6 Kg",
+    1,
+    "APR-323"
+  ],
+  [
+    324,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess Tamu",
+    "6 Kg",
+    2,
+    "APR-324"
+  ],
+  [
+    325,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess Tamu",
+    "6 Kg",
+    3,
+    "APR-325"
+  ],
+  [
+    326,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess Catering A",
+    "6 Kg",
+    1,
+    "APR-326"
+  ],
+  [
+    327,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess Catering A",
+    "6 Kg",
+    2,
+    "APR-327"
+  ],
+  [
+    328,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess Catering A",
+    "6 Kg",
+    3,
+    "APR-328"
+  ],
+  [
+    329,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess Catering A",
+    "6 Kg",
+    4,
+    "APR-329"
+  ],
+  [
+    330,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess Catering A",
+    "6 Kg",
+    5,
+    "APR-330"
+  ],
+  [
+    331,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess Catering B",
+    "6 Kg",
+    1,
+    "APR-331"
+  ],
+  [
+    332,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess Catering B",
+    "6 Kg",
+    2,
+    "APR-332"
+  ],
+  [
+    333,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess Catering B",
+    "6 Kg",
+    3,
+    "APR-333"
+  ],
+  [
+    334,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess Catering B",
+    "6 Kg",
+    4,
+    "APR-334"
+  ],
+  [
+    335,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess Catering B",
+    "6 Kg",
+    5,
+    "APR-335"
+  ],
+  [
+    336,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess Catering C",
+    "6 Kg",
+    1,
+    "APR-336"
+  ],
+  [
+    337,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess Catering C",
+    "6 Kg",
+    2,
+    "APR-337"
+  ],
+  [
+    338,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess Catering C",
+    "6 Kg",
+    3,
+    "APR-338"
+  ],
+  [
+    339,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess Catering C",
+    "6 Kg",
+    4,
+    "APR-339"
+  ],
+  [
+    340,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess Catering C",
+    "6 Kg",
+    5,
+    "APR-340"
+  ],
+  [
+    341,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Foodcourt Mess Baru (Dapur KPS)",
+    "6 Kg",
+    1,
+    "APR-341"
+  ],
+  [
+    342,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Foodcourt Mess Baru (Dapur KPS)",
+    "6 Kg",
+    2,
+    "APR-342"
+  ],
+  [
+    343,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Foodcourt Mess Baru (Lobby)",
+    "6 Kg",
+    3,
+    "APR-343"
+  ],
+  [
+    344,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Foodcourt Mess Baru (Depan Kasir)",
+    "6 Kg",
+    4,
+    "APR-344"
+  ],
+  [
+    345,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Foodcourt Mess Baru (Dapur DSJ)",
+    "6 Kg",
+    5,
+    "APR-345"
+  ],
+  [
+    346,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Foodcourt Mess Baru (Dapur Patria)",
+    "6 Kg",
+    6,
+    "APR-346"
+  ],
+  [
+    347,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Foodcourt Mess Baru (Lobby)",
+    "6 Kg",
+    7,
+    "APR-347"
+  ],
+  [
+    348,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Foodcourt Mess Baru (Lobby)",
+    "6 Kg",
+    8,
+    "APR-348"
+  ],
+  [
+    349,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Foodcourt Mess Baru (Lobby)",
+    "6 Kg",
+    9,
+    "APR-349"
+  ],
+  [
+    350,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Foodcourt Mess Baru (Lantai 2)",
+    "6 Kg",
+    10,
+    "APR-350"
+  ],
+  [
+    351,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Foodcourt Mess Baru (Lantai 2)",
+    "6 Kg",
+    11,
+    "APR-351"
+  ],
+  [
+    352,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Foodcourt Mess Baru (Lobby)",
+    "6 Kg",
+    12,
+    "APR-352"
+  ],
+  [
+    353,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Gudang Loundry (Depan)",
+    "6 Kg",
+    1,
+    "APR-353"
+  ],
+  [
+    354,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Gudang Loundry (Belakang)",
+    "6 Kg",
+    2,
+    "APR-354"
+  ],
+  [
+    355,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Rumah Laundry 1",
+    "6 Kg",
+    1,
+    "APR-355"
+  ],
+  [
+    356,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Rumah Laundry 2",
+    "6 Kg",
+    1,
+    "APR-356"
+  ],
+  [
+    357,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Rumah Laundry 3",
+    "6 Kg",
+    1,
+    "APR-357"
+  ],
+  [
+    358,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Rumah Laundry 4",
+    "6 Kg",
+    1,
+    "APR-358"
+  ],
+  [
+    359,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Rumah Laundry 4",
+    "6 Kg",
+    2,
+    "APR-359"
+  ],
+  [
+    360,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Rumah Laundry 5",
+    "6 Kg",
+    1,
+    "APR-360"
+  ],
+  [
+    361,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Rumah Laundry 5",
+    "6 Kg",
+    2,
+    "APR-361"
+  ],
+  [
+    362,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Rumah Laundry 6",
+    "3 Kg",
+    1,
+    "APR-362"
+  ],
+  [
+    363,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Rumah Laundry 6",
+    "3 Kg",
+    2,
+    "APR-363"
+  ],
+  [
+    364,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Rumah Laundry 7",
+    "6 Kg",
+    1,
+    "APR-364"
+  ],
+  [
+    365,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Rumah Laundry 7",
+    "6 Kg",
+    2,
+    "APR-365"
+  ],
+  [
+    366,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Office GA",
+    "6 Kg",
+    1,
+    "APR-366"
+  ],
+  [
+    367,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Office GA",
+    "6 Kg",
+    2,
+    "APR-367"
+  ],
+  [
+    368,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Office GA (IT)",
+    "6 Kg",
+    3,
+    "APR-368"
+  ],
+  [
+    369,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Office GA (Electric)",
+    "6 Kg",
+    4,
+    "APR-369"
+  ],
+  [
+    370,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Office GA (Carpenter)",
+    "6 Kg",
+    5,
+    "APR-370"
+  ],
+  [
+    371,
+    "APAR BANGUNAN",
+    "AKAPI",
+    "AKAPI Office PPA Academy (Depan)",
+    "6 Kg",
+    1,
+    "APR-371"
+  ],
+  [
+    372,
+    "APAR BANGUNAN",
+    "AKAPI",
+    "AKAPI Office PPA Academy (Dalam)",
+    "6 Kg",
+    2,
+    "APR-372"
+  ],
+  [
+    373,
+    "APAR BANGUNAN",
+    "AKAPI",
+    "AKAPI Office PPA Academy (Dalam)",
+    "6 Kg",
+    3,
+    "APR-373"
+  ],
+  [
+    374,
+    "APAR BANGUNAN",
+    "AKAPI",
+    "AKAPI Aula PPA Academy (Depan)",
+    "6 Kg",
+    4,
+    "APR-374"
+  ],
+  [
+    375,
+    "APAR BANGUNAN",
+    "AKAPI",
+    "AKAPI Aula PPA Academy (Dalam)",
+    "6 Kg",
+    5,
+    "APR-375"
+  ],
+  [
+    376,
+    "APAR BANGUNAN",
+    "AKAPI",
+    "AKAPI Lorong Kelas PPA Academy",
+    "6 Kg",
+    6,
+    "APR-376"
+  ],
+  [
+    377,
+    "APAR BANGUNAN",
+    "AKAPI",
+    "AKAPI Lorong Kelas PPA Academy",
+    "6 Kg",
+    7,
+    "APR-377"
+  ],
+  [
+    378,
+    "APAR BANGUNAN",
+    "AKAPI",
+    "AKAPI Ruang Simolator (Depan)",
+    "6 Kg",
+    1,
+    "APR-378"
+  ],
+  [
+    379,
+    "APAR BANGUNAN",
+    "AKAPI",
+    "AKAPI Ruang Simolator (Dalam)",
+    "6 Kg",
+    2,
+    "APR-379"
+  ],
+  [
+    380,
+    "APAR BANGUNAN",
+    "AKAPI",
+    "AKAPI Ruang Simolator (Dalam)",
+    "6 Kg",
+    3,
+    "APR-380"
+  ],
+  [
+    381,
+    "APAR BANGUNAN",
+    "AKAPI",
+    "AKAPI Ruang Simulator HD",
+    "2 Kg",
+    4,
+    "APR-381"
+  ],
+  [
+    382,
+    "APAR BANGUNAN",
+    "AKAPI",
+    "AKAPI Ruang Simulator HD",
+    "2 Kg",
+    5,
+    "APR-382"
+  ],
+  [
+    383,
+    "APAR BANGUNAN",
+    "AKAPI",
+    "AKAPI Ruang Simulator PC",
+    "2 Kg",
+    6,
+    "APR-383"
+  ],
+  [
+    384,
+    "APAR BANGUNAN",
+    "AKAPI",
+    "AKAPI Ruang Simulator PC",
+    "2 Kg",
+    7,
+    "APR-384"
+  ],
+  [
+    385,
+    "APAR BANGUNAN",
+    "AKAPI",
+    "AKAPI Workshop T.I",
+    "6 Kg",
+    8,
+    "APR-385"
+  ],
+  [
+    386,
+    "APAR BANGUNAN",
+    "AKAPI",
+    "Mess AKAPI",
+    "6 Kg",
+    1,
+    "APR-386"
+  ],
+  [
+    387,
+    "APAR BANGUNAN",
+    "AKAPI",
+    "Mess AKAPI",
+    "6 Kg",
+    2,
+    "APR-387"
+  ],
+  [
+    388,
+    "APAR BANGUNAN",
+    "AKAPI",
+    "Mess AKAPI",
+    "6 Kg",
+    3,
+    "APR-388"
+  ],
+  [
+    389,
+    "APAR BANGUNAN",
+    "AKAPI",
+    "Mess AKAPI",
+    "6 Kg",
+    4,
+    "APR-389"
+  ],
+  [
+    390,
+    "APAR BANGUNAN",
+    "AKAPI",
+    "Mess AKAPI",
+    "6 Kg",
+    5,
+    "APR-390"
+  ],
+  [
+    391,
+    "APAR BANGUNAN",
+    "AKAPI",
+    "Mess AKAPI",
+    "6 Kg",
+    6,
+    "APR-391"
+  ],
+  [
+    392,
+    "APAR BANGUNAN",
+    "AKAPI",
+    "Mess AKAPI",
+    "6 Kg",
+    7,
+    "APR-392"
+  ],
+  [
+    393,
+    "APAR BANGUNAN",
+    "AKAPI",
+    "Mess AKAPI",
+    "6 Kg",
+    8,
+    "APR-393"
+  ],
+  [
+    394,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "WTP 01",
+    "6 Kg",
+    1,
+    "APR-394"
+  ],
+  [
+    395,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "WTP 01",
+    "6 Kg",
+    2,
+    "APR-395"
+  ],
+  [
+    396,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "WTP 01",
+    "6 Kg",
+    3,
+    "APR-396"
+  ],
+  [
+    397,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "WTP 01",
+    "6 Kg",
+    4,
+    "APR-397"
+  ],
+  [
+    398,
+    "APAR BANGUNAN",
+    "WAREHOUSE",
+    "Warehouse FA&LOG (Lantai 1)",
+    "6 Kg",
+    1,
+    "APR-398"
+  ],
+  [
+    399,
+    "APAR BANGUNAN",
+    "WAREHOUSE",
+    "Warehouse FA&LOG (Lantai 1)",
+    "6 Kg",
+    2,
+    "APR-399"
+  ],
+  [
+    400,
+    "APAR BANGUNAN",
+    "WAREHOUSE",
+    "Warehouse FA&LOG (Lantai 1)",
+    "6 Kg",
+    3,
+    "APR-400"
+  ],
+  [
+    401,
+    "APAR BANGUNAN",
+    "WAREHOUSE",
+    "Warehouse FA&LOG (Lantai 1)",
+    "6 Kg",
+    4,
+    "APR-401"
+  ],
+  [
+    402,
+    "APAR BANGUNAN",
+    "WAREHOUSE",
+    "Warehouse FA&LOG (Lantai 1)",
+    "6 Kg",
+    5,
+    "APR-402"
+  ],
+  [
+    403,
+    "APAR BANGUNAN",
+    "WAREHOUSE",
+    "Warehouse FA&LOG (Lantai 1)",
+    "6 Kg",
+    6,
+    "APR-403"
+  ],
+  [
+    404,
+    "APAR BANGUNAN",
+    "WAREHOUSE",
+    "Warehouse FA&LOG (Lantai 1/Di luar)",
+    "25 Kg",
+    7,
+    "APR-404"
+  ],
+  [
+    405,
+    "APAR BANGUNAN",
+    "WAREHOUSE",
+    "Warehouse FA&LOG (Lantai 2)",
+    "6 Kg",
+    8,
+    "APR-405"
+  ],
+  [
+    406,
+    "APAR BANGUNAN",
+    "WAREHOUSE",
+    "Warehouse FA&LOG (Lantai 2)",
+    "6 Kg",
+    9,
+    "APR-406"
+  ],
+  [
+    407,
+    "APAR BANGUNAN",
+    "WAREHOUSE",
+    "Warehouse FA&LOG (Lantai 2)",
+    "3 Kg",
+    10,
+    "APR-407"
+  ],
+  [
+    408,
+    "APAR BANGUNAN",
+    "WAREHOUSE",
+    "Warehouse FA&LOG (Lantai 2)",
+    "3 Kg",
+    11,
+    "APR-408"
+  ],
+  [
+    409,
+    "APAR BANGUNAN",
+    "WAREHOUSE",
+    "Warehouse FA&LOG (Lantai 2)",
+    "3 Kg",
+    12,
+    "APR-409"
+  ],
+  [
+    410,
+    "APAR BANGUNAN",
+    "WAREHOUSE",
+    "Warehouse FA&LOG (Lantai 2)",
+    "3 Kg",
+    13,
+    "APR-410"
+  ],
+  [
+    411,
+    "APAR BANGUNAN",
+    "WAREHOUSE",
+    "Warehouse Open Storage",
+    "9 Kg",
+    14,
+    "APR-411"
+  ],
+  [
+    412,
+    "APAR BANGUNAN",
+    "WAREHOUSE",
+    "Warehouse Open Storage",
+    "6 Kg",
+    15,
+    "APR-412"
+  ],
+  [
+    413,
+    "APAR BANGUNAN",
+    "WAREHOUSE",
+    "Warehouse Open Storage",
+    "6 Kg",
+    16,
+    "APR-413"
+  ],
+  [
+    414,
+    "APAR BANGUNAN",
+    "WAREHOUSE",
+    "Warehouse Open Storage",
+    "6 Kg",
+    17,
+    "APR-414"
+  ],
+  [
+    415,
+    "APAR BANGUNAN",
+    "FUEL STORAGE",
+    "Fuel Storage (Area in)",
+    "6 Kg",
+    1,
+    "APR-415"
+  ],
+  [
+    416,
+    "APAR BANGUNAN",
+    "FUEL STORAGE",
+    "Fuel Storage (Area in)",
+    "6 Kg",
+    2,
+    "APR-416"
+  ],
+  [
+    417,
+    "APAR BANGUNAN",
+    "FUEL STORAGE",
+    "Fuel Storage (Area in)",
+    "6 Kg",
+    3,
+    "APR-417"
+  ],
+  [
+    418,
+    "APAR BANGUNAN",
+    "FUEL STORAGE",
+    "Fuel Storage (Area in)",
+    "6 Kg",
+    4,
+    "APR-418"
+  ],
+  [
+    419,
+    "APAR BANGUNAN",
+    "FUEL STORAGE",
+    "Fuel Storage (Area in)",
+    "6 Kg",
+    5,
+    "APR-419"
+  ],
+  [
+    420,
+    "APAR BANGUNAN",
+    "FUEL STORAGE",
+    "Fuel Storage (Room Engine Hydrant)",
+    "6 Kg",
+    6,
+    "APR-420"
+  ],
+  [
+    421,
+    "APAR BANGUNAN",
+    "FUEL STORAGE",
+    "Fuel Storage (Area in)",
+    "68 Kg",
+    7,
+    "APR-421"
+  ],
+  [
+    422,
+    "APAR BANGUNAN",
+    "FUEL STORAGE",
+    "Fuel Storage (Area in)",
+    "68 Kg",
+    8,
+    "APR-422"
+  ],
+  [
+    423,
+    "APAR BANGUNAN",
+    "FUEL STORAGE",
+    "Fuel Storage (Area Out)",
+    "68 Kg",
+    9,
+    "APR-423"
+  ],
+  [
+    424,
+    "APAR BANGUNAN",
+    "FUEL STORAGE",
+    "Fuel Storage (Area Out)",
+    "68 Kg",
+    10,
+    "APR-424"
+  ],
+  [
+    425,
+    "APAR BANGUNAN",
+    "FUEL STORAGE",
+    "Fuel Storage ( Area In )",
+    "68 Kg",
+    11,
+    "APR-425"
+  ],
+  [
+    426,
+    "APAR BANGUNAN",
+    "FUEL STORAGE",
+    "Fuel Storage (Area In)",
+    "68 Kg",
+    12,
+    "APR-426"
+  ],
+  [
+    427,
+    "APAR BANGUNAN",
+    "FUEL STORAGE",
+    "Fuel Storage (Area In)",
+    "7 Kg",
+    13,
+    "APR-427"
+  ],
+  [
+    428,
+    "APAR BANGUNAN",
+    "FUEL STORAGE",
+    "Fuel Storage (Area Out)",
+    "6 Kg",
+    14,
+    "APR-428"
+  ],
+  [
+    429,
+    "APAR BANGUNAN",
+    "FUEL STORAGE",
+    "Fuel Storage (Area Out)",
+    "6 Kg",
+    15,
+    "APR-429"
+  ],
+  [
+    430,
+    "APAR BANGUNAN",
+    "FUEL STORAGE",
+    "Fuel Storage (Area Out)",
+    "6 Kg",
+    16,
+    "APR-430"
+  ],
+  [
+    431,
+    "APAR BANGUNAN",
+    "FUEL STORAGE",
+    "Fuel Storage (Area Out)",
+    "6 Kg",
+    17,
+    "APR-431"
+  ],
+  [
+    432,
+    "APAR BANGUNAN",
+    "FUEL STORAGE",
+    "Fuel Storage ( OFFICE )",
+    "6 Kg",
+    18,
+    "APR-432"
+  ],
+  [
+    433,
+    "APAR BANGUNAN",
+    "FUEL STORAGE",
+    "Fuel Storage ( OFFICE )",
+    "6 Kg",
+    19,
+    "APR-433"
+  ],
+  [
+    434,
+    "APAR BANGUNAN",
+    "FUEL STORAGE",
+    "Fuel Storage (Pos security)",
+    "3 Kg",
+    20,
+    "APR-434"
+  ],
+  [
+    435,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Genset Mess Baru",
+    "6 Kg",
+    1,
+    "APR-435"
+  ],
+  [
+    436,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Genset Mess Baru",
+    "6 Kg",
+    2,
+    "APR-436"
+  ],
+  [
+    437,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Genset Mess Baru",
+    "6 Kg",
+    3,
+    "APR-437"
+  ],
+  [
+    438,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Genset Mess Baru",
+    "6 Kg",
+    4,
+    "APR-438"
+  ],
+  [
+    439,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "Office Plant (Lantai 1)",
+    "6 Kg",
+    1,
+    "APR-439"
+  ],
+  [
+    440,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "Office Plant (Lantai 1)",
+    "6 Kg",
+    2,
+    "APR-440"
+  ],
+  [
+    441,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "Office Plant (Lantai 1)",
+    "6 Kg",
+    3,
+    "APR-441"
+  ],
+  [
+    442,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "Office Plant (Lantai 1)",
+    "6 Kg",
+    4,
+    "APR-442"
+  ],
+  [
+    443,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "Office Plant (Lantai 1)",
+    "6 Kg",
+    5,
+    "APR-443"
+  ],
+  [
+    444,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "Office Plant (Lantai 2)",
+    "6 Kg",
+    6,
+    "APR-444"
+  ],
+  [
+    445,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "Office Plant (Lantai 2)",
+    "6 Kg",
+    7,
+    "APR-445"
+  ],
+  [
+    446,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "PLANT (PPA Mart Koperasi)",
+    "6 Kg",
+    1,
+    "APR-446"
+  ],
+  [
+    447,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "PLANT (Oli Trap)",
+    "6 Kg",
+    1,
+    "APR-447"
+  ],
+  [
+    448,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "PLANT (Oli Trap)",
+    "6 Kg",
+    2,
+    "APR-448"
+  ],
+  [
+    449,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "PLANT (Workshop BAY/WS Utama)",
+    "6 Kg",
+    1,
+    "APR-449"
+  ],
+  [
+    450,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "PLANT (Workshop BAY/WS Utama)",
+    "6 Kg",
+    2,
+    "APR-450"
+  ],
+  [
+    451,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "PLANT (Workshop BAY/WS Utama)",
+    "9 Kg",
+    3,
+    "APR-451"
+  ],
+  [
+    452,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "PLANT (Workshop BAY/WS Utama)",
+    "6 Kg",
+    4,
+    "APR-452"
+  ],
+  [
+    453,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "PLANT (Workshop BAY/WS Utama)",
+    "6 Kg",
+    5,
+    "APR-453"
+  ],
+  [
+    454,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "PLANT (Limbah B3)",
+    "6 Kg",
+    1,
+    "APR-454"
+  ],
+  [
+    455,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "PLANT (Limbah B3)",
+    "6 Kg",
+    2,
+    "APR-455"
+  ],
+  [
+    456,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "PLANT (Limbah B3)",
+    "6 Kg",
+    3,
+    "APR-456"
+  ],
+  [
+    457,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "PLANT (Washpad)",
+    "3 Kg",
+    1,
+    "APR-457"
+  ],
+  [
+    458,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "PLANT (Washpad)",
+    "6 Kg",
+    2,
+    "APR-458"
+  ],
+  [
+    459,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "PLANT (Gudang Oli)",
+    "6 Kg",
+    1,
+    "APR-459"
+  ],
+  [
+    460,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "PLANT (Gudang Oli)",
+    "6 Kg",
+    2,
+    "APR-460"
+  ],
+  [
+    461,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "PLANT (Gudang Oli)",
+    "6 Kg",
+    3,
+    "APR-461"
+  ],
+  [
+    462,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "PLANT (Workshop Comex)",
+    "6 Kg",
+    1,
+    "APR-462"
+  ],
+  [
+    463,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "PLANT Workshop Fabrikasi (Lantai 2)",
+    "6 Kg",
+    1,
+    "APR-463"
+  ],
+  [
+    464,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "PLANT Workshop Fabrikasi (Lantai 1)",
+    "6 Kg",
+    2,
+    "APR-464"
+  ],
+  [
+    465,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "PLANT Workshop Fabrikasi (Bay)",
+    "9 Kg",
+    3,
+    "APR-465"
+  ],
+  [
+    466,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "PLANT Workshop Fabrikasi (Bay)",
+    "9 Kg",
+    4,
+    "APR-466"
+  ],
+  [
+    467,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "PLANT Workshop Fabrikasi (Bay)",
+    "6 Kg",
+    5,
+    "APR-467"
+  ],
+  [
+    468,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "PLANT Workshop Fabrikasi (Bay)",
+    "9 Kg",
+    6,
+    "APR-468"
+  ],
+  [
+    469,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "PLANT Workshop Fabrikasi (Bay)",
+    "68 Kg",
+    7,
+    "APR-469"
+  ],
+  [
+    470,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "PLANT Workshop Fabrikasi (Bay)",
+    "6 Kg",
+    8,
+    "APR-470"
+  ],
+  [
+    471,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "PLANT Workshop Fabrikasi (Bay)",
+    "9 Kg",
+    9,
+    "APR-471"
+  ],
+  [
+    472,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "PLANT Workshop Fabrikasi (Lantai 2)",
+    "6 Kg",
+    10,
+    "APR-472"
+  ],
+  [
+    473,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "PLANT Workshop Fabrikasi (CV.SRJ)",
+    "6 Kg",
+    1,
+    "APR-473"
+  ],
+  [
+    474,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "PLANT Workshop Fabrikasi (CV.SRJ)",
+    "6 Kg",
+    2,
+    "APR-474"
+  ],
+  [
+    475,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "PLANT Workshop Tyre (BAY)",
+    "6 Kg",
+    1,
+    "APR-475"
+  ],
+  [
+    476,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "PLANT Workshop Tyre (BAY)",
+    "6 Kg",
+    2,
+    "APR-476"
+  ],
+  [
+    477,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "PLANT Workshop Tyre (BAY)",
+    "6 Kg",
+    3,
+    "APR-477"
+  ],
+  [
+    478,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "PLANT Workshop Tyre (Repair Tyre)",
+    "6 Kg",
+    4,
+    "APR-478"
+  ],
+  [
+    479,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "PLANT Workshop Tyre (Lantai 2)",
+    "6 Kg",
+    5,
+    "APR-479"
+  ],
+  [
+    480,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "PLANT Workshop Tyre (Rest Area)",
+    "9 Kg",
+    6,
+    "APR-480"
+  ],
+  [
+    481,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "PLANT Workshop Tyre (PT.BJS)",
+    "6 Kg",
+    1,
+    "APR-481"
+  ],
+  [
+    482,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "PLANT Workshop Tyre (PT.BJS)",
+    "6 Kg",
+    2,
+    "APR-482"
+  ],
+  [
+    483,
+    "APAR BANGUNAN",
+    "PIT KGU",
+    "Viewpoint KGU",
+    "6 Kg",
+    1,
+    "APR-483"
+  ],
+  [
+    484,
+    "APAR BANGUNAN",
+    "PIT KGU",
+    "Viewpoint KGU",
+    "6 Kg",
+    2,
+    "APR-484"
+  ],
+  [
+    485,
+    "APAR BANGUNAN",
+    "PIT KGU",
+    "Viewpoint KGU",
+    "6 Kg",
+    3,
+    "APR-485"
+  ],
+  [
+    486,
+    "APAR BANGUNAN",
+    "PIT KGU",
+    "Viewpoint KGU (Kontainer BIB)",
+    "6 Kg",
+    4,
+    "APR-486"
+  ],
+  [
+    487,
+    "APAR BANGUNAN",
+    "PIT KGU",
+    "Viewpoint KGU (Pit Control)",
+    "6 Kg",
+    5,
+    "APR-487"
+  ],
+  [
+    488,
+    "APAR BANGUNAN",
+    "PIT KGU",
+    "Viewpoint KGU (Kontainer SHE)",
+    "6 Kg",
+    6,
+    "APR-488"
+  ],
+  [
+    489,
+    "APAR BANGUNAN",
+    "PIT KGU",
+    "Viewpoint KGU (Kontainer SHE)",
+    "6 Kg",
+    7,
+    "APR-489"
+  ],
+  [
+    490,
+    "APAR BANGUNAN",
+    "PIT KGU",
+    "Viewpoint KGU (Genset)",
+    "6 Kg",
+    8,
+    "APR-490"
+  ],
+  [
+    491,
+    "APAR BANGUNAN",
+    "PIT KGU",
+    "Viewpoint KGU (Genset)",
+    "3 Kg",
+    9,
+    "APR-491"
+  ],
+  [
+    492,
+    "APAR BANGUNAN",
+    "PIT KGU",
+    "View Point KGU (Station ERT)",
+    "6 Kg",
+    10,
+    "APR-492"
+  ],
+  [
+    493,
+    "APAR BANGUNAN",
+    "PIT KGU",
+    "Manpower KGU",
+    "6 Kg",
+    1,
+    "APR-493"
+  ],
+  [
+    494,
+    "APAR BANGUNAN",
+    "PIT KGU",
+    "Manpower KGU",
+    "6 Kg",
+    2,
+    "APR-494"
+  ],
+  [
+    495,
+    "APAR BANGUNAN",
+    "PIT KGU",
+    "Manpower KGU",
+    "6 Kg",
+    3,
+    "APR-495"
+  ],
+  [
+    496,
+    "APAR BANGUNAN",
+    "GUDANG HANDAK",
+    "(Gudang Handak) Gudang Amonium",
+    "6 Kg",
+    1,
+    "APR-496"
+  ],
+  [
+    497,
+    "APAR BANGUNAN",
+    "GUDANG HANDAK",
+    "(Gudang Handak) Gudang Amonium",
+    "6 Kg",
+    2,
+    "APR-497"
+  ],
+  [
+    498,
+    "APAR BANGUNAN",
+    "GUDANG HANDAK",
+    "(Gudang Handak) Gudang Dynamite",
+    "6 Kg",
+    3,
+    "APR-498"
+  ],
+  [
+    499,
+    "APAR BANGUNAN",
+    "GUDANG HANDAK",
+    "(Gudang Handak) Gudang Detonator",
+    "6 Kg",
+    4,
+    "APR-499"
+  ],
+  [
+    500,
+    "APAR BANGUNAN",
+    "GUDANG HANDAK",
+    "(Gudang Handak) Area parkiran unit Blasting",
+    "6 Kg",
+    5,
+    "APR-500"
+  ],
+  [
+    501,
+    "APAR BANGUNAN",
+    "GUDANG HANDAK",
+    "(Gudang Handak) Ruang Genset (Luar)",
+    "6 Kg",
+    6,
+    "APR-501"
+  ],
+  [
+    502,
+    "APAR BANGUNAN",
+    "GUDANG HANDAK",
+    "(Gudang Handak) Pos Security",
+    "6 Kg",
+    7,
+    "APR-502"
+  ],
+  [
+    503,
+    "APAR BANGUNAN",
+    "GUDANG HANDAK",
+    "(Gudang Handak) Workshop MNK",
+    "6 Kg",
+    8,
+    "APR-503"
+  ],
+  [
+    504,
+    "APAR BANGUNAN",
+    "GUDANG HANDAK",
+    "(Gudang Handak) Workshop MNK",
+    "6 Kg",
+    9,
+    "APR-504"
+  ],
+  [
+    505,
+    "APAR BANGUNAN",
+    "GUDANG HANDAK",
+    "(Gudang Handak) Office Blasting",
+    "6 Kg",
+    10,
+    "APR-505"
+  ],
+  [
+    506,
+    "APAR BANGUNAN",
+    "GUDANG HANDAK",
+    "(Gudang Handak) Ruang Genset (Dalam)",
+    "6 Kg",
+    11,
+    "APR-506"
+  ],
+  [
+    507,
+    "APAR BANGUNAN",
+    "GUDANG HANDAK",
+    "(Gudang Handak) Workshop MNK",
+    "6 Kg",
+    12,
+    "APR-507"
+  ],
+  [
+    508,
+    "APAR BANGUNAN",
+    "GUDANG HANDAK",
+    "(Gudang Handak) Emulsion plant",
+    "6 Kg",
+    1,
+    "APR-508"
+  ],
+  [
+    509,
+    "APAR BANGUNAN",
+    "GUDANG HANDAK",
+    "(Gudang Handak) Emulsion plant",
+    "6 Kg",
+    2,
+    "APR-509"
+  ],
+  [
+    510,
+    "APAR BANGUNAN",
+    "GUDANG HANDAK",
+    "(Gudang Handak) Emulsion plant",
+    "6 Kg",
+    3,
+    "APR-510"
+  ],
+  [
+    511,
+    "APAR BANGUNAN",
+    "GUDANG HANDAK",
+    "(Gudang Handak) Emulsion plant",
+    "6 Kg",
+    4,
+    "APR-511"
+  ],
+  [
+    512,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "Workshop Transport (Lantai 1) KPS",
+    "6 Kg",
+    1,
+    "APR-512"
+  ],
+  [
+    513,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "Workshop Transport (Lantai 1) KPS",
+    "6 Kg",
+    2,
+    "APR-513"
+  ],
+  [
+    514,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "Workshop Transport (Lantai 2) KPS",
+    "6 Kg",
+    3,
+    "APR-514"
+  ],
+  [
+    515,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "Workshop Transport (Lantai 1) TKN",
+    "6 Kg",
+    4,
+    "APR-515"
+  ],
+  [
+    516,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "Workshop Transport (Lantai 1) TKN",
+    "6 Kg",
+    5,
+    "APR-516"
+  ],
+  [
+    517,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "Workshop Transport (Lantai 2) TKN",
+    "6 Kg",
+    6,
+    "APR-517"
+  ],
+  [
+    518,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "Workshop Transport (Lantai 1) Bagong",
+    "6 Kg",
+    7,
+    "APR-518"
+  ],
+  [
+    519,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "Workshop Transport (Lantai 1) Bagong",
+    "6 Kg",
+    8,
+    "APR-519"
+  ],
+  [
+    520,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "Workshop Transport (Lantai 1) KPS",
+    "6 Kg",
+    9,
+    "APR-520"
+  ],
+  [
+    521,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "Workshop Transport (Lantai 1) KPS",
+    "6 Kg",
+    10,
+    "APR-521"
+  ],
+  [
+    522,
+    "APAR BANGUNAN",
+    "PIT KGU",
+    "Pos HRM-Phase 7",
+    "6 Kg",
+    1,
+    "APR-522"
+  ],
+  [
+    523,
+    "APAR BANGUNAN",
+    "PIT KGU",
+    "Pos HRM-Phase 7",
+    "6 Kg",
+    2,
+    "APR-523"
+  ],
+  [
+    524,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Pos Mako Baru",
+    "6 Kg",
+    1,
+    "APR-524"
+  ],
+  [
+    525,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Pos Mako Baru",
+    "6 Kg",
+    2,
+    "APR-525"
+  ],
+  [
+    526,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Pos Mako Baru",
+    "6 Kg",
+    3,
+    "APR-526"
+  ],
+  [
+    527,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Pos Mako Baru",
+    "6 Kg",
+    4,
+    "APR-527"
+  ],
+  [
+    528,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Office Hamara",
+    "6 Kg",
+    1,
+    "APR-528"
+  ],
+  [
+    529,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Office Hamara",
+    "6 Kg",
+    2,
+    "APR-529"
+  ],
+  [
+    530,
+    "APAR BANGUNAN",
+    "PIT STOP KGU",
+    "PIT STOP KGU-TENGAH",
+    "6 Kg",
+    1,
+    "APR-530"
+  ],
+  [
+    531,
+    "APAR BANGUNAN",
+    "PIT STOP KGU",
+    "PIT STOP KGU-TENGAH",
+    "6 Kg",
+    2,
+    "APR-531"
+  ],
+  [
+    532,
+    "APAR BANGUNAN",
+    "PIT STOP KGU",
+    "PIT STOP KGU-TENGAH (Ws. Tyre)",
+    "6 Kg",
+    1,
+    "APR-532"
+  ],
+  [
+    533,
+    "APAR BANGUNAN",
+    "PIT STOP KGU",
+    "PIT STOP KGU-U (Rest Area Luar)",
+    "6 Kg",
+    1,
+    "APR-533"
+  ],
+  [
+    534,
+    "APAR BANGUNAN",
+    "PIT STOP KGU",
+    "PIT STOP KGU-U (Rest Area Dalam)",
+    "6 Kg",
+    2,
+    "APR-534"
+  ],
+  [
+    535,
+    "APAR BANGUNAN",
+    "PIT STOP KGU",
+    "PIT STOP KGU-U (Wheel)",
+    "6 Kg",
+    3,
+    "APR-535"
+  ],
+  [
+    536,
+    "APAR BANGUNAN",
+    "PIT STOP KGU",
+    "PIT STOP KGU-U (Track)",
+    "9 Kg",
+    4,
+    "APR-536"
+  ],
+  [
+    537,
+    "APAR BANGUNAN",
+    "PIT STOP KGU",
+    "PIT STOP KGU-U (Track)",
+    "6 Kg",
+    5,
+    "APR-537"
+  ],
+  [
+    538,
+    "APAR BANGUNAN",
+    "PIT STOP KGU",
+    "PIT STOP KGU-U (Wheel)",
+    "6 Kg",
+    6,
+    "APR-538"
+  ],
+  [
+    539,
+    "APAR BANGUNAN",
+    "PIT STOP KGU",
+    "PIT STOP KGU-U (Wheel)",
+    "6 Kg",
+    7,
+    "APR-539"
+  ],
+  [
+    540,
+    "APAR BANGUNAN",
+    "PIT STOP KGU",
+    "PIT STOP KGU-U (Fabrikasi)",
+    "6 Kg",
+    8,
+    "APR-540"
+  ],
+  [
+    541,
+    "APAR BANGUNAN",
+    "PIT STOP KGU",
+    "PIT STOP KGU-U (Fabrikasi)",
+    "6 Kg",
+    9,
+    "APR-541"
+  ],
+  [
+    542,
+    "APAR BANGUNAN",
+    "PIT STOP KGU",
+    "PIT STOP KGU-U (Fa-log)",
+    "6 Kg",
+    10,
+    "APR-542"
+  ],
+  [
+    543,
+    "APAR BANGUNAN",
+    "PIT STOP KGU",
+    "PIT STOP KGU-U (Fa-log)",
+    "6 Kg",
+    11,
+    "APR-543"
+  ],
+  [
+    544,
+    "APAR BANGUNAN",
+    "PIT STOP KGU",
+    "PIT STOP KGU-U (Genset)",
+    "6 Kg",
+    12,
+    "APR-544"
+  ],
+  [
+    545,
+    "APAR BANGUNAN",
+    "PIT STOP KGU",
+    "PIT STOP KGU-U (Bina Pertiwi)",
+    "6 Kg",
+    13,
+    "APR-545"
+  ],
+  [
+    546,
+    "APAR BANGUNAN",
+    "PIT STOP KGU",
+    "PIT STOP KGU-U (Lube station)",
+    "6 Kg",
+    14,
+    "APR-546"
+  ],
+  [
+    547,
+    "APAR BANGUNAN",
+    "ROM",
+    "ROM AMM",
+    "6 Kg",
+    1,
+    "APR-547"
+  ],
+  [
+    548,
+    "APAR BANGUNAN",
+    "ROM",
+    "ROM AMM",
+    "6 Kg",
+    2,
+    "APR-548"
+  ],
+  [
+    549,
+    "APAR BANGUNAN",
+    "PIT KGU",
+    "CSA trintin PIT KGU-U",
+    "6 Kg",
+    1,
+    "APR-549"
+  ],
+  [
+    550,
+    "APAR BANGUNAN",
+    "PIT KGU",
+    "CSA trintin PIT KGU-U",
+    "6 Kg",
+    2,
+    "APR-550"
+  ],
+  [
+    551,
+    "APAR BANGUNAN",
+    "PIT KGU",
+    "Main Road PIT KGU-Tengah",
+    "6 Kg",
+    1,
+    "APR-551"
+  ],
+  [
+    552,
+    "APAR BANGUNAN",
+    "PIT KGU",
+    "Main Road PIT KGU-Tengah",
+    "6 Kg",
+    2,
+    "APR-552"
+  ],
+  [
+    553,
+    "APAR BANGUNAN",
+    "PIT KGU",
+    "Pit Service KGU-Utara (Bawah Station ERT V.W)",
+    "6 Kg",
+    1,
+    "APR-553"
+  ],
+  [
+    554,
+    "APAR BANGUNAN",
+    "PIT KGU",
+    "Pit Service KGU-Utara (Bawah Station ERT V.W)",
+    "6 Kg",
+    2,
+    "APR-554"
+  ],
+  [
+    555,
+    "APAR BANGUNAN",
+    "ASSEMBLY",
+    "Workshop High Voltage",
+    "6 Kg",
+    1,
+    "APR-555"
+  ],
+  [
+    556,
+    "APAR BANGUNAN",
+    "ASSEMBLY",
+    "Workshop Dewatering",
+    "6 Kg",
+    2,
+    "APR-556"
+  ],
+  [
+    557,
+    "APAR BANGUNAN",
+    "ASSEMBLY",
+    "Office CV. SRJ",
+    "6 Kg",
+    1,
+    "APR-557"
+  ],
+  [
+    558,
+    "APAR BANGUNAN",
+    "ASSEMBLY",
+    "Lifting PPA",
+    "6 Kg",
+    1,
+    "APR-558"
+  ],
+  [
+    559,
+    "APAR BANGUNAN",
+    "ASSEMBLY",
+    "Lifting PPA",
+    "6 Kg",
+    2,
+    "APR-559"
+  ],
+  [
+    560,
+    "APAR BANGUNAN",
+    "ASSEMBLY",
+    "Lifting PPA",
+    "6 Kg",
+    3,
+    "APR-560"
+  ],
+  [
+    561,
+    "APAR BANGUNAN",
+    "ASSEMBLY",
+    "Lifting PPA",
+    "6 Kg",
+    4,
+    "APR-561"
+  ],
+  [
+    562,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "Workshop Patria Fabrikasi",
+    "6 Kg",
+    1,
+    "APR-562"
+  ],
+  [
+    563,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "Workshop BTB",
+    "6 Kg",
+    1,
+    "APR-563"
+  ],
+  [
+    564,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "Workshop BTB",
+    "6 Kg",
+    2,
+    "APR-564"
+  ],
+  [
+    565,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "Workshop Support (BAY)",
+    "6 Kg",
+    1,
+    "APR-565"
+  ],
+  [
+    566,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "Workshop Support (BAY)",
+    "6 Kg",
+    2,
+    "APR-566"
+  ],
+  [
+    567,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "Workshop Support (Toolroom)",
+    "6 Kg",
+    3,
+    "APR-567"
+  ],
+  [
+    568,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "Workshop Support",
+    "6 Kg",
+    4,
+    "APR-568"
+  ],
+  [
+    569,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "Workshop Support",
+    "6 Kg",
+    5,
+    "APR-569"
+  ],
+  [
+    570,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "Workshop Support (Fabrikasi)",
+    "6 Kg",
+    6,
+    "APR-570"
+  ],
+  [
+    571,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "Workshop Support (Area Repair Component)",
+    "6 Kg",
+    7,
+    "APR-571"
+  ],
+  [
+    572,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "Workshop Hauling (BAY)",
+    "6 Kg",
+    1,
+    "APR-572"
+  ],
+  [
+    573,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "Workshop Hauling (BAY)",
+    "6 Kg",
+    2,
+    "APR-573"
+  ],
+  [
+    574,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "Workshop Hauling",
+    "6 Kg",
+    3,
+    "APR-574"
+  ],
+  [
+    575,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "Workshop Hauling",
+    "6 Kg",
+    4,
+    "APR-575"
+  ],
+  [
+    576,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "Workshop Hauling",
+    "6 Kg",
+    5,
+    "APR-576"
+  ],
+  [
+    577,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "Workshop Hauling",
+    "6 Kg",
+    6,
+    "APR-577"
+  ],
+  [
+    578,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "Workshop Hauling (unschedule)",
+    "6 Kg",
+    7,
+    "APR-578"
+  ],
+  [
+    579,
+    "APAR BANGUNAN",
+    "WAREHOUSE",
+    "Workshop Hauling (Area Rotable)",
+    "6 Kg",
+    8,
+    "APR-579"
+  ],
+  [
+    580,
+    "APAR BANGUNAN",
+    "WAREHOUSE",
+    "Warehouse Support (PT.GMI)",
+    "6 Kg",
+    1,
+    "APR-580"
+  ],
+  [
+    581,
+    "APAR BANGUNAN",
+    "WAREHOUSE",
+    "Warehouse Support (PT.GMI)",
+    "6 Kg",
+    2,
+    "APR-581"
+  ],
+  [
+    582,
+    "APAR BANGUNAN",
+    "WAREHOUSE",
+    "Warehouse Support (PT.PWB)",
+    "6 Kg",
+    1,
+    "APR-582"
+  ],
+  [
+    583,
+    "APAR BANGUNAN",
+    "WAREHOUSE",
+    "Warehouse Support (Bina Pertiwi)",
+    "6 Kg",
+    1,
+    "APR-583"
+  ],
+  [
+    584,
+    "APAR BANGUNAN",
+    "WAREHOUSE",
+    "Warehouse Support (Bina Pertiwi)",
+    "6 Kg",
+    2,
+    "APR-584"
+  ],
+  [
+    585,
+    "APAR BANGUNAN",
+    "WAREHOUSE",
+    "Warehouse Support (Bina Pertiwi)",
+    "6 Kg",
+    3,
+    "APR-585"
+  ],
+  [
+    586,
+    "APAR BANGUNAN",
+    "WAREHOUSE",
+    "Warehouse Support (Bina Pertiwi)",
+    "6 Kg",
+    4,
+    "APR-586"
+  ],
+  [
+    587,
+    "APAR BANGUNAN",
+    "WAREHOUSE",
+    "Warehouse Support (Multindo)",
+    "6 Kg",
+    1,
+    "APR-587"
+  ],
+  [
+    588,
+    "APAR BANGUNAN",
+    "WAREHOUSE",
+    "Warehouse Support (Cv. United Diesel)",
+    "6 Kg",
+    1,
+    "APR-588"
+  ],
+  [
+    589,
+    "APAR BANGUNAN",
+    "WAREHOUSE",
+    "Warehouse Support (Cv. United Diesel)",
+    "6 Kg",
+    2,
+    "APR-589"
+  ],
+  [
+    590,
+    "APAR BANGUNAN",
+    "WAREHOUSE",
+    "Warehouse Support (Cv. United Diesel)",
+    "3 Kg",
+    3,
+    "APR-590"
+  ],
+  [
+    591,
+    "APAR BANGUNAN",
+    "WAREHOUSE",
+    "Warehouse Support (Eka Dharma)",
+    "6 Kg",
+    1,
+    "APR-591"
+  ],
+  [
+    592,
+    "APAR BANGUNAN",
+    "WAREHOUSE",
+    "Warehouse Support (Eka Dharma)",
+    "6 Kg",
+    2,
+    "APR-592"
+  ],
+  [
+    593,
+    "APAR BANGUNAN",
+    "WAREHOUSE",
+    "Warehouse Support (Mastratech)",
+    "6 Kg",
+    1,
+    "APR-593"
+  ],
+  [
+    594,
+    "APAR BANGUNAN",
+    "WAREHOUSE",
+    "Warehouse Support (Mastratech)",
+    "6 Kg",
+    2,
+    "APR-594"
+  ],
+  [
+    595,
+    "APAR BANGUNAN",
+    "WAREHOUSE",
+    "Warehouse Support (Mastratech)",
+    "6 Kg",
+    3,
+    "APR-595"
+  ],
+  [
+    596,
+    "APAR BANGUNAN",
+    "WAREHOUSE",
+    "Warehouse Support (Mastratech)",
+    "6 Kg",
+    4,
+    "APR-596"
+  ],
+  [
+    597,
+    "APAR BANGUNAN",
+    "WAREHOUSE",
+    "Warehouse Support (Sentosa Tekhnik)",
+    "6 Kg",
+    1,
+    "APR-597"
+  ],
+  [
+    598,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "Workshop Boston (Depan)",
+    "6 Kg",
+    1,
+    "APR-598"
+  ],
+  [
+    599,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "Workshop Boston (Dalam)",
+    "6 Kg",
+    2,
+    "APR-599"
+  ],
+  [
+    600,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "Workshop Boston (BAY)",
+    "9 Kg",
+    3,
+    "APR-600"
+  ],
+  [
+    601,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "Workshop Boston (Tools)",
+    "6 Kg",
+    4,
+    "APR-601"
+  ],
+  [
+    602,
+    "APAR BANGUNAN",
+    "WAREHOUSE",
+    "Office UT (Luar)",
+    "6 Kg",
+    1,
+    "APR-602"
+  ],
+  [
+    603,
+    "APAR BANGUNAN",
+    "WAREHOUSE",
+    "Office UT (Dalam)",
+    "6 Kg",
+    2,
+    "APR-603"
+  ],
+  [
+    604,
+    "APAR BANGUNAN",
+    "WAREHOUSE",
+    "Office UT (Dalam)",
+    "6 Kg",
+    3,
+    "APR-604"
+  ],
+  [
+    605,
+    "APAR BANGUNAN",
+    "WAREHOUSE",
+    "Office UT (Dalam)",
+    "6 Kg",
+    4,
+    "APR-605"
+  ],
+  [
+    606,
+    "APAR BANGUNAN",
+    "WAREHOUSE",
+    "Office UT (Dalam)",
+    "6 Kg",
+    5,
+    "APR-606"
+  ],
+  [
+    607,
+    "APAR BANGUNAN",
+    "WAREHOUSE",
+    "Warehouse UT (Lantai 1)",
+    "9 Kg",
+    6,
+    "APR-607"
+  ],
+  [
+    608,
+    "APAR BANGUNAN",
+    "WAREHOUSE",
+    "Warehouse UT (Lantai 1)",
+    "6 Kg",
+    7,
+    "APR-608"
+  ],
+  [
+    609,
+    "APAR BANGUNAN",
+    "WAREHOUSE",
+    "Warehouse UT (Lantai 1)",
+    "6 Kg",
+    8,
+    "APR-609"
+  ],
+  [
+    610,
+    "APAR BANGUNAN",
+    "WAREHOUSE",
+    "Warehouse UT (Lantai 1)",
+    "6 Kg",
+    9,
+    "APR-610"
+  ],
+  [
+    611,
+    "APAR BANGUNAN",
+    "WAREHOUSE",
+    "Warehouse UT (Lantai 1)",
+    "6 Kg",
+    10,
+    "APR-611"
+  ],
+  [
+    612,
+    "APAR BANGUNAN",
+    "WAREHOUSE",
+    "Warehouse UT (Lantai 2)",
+    "6 Kg",
+    11,
+    "APR-612"
+  ],
+  [
+    613,
+    "APAR BANGUNAN",
+    "WAREHOUSE",
+    "Warehouse UT (Lantai 2)",
+    "6 Kg",
+    12,
+    "APR-613"
+  ],
+  [
+    614,
+    "APAR BANGUNAN",
+    "PIT STOP KGU",
+    "Pit Stop FMC UT KGU-U",
+    "6 Kg",
+    1,
+    "APR-614"
+  ],
+  [
+    615,
+    "APAR BANGUNAN",
+    "PIT STOP KGU",
+    "Pit Stop FMC UT KGU-U",
+    "6 Kg",
+    2,
+    "APR-615"
+  ],
+  [
+    616,
+    "APAR BANGUNAN",
+    "PIT STOP KGU",
+    "Pit Stop FMC UT KGU-U (Base 2)",
+    "6 Kg",
+    3,
+    "APR-616"
+  ],
+  [
+    617,
+    "APAR BANGUNAN",
+    "PIT STOP KGU",
+    "Pit Stop FMC UT KGU-U (Base 1)",
+    "6 Kg",
+    4,
+    "APR-617"
+  ],
+  [
+    618,
+    "APAR BANGUNAN",
+    "PIT STOP KGU",
+    "Pit Stop FMC UT KGU-U (Base 2)",
+    "6 Kg",
+    5,
+    "APR-618"
+  ],
+  [
+    619,
+    "APAR BANGUNAN",
+    "PIT STOP KGU",
+    "Pit Stop FMC UT KGU-U (Base 1)",
+    "6 Kg",
+    6,
+    "APR-619"
+  ],
+  [
+    620,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "Workshop ( BAY Hauling)",
+    "6 Kg",
+    1,
+    "APR-620"
+  ],
+  [
+    621,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "Workshop ( BAY Hauling)",
+    "6 Kg",
+    2,
+    "APR-621"
+  ],
+  [
+    622,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "Workshop ( BAY Hauling)",
+    "6 Kg",
+    3,
+    "APR-622"
+  ],
+  [
+    623,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "Workshop (BAY Track)",
+    "6 Kg",
+    1,
+    "APR-623"
+  ],
+  [
+    624,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "Workshop (BAY Track)",
+    "6 Kg",
+    2,
+    "APR-624"
+  ],
+  [
+    625,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "Workshop (BAY Track)",
+    "6 Kg",
+    3,
+    "APR-625"
+  ],
+  [
+    626,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "Workshop (BAY Track)",
+    "6 Kg",
+    4,
+    "APR-626"
+  ],
+  [
+    627,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "Workshop (TOOLROOM)",
+    "6 Kg",
+    5,
+    "APR-627"
+  ],
+  [
+    628,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "Workshop FMC UT (BAY)",
+    "6 Kg",
+    1,
+    "APR-628"
+  ],
+  [
+    629,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "Workshop FMC UT (BAY)",
+    "6 Kg",
+    2,
+    "APR-629"
+  ],
+  [
+    630,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "Workshop FMC UT (BAY)",
+    "6 Kg",
+    3,
+    "APR-630"
+  ],
+  [
+    631,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "Workshop FMC UT (BAY)",
+    "6 Kg",
+    4,
+    "APR-631"
+  ],
+  [
+    632,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "Workshop FMC UT (Rest Area))",
+    "6 Kg",
+    5,
+    "APR-632"
+  ],
+  [
+    633,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Catering NN Baru",
+    "6 Kg",
+    1,
+    "APR-633"
+  ],
+  [
+    634,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Catering NN Baru",
+    "6 Kg",
+    2,
+    "APR-634"
+  ],
+  [
+    635,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Catering NN Baru",
+    "6 Kg",
+    3,
+    "APR-635"
+  ],
+  [
+    636,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Catering NN Baru",
+    "6 Kg",
+    4,
+    "APR-636"
+  ],
+  [
+    637,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Catering NN Baru",
+    "6 Kg",
+    5,
+    "APR-637"
+  ],
+  [
+    638,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Catering DSJ Baru",
+    "6 Kg",
+    1,
+    "APR-638"
+  ],
+  [
+    639,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Catering DSJ Baru",
+    "6 Kg",
+    2,
+    "APR-639"
+  ],
+  [
+    640,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Catering DSJ Baru",
+    "6 Kg",
+    3,
+    "APR-640"
+  ],
+  [
+    641,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Catering DSJ Baru",
+    "6 Kg",
+    4,
+    "APR-641"
+  ],
+  [
+    642,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Catering DSJ Baru",
+    "6 Kg",
+    5,
+    "APR-642"
+  ],
+  [
+    643,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Catering Patria Baru",
+    "6 Kg",
+    1,
+    "APR-643"
+  ],
+  [
+    644,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Catering Patria Baru",
+    "6 Kg",
+    2,
+    "APR-644"
+  ],
+  [
+    645,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Catering Patria Baru",
+    "6 Kg",
+    3,
+    "APR-645"
+  ],
+  [
+    646,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Catering Patria Baru",
+    "6 Kg",
+    4,
+    "APR-646"
+  ],
+  [
+    647,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Catering Patria Baru",
+    "6 Kg",
+    5,
+    "APR-647"
+  ],
+  [
+    648,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Catering KPS Baru",
+    "6 Kg",
+    1,
+    "APR-648"
+  ],
+  [
+    649,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Catering KPS Baru",
+    "6 Kg",
+    2,
+    "APR-649"
+  ],
+  [
+    650,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Catering KPS Baru",
+    "6 Kg",
+    3,
+    "APR-650"
+  ],
+  [
+    651,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Catering KPS Baru",
+    "6 Kg",
+    4,
+    "APR-651"
+  ],
+  [
+    652,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Catering KPS Baru",
+    "6 Kg",
+    5,
+    "APR-652"
+  ],
+  [
+    653,
+    "APAR BANGUNAN",
+    "PIT KGU",
+    "HSCS MERAK KGU-SELATAN",
+    "6 Kg",
+    1,
+    "APR-653"
+  ],
+  [
+    654,
+    "APAR BANGUNAN",
+    "PIT KGU",
+    "HSCS RANGKONG-SELATAN",
+    "6 Kg",
+    1,
+    "APR-654"
+  ],
+  [
+    655,
+    "APAR BANGUNAN",
+    "PIT KGU",
+    "MAIN ROAD PIT KGU- UTARA",
+    "6 Kg",
+    1,
+    "APR-655"
+  ],
+  [
+    656,
+    "APAR BANGUNAN",
+    "PIT KGU",
+    "MAIN ROAD PIT KGU- SELATAN",
+    "6 Kg",
+    1,
+    "APR-656"
+  ],
+  [
+    657,
+    "APAR BANGUNAN",
+    "PIT KGU",
+    "HSCS RAJAWALI (KGU TENGAH)",
+    "6 Kg",
+    1,
+    "APR-657"
+  ],
+  [
+    658,
+    "APAR BANGUNAN",
+    "PIT KGU",
+    "HSCS ELANG-UTARA",
+    "6 Kg",
+    1,
+    "APR-658"
+  ],
+  [
+    659,
+    "APAR BANGUNAN",
+    "PIT KGU",
+    "HSCS GARUDA",
+    "6 Kg",
+    1,
+    "APR-659"
+  ],
+  [
+    660,
+    "APAR BANGUNAN",
+    "PIT KGU",
+    "CHANGE SHIFT 2000 PIT KGU-UTARA",
+    "6 Kg",
+    1,
+    "APR-660"
+  ],
+  [
+    661,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "IPAL 03",
+    "6 Kg",
+    1,
+    "APR-661"
+  ],
+  [
+    662,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "IPAL 03",
+    "6 Kg",
+    2,
+    "APR-662"
+  ],
+  [
+    663,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "OFFICE TRACK BARU",
+    "6 Kg",
+    1,
+    "APR-663"
+  ],
+  [
+    664,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "OFFICE TRACK BARU",
+    "6 Kg",
+    2,
+    "APR-664"
+  ],
+  [
+    665,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "OFFICE TRACK BARU",
+    "6 Kg",
+    3,
+    "APR-665"
+  ],
+  [
+    666,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "OFFICE TRACK BARU",
+    "6 Kg",
+    4,
+    "APR-666"
+  ],
+  [
+    667,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "OFFICE TRACK BARU",
+    "6 Kg",
+    5,
+    "APR-667"
+  ],
+  [
+    668,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "MESS F.1",
+    "6 Kg",
+    1,
+    "APR-668"
+  ],
+  [
+    669,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "MESS F.1",
+    "6 Kg",
+    2,
+    "APR-669"
+  ],
+  [
+    670,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "MESS F.1",
+    "6 Kg",
+    3,
+    "APR-670"
+  ],
+  [
+    671,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "MESS F.1",
+    "6 Kg",
+    4,
+    "APR-671"
+  ],
+  [
+    672,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "MESS F.1",
+    "6 Kg",
+    5,
+    "APR-672"
+  ],
+  [
+    673,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "MESS F.2",
+    "6 Kg",
+    1,
+    "APR-673"
+  ],
+  [
+    674,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "MESS F.2",
+    "6 Kg",
+    2,
+    "APR-674"
+  ],
+  [
+    675,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "MESS F.2",
+    "6 Kg",
+    3,
+    "APR-675"
+  ],
+  [
+    676,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "MESS F.2",
+    "6 Kg",
+    4,
+    "APR-676"
+  ],
+  [
+    677,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "MESS F.2",
+    "6 Kg",
+    5,
+    "APR-677"
+  ],
+  [
+    678,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "WTP 02",
+    "6 Kg",
+    1,
+    "APR-678"
+  ],
+  [
+    679,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "WTP 02",
+    "6 Kg",
+    2,
+    "APR-679"
+  ],
+  [
+    680,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "WTP 02",
+    "6 Kg",
+    3,
+    "APR-680"
+  ],
+  [
+    681,
+    "APAR BANGUNAN",
+    "PIT KGU",
+    "Pit Service KGU-Utara (Bawah Station ERT V.W)",
+    "6 Kg",
+    3,
+    "APR-682"
+  ],
+  [
+    682,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "WORKSHOP COMEX BARU",
+    "6 Kg",
+    1,
+    "APR-683"
+  ],
+  [
+    683,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "WORKSHOP COMEX BARU",
+    "6 Kg",
+    2,
+    "APR-684"
+  ],
+  [
+    684,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "WORKSHOP COMEX BARU",
+    "6 Kg",
+    3,
+    "APR-685"
+  ],
+  [
+    685,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "WORKSHOP COMEX BARU",
+    "6 Kg",
+    4,
+    "APR-686"
+  ],
+  [
+    686,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "WORKSHOP COMEX BARU",
+    "6 Kg",
+    5,
+    "APR-687"
+  ],
+  [
+    687,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "WORKSHOP COMEX BARU",
+    "6 Kg",
+    6,
+    "APR-688"
+  ],
+  [
+    688,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "WORKSHOP COMEX BARU",
+    "6 Kg",
+    7,
+    "APR-689"
+  ],
+  [
+    689,
+    "APAR BANGUNAN",
+    "PIT KGU",
+    "VIEW POINT KGU - SELATAN",
+    "6 Kg",
+    1,
+    "APR-690"
+  ],
+  [
+    690,
+    "APAR BANGUNAN",
+    "PIT KGU",
+    "VIEW POINT KGU - SELATAN",
+    "6 Kg",
+    2,
+    "APR-691"
+  ],
+  [
+    691,
+    "APAR BANGUNAN",
+    "PIT KGU",
+    "MANPOWER KGU",
+    "6 Kg",
+    4,
+    "APR-692"
+  ],
+  [
+    692,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "GENSET MESS BARU",
+    "6 Kg",
+    5,
+    "APR-693"
+  ],
+  [
+    693,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "MESS E.3",
+    "6 Kg",
+    1,
+    "APR-694"
+  ],
+  [
+    694,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "MESS E.3",
+    "6 Kg",
+    2,
+    "APR-695"
+  ],
+  [
+    695,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "MESS E.3",
+    "6 Kg",
+    3,
+    "APR-696"
+  ],
+  [
+    696,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "MESS E.3",
+    "6 Kg",
+    4,
+    "APR-697"
+  ],
+  [
+    697,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "MESS E.3",
+    "6 Kg",
+    5,
+    "APR-698"
+  ],
+  [
+    698,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "OFFICE GA (PANTRY)",
+    "6 Kg",
+    6,
+    "APR-699"
+  ],
+  [
+    699,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "OFFICE GA (R.TRAINING)",
+    "6 Kg",
+    7,
+    "APR-700"
+  ],
+  [
+    700,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "OFFICE GA (Galon)",
+    "6 Kg",
+    8,
+    "APR-701"
+  ],
+  [
+    701,
+    "APAR BANGUNAN",
+    "PIT KGU",
+    "HSCS CENDRAWASIH",
+    "6 Kg",
+    1,
+    "APR-702"
+  ],
+  [
+    702,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "GUDANG KOPERASI",
+    "6 Kg",
+    1,
+    "APR-703"
+  ],
+  [
+    703,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "GUDANG KOPERASI",
+    "6 Kg",
+    2,
+    "APR-704"
+  ],
+  [
+    704,
+    "APAR BANGUNAN",
+    "FUEL STORAGE",
+    "FUEL STORAGE (ENGINE HYDRANT BARU)",
+    "6 Kg",
+    21,
+    "APR-705"
+  ],
+  [
+    705,
+    "APAR BANGUNAN",
+    "FUEL STORAGE",
+    "FUEL STORAGE )HYDRANT BARU)",
+    "68 Kg",
+    22,
+    "APR-706"
+  ],
+  [
+    706,
+    "APAR BANGUNAN",
+    "FUEL STORAGE",
+    "FUEL STORAGE )HYDRANT BARU)",
+    "68 Kg",
+    23,
+    "APR-707"
+  ],
+  [
+    707,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "WORKSHOP WHEEL BARU",
+    "6 Kg",
+    1,
+    "APR-708"
+  ],
+  [
+    708,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "WORKSHOP WHEEL BARU",
+    "6 Kg",
+    2,
+    "APR-709"
+  ],
+  [
+    709,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "WORKSHOP WHEEL BARU",
+    "6 Kg",
+    3,
+    "APR-710"
+  ],
+  [
+    710,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "WORKSHOP WHEEL BARU",
+    "6 Kg",
+    4,
+    "APR-711"
+  ],
+  [
+    711,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "WORKSHOP WHEEL BARU",
+    "6 Kg",
+    5,
+    "APR-712"
+  ],
+  [
+    712,
+    "APAR BANGUNAN",
+    "PIT STOP KGU",
+    "PIT STOP KGU-SELATAN (REST AREA)",
+    "6 Kg",
+    1,
+    "APR-713"
+  ],
+  [
+    713,
+    "APAR BANGUNAN",
+    "PIT STOP KGU",
+    "PIT STOP KGU-SELATAN (REST AREA)",
+    "6 Kg",
+    2,
+    "APR-714"
+  ],
+  [
+    714,
+    "APAR BANGUNAN",
+    "PIT STOP KGU",
+    "PIT STOP KGU-SELATAN (LUBE STATION)",
+    "6 Kg",
+    3,
+    "APR-715"
+  ],
+  [
+    715,
+    "APAR BANGUNAN",
+    "PIT KGU",
+    "HSCS KASUARI (KGU UTARA)",
+    "6 Kg",
+    1,
+    "APR-716"
+  ],
+  [
+    716,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "OFFICE TRACK BARU",
+    "6 Kg",
+    6,
+    "APR-717"
+  ],
+  [
+    717,
+    "APAR BANGUNAN",
+    "STATION ERT",
+    "OFFICE ERT BARU",
+    "6 Kg",
+    1,
+    "APR-718"
+  ],
+  [
+    718,
+    "APAR BANGUNAN",
+    "STATION ERT",
+    "OFFICE ERT BARU",
+    "6 Kg",
+    2,
+    "APR-719"
+  ],
+  [
+    719,
+    "APAR BANGUNAN",
+    "STATION ERT",
+    "OFFICE ERT BARU",
+    "6 Kg",
+    3,
+    "APR-720"
+  ],
+  [
+    720,
+    "APAR BANGUNAN",
+    "STATION ERT",
+    "OFFICE ERT BARU",
+    "6 Kg",
+    4,
+    "APR-721"
+  ],
+  [
+    721,
+    "APAR BANGUNAN",
+    "STATION ERT",
+    "OFFICE ERT BARU",
+    "6 Kg",
+    5,
+    "APR-722"
+  ],
+  [
+    722,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "SWIMING POOL",
+    "6 Kg",
+    1,
+    "APR-723"
+  ],
+  [
+    723,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "SWIMING POOL",
+    "6 Kg",
+    2,
+    "APR-724"
+  ],
+  [
+    724,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "WORKSHOP HAULING BARU",
+    "6 Kg",
+    1,
+    "APR-725"
+  ],
+  [
+    725,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "WORKSHOP HAULING BARU",
+    "6 Kg",
+    2,
+    "APR-726"
+  ],
+  [
+    726,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "WORKSHOP HAULING BARU",
+    "6 Kg",
+    3,
+    "APR-727"
+  ],
+  [
+    727,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "WORKSHOP HAULING BARU",
+    "6 Kg",
+    4,
+    "APR-728"
+  ],
+  [
+    728,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "WORKSHOP HAULING BARU",
+    "6 Kg",
+    5,
+    "APR-729"
+  ],
+  [
+    729,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "WORKSHOP HAULING BARU",
+    "6 Kg",
+    6,
+    "APR-730"
+  ],
+  [
+    730,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "MESS E.4",
+    "6 Kg",
+    1,
+    "APR-731"
+  ],
+  [
+    731,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "MESS E.4",
+    "6 Kg",
+    2,
+    "APR-732"
+  ],
+  [
+    732,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "MESS E.4",
+    "6 Kg",
+    3,
+    "APR-733"
+  ],
+  [
+    733,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "MESS E.4",
+    "6 Kg",
+    4,
+    "APR-734"
+  ],
+  [
+    734,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "MESS E.4",
+    "6 Kg",
+    5,
+    "APR-735"
+  ],
+  [
+    735,
+    "APAR BANGUNAN",
+    "PIT KGU",
+    "HSCS KASUARI (KGU UTARA)",
+    "6 Kg",
+    2,
+    "APR-736"
+  ],
+  [
+    736,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "MASJID MESS BARU",
+    "6 Kg",
+    1,
+    "APR-737"
+  ],
+  [
+    737,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "MASJID MESS BARU",
+    "6 Kg",
+    2,
+    "APR-738"
+  ],
+  [
+    738,
+    "APAR BANGUNAN",
+    "WAREHOUSE",
+    "Warehouse Open Storage",
+    "6 Kg",
+    18,
+    "APR-739"
+  ],
+  [
+    739,
+    "APAR BANGUNAN",
+    "WAREHOUSE",
+    "Warehouse SWI",
+    "6 Kg",
+    1,
+    "APR-740"
+  ],
+  [
+    740,
+    "APAR BANGUNAN",
+    "WAREHOUSE",
+    "Warehouse SWI",
+    "6 Kg",
+    2,
+    "APR-741"
+  ],
+  [
+    741,
+    "APAR BANGUNAN",
+    "PIT KGU",
+    "CHANGE SHIFT 2000 PIT KGU-Selatan",
+    "6 Kg",
+    1,
+    "APR-742"
+  ],
+  [
+    742,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "GARDU ELECTRIC",
+    "6 Kg",
+    1,
+    "APR-743"
+  ],
+  [
+    743,
+    "APAR BANGUNAN",
+    "MESS BARU",
+    "Mess Anggrek B (Wanita)",
+    "6 Kg",
+    7,
+    "APR-744"
+  ],
+  [
+    744,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "WORKSHOP COMEX BARU",
+    "6 Kg",
+    8,
+    "APR-745"
+  ],
+  [
+    745,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "WORKSHOP COMEX BARU",
+    "6 Kg",
+    9,
+    "APR-746"
+  ],
+  [
+    746,
+    "APAR BANGUNAN",
+    "PIT STOP KGU",
+    "PIT STOP KGU-SELATAN (TOOLSROOM)",
+    "6 Kg",
+    4,
+    "APR-747"
+  ],
+  [
+    747,
+    "APAR BANGUNAN",
+    "PIT STOP KGU",
+    "KONTAINER OUTPIT 3C",
+    "6 Kg",
+    1,
+    "APR-748"
+  ],
+  [
+    748,
+    "APAR BANGUNAN",
+    "PIT STOP KGU",
+    "KONTAINER OUTPIT 3C",
+    "6 Kg",
+    2,
+    "APR-749"
+  ],
+  [
+    749,
+    "APAR BANGUNAN",
+    "PIT STOP KGU",
+    "KONTAINER OUTPI 3C",
+    "6 Kg",
+    3,
+    "APR-750"
+  ],
+  [
+    750,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "WORKSHOP WHEEL (KONTAINER GENSET)",
+    "6 Kg",
+    1,
+    "APR-751"
+  ],
+  [
+    751,
+    "APAR BANGUNAN",
+    "WAREHOUSE",
+    "Warehouse FA&LOG (Open Storage Baru)",
+    "6 Kg",
+    1,
+    "APR-752"
+  ],
+  [
+    752,
+    "APAR BANGUNAN",
+    "WAREHOUSE",
+    "Warehouse FA&LOG (Open Storage Baru)",
+    "6 Kg",
+    2,
+    "APR-753"
+  ],
+  [
+    753,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "Worksop Suport (BAY1)",
+    "6 Kg",
+    1,
+    "APR-754"
+  ],
+  [
+    754,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "Worksop Suport (BAY2)",
+    "6 Kg",
+    2,
+    "APR-755"
+  ],
+  [
+    755,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "Worksop Suport (BAY3)",
+    "6 Kg",
+    3,
+    "APR-756"
+  ],
+  [
+    756,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "Worksop Suport (Office lantai1)",
+    "6 Kg",
+    4,
+    "APR-757"
+  ],
+  [
+    757,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "Worksop Suport (Office Latai2 R. Meting)",
+    "6 Kg",
+    5,
+    "APR-758"
+  ],
+  [
+    758,
+    "APAR BANGUNAN",
+    "WORKSHOP",
+    "Worksop Suport (Office Latai2 R. Istirahat Mekanik)",
+    "6 Kg",
+    6,
+    "APR-759"
+  ],
+  [
+    759,
+    "APAR BANGUNAN",
+    "PIT KGU",
+    "HSCS Elang",
+    "6 Kg",
+    2,
+    "APR-76-"
+  ],
+  [
+    762,
+    "APAR BANGUNAN",
+    "PIT KGU",
+    "VIEW POINT KGU-TENGAH",
+    "7 Kg",
+    1,
+    "APR-761"
+  ],
+  [
+    762,
+    "APAR BANGUNAN",
+    "PIT KGU",
+    "VIEW POINT KGU-TENGAH",
+    "7 Kg",
+    2,
+    "APR-762"
+  ],
+  [
+    763,
+    "APAR BANGUNAN",
+    "GUDANG HANDAK",
+    "(Gudang Handak) Kontainer Flare",
+    "6 Kg",
+    13,
+    "APR-763"
+  ],
+  [
+    763,
+    "APAR BANGUNAN",
+    "PIT KGU",
+    "PIT STOP TRACK KGU TENGAH",
+    "6 Kg",
+    1,
+    "APR-764"
+  ],
+  [
+    764,
+    "APAR BANGUNAN",
+    "PIT KGU",
+    "PIT STOP TRACK KGU TENGAH",
+    "6 Kg",
+    2,
+    "APR-765"
+  ],
+  [
+    765,
+    "APAR BANGUNAN",
+    "PIT KGU",
+    "PIT STOP TRACK KGU TENGAH",
+    "6 Kg",
+    3,
+    "APR-766"
+  ]
+]

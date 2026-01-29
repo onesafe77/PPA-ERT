@@ -1,0 +1,640 @@
+[
+  [
+    "NO",
+    "AREA",
+    "LOKASI",
+    "NO. LAMBUNG",
+    "NO. REGISTER"
+  ],
+  [],
+  [
+    1,
+    "MAIN OFFICE",
+    "R.Security lobby",
+    "SD-01",
+    "PPA-SHE-II-SD-2025-01"
+  ],
+  [
+    2,
+    "MAIN OFFICE",
+    "R. Meeting 1",
+    "SD-02",
+    "PPA-SHE-II-SD-2025-02"
+  ],
+  [
+    3,
+    "MAIN OFFICE",
+    "R.HCGA Staff 1",
+    "SD-03",
+    "PPA-SHE-II-SD-2025-03"
+  ],
+  [
+    4,
+    "MAIN OFFICE",
+    "R.HCGA Section Head",
+    "SD-04",
+    "PPA-SHE-II-SD-2025-04"
+  ],
+  [
+    5,
+    "MAIN OFFICE",
+    "Lorong Office",
+    "SD-05",
+    "PPA-SHE-II-SD-2025-05"
+  ],
+  [
+    6,
+    "MAIN OFFICE",
+    "R.Admin HC 1",
+    "SD-06",
+    "PPA-SHE-II-SD-2025-06"
+  ],
+  [
+    7,
+    "MAIN OFFICE",
+    "R.Admin HC 2",
+    "SD-07",
+    "PPA-SHE-II-SD-2025-07"
+  ],
+  [
+    8,
+    "MAIN OFFICE",
+    "R. HCGA Staff 2",
+    "SD-08",
+    "PPA-SHE-II-SD-2025-08"
+  ],
+  [
+    9,
+    "MAIN OFFICE",
+    "Lorong Office",
+    "SD-09",
+    "PPA-SHE-II-SD-2025-09"
+  ],
+  [
+    10,
+    "MAIN OFFICE",
+    "Gudang HC",
+    "SD-10",
+    "PPA-SHE-II-SD-2025-10"
+  ],
+  [
+    11,
+    "MAIN OFFICE",
+    "Lorong Office",
+    "SD-11",
+    "PPA-SHE-II-SD-2025-11"
+  ],
+  [
+    12,
+    "MAIN OFFICE",
+    "Lorong Office",
+    "SD-12",
+    "PPA-SHE-II-SD-2025-12"
+  ],
+  [
+    13,
+    "MAIN OFFICE",
+    "R. Server",
+    "SD-13",
+    "PPA-SHE-II-SD-2025-13"
+  ],
+  [
+    14,
+    "MAIN OFFICE",
+    "R. Labour supply 1",
+    "SD-14",
+    "PPA-SHE-II-SD-2025-14"
+  ],
+  [
+    15,
+    "MAIN OFFICE",
+    "R. Labour supply 2",
+    "SD-15",
+    "PPA-SHE-II-SD-2025-15"
+  ],
+  [
+    16,
+    "MAIN OFFICE",
+    "R. CCR",
+    "SD-16",
+    "PPA-SHE-II-SD-2025-16"
+  ],
+  [
+    17,
+    "MAIN OFFICE",
+    "Lorong Office",
+    "SD-17",
+    "PPA-SHE-II-SD-2025-17"
+  ],
+  [
+    18,
+    "MAIN OFFICE",
+    "R. Dewatering",
+    "SD-18",
+    "PPA-SHE-II-SD-2025-18"
+  ],
+  [
+    19,
+    "MAIN OFFICE",
+    "R. Mineroad",
+    "SD-19",
+    "PPA-SHE-II-SD-2025-19"
+  ],
+  [
+    20,
+    "MAIN OFFICE",
+    "R. CEO Section Head",
+    "SD-20",
+    "PPA-SHE-II-SD-2025-20"
+  ],
+  [
+    21,
+    "MAIN OFFICE",
+    "Lorong Office",
+    "SD-21",
+    "PPA-SHE-II-SD-2025-21"
+  ],
+  [
+    22,
+    "MAIN OFFICE",
+    "R. ENG Staff",
+    "SD-22",
+    "PPA-SHE-II-SD-2025-22"
+  ],
+  [
+    23,
+    "MAIN OFFICE",
+    "R. ENG Staff",
+    "SD-23",
+    "PPA-SHE-II-SD-2025-23"
+  ],
+  [
+    24,
+    "MAIN OFFICE",
+    "R. ENG Staff",
+    "SD-24",
+    "PPA-SHE-II-SD-2025-24"
+  ],
+  [
+    25,
+    "MAIN OFFICE",
+    "R. Dept head ENG",
+    "SD-25",
+    "PPA-SHE-II-SD-2025-25"
+  ],
+  [
+    26,
+    "MAIN OFFICE",
+    "R. Deputi",
+    "SD-26",
+    "PPA-SHE-II-SD-2025-26"
+  ],
+  [
+    27,
+    "MAIN OFFICE",
+    "Lorong Office",
+    "SD-27",
+    "PPA-SHE-II-SD-2025-27"
+  ],
+  [
+    28,
+    "MAIN OFFICE",
+    "Lorong Office",
+    "SD-28",
+    "PPA-SHE-II-SD-2025-28"
+  ],
+  [
+    29,
+    "MAIN OFFICE",
+    "HCGA Staff 3",
+    "SD-29",
+    "PPA-SHE-II-SD-2025-29"
+  ],
+  [
+    30,
+    "MAIN OFFICE",
+    "R. Meeting Besar2",
+    "SD-30",
+    "PPA-SHE-II-SD-2025-30"
+  ],
+  [
+    31,
+    "MAIN OFFICE",
+    "Lorong tengah/CCR",
+    "SD-31",
+    "PPA-SHE-II-SD-2025-31"
+  ],
+  [
+    32,
+    "MAIN OFFICE",
+    "R.Meeting Besar3",
+    "SD-32",
+    "PPA-SHE-II-SD-2025-32"
+  ],
+  [
+    33,
+    "MESS BARU",
+    "GL 3 Lantai 1",
+    "SD-01",
+    "PPA-SHE-II-SD-2025-33"
+  ],
+  [
+    34,
+    "MESS BARU",
+    "GL 3 Lantai 1",
+    "SD-02",
+    "PPA-SHE-II-SD-2025-34"
+  ],
+  [
+    35,
+    "MESS BARU",
+    "GL 3 Lantai 1",
+    "SD-03",
+    "PPA-SHE-II-SD-2025-35"
+  ],
+  [
+    36,
+    "MESS BARU",
+    "GL 3 Lantai 2",
+    "SD-04",
+    "PPA-SHE-II-SD-2025-36"
+  ],
+  [
+    37,
+    "MESS BARU",
+    "GL 3 Lantai 2",
+    "SD-05",
+    "PPA-SHE-II-SD-2025-37"
+  ],
+  [
+    38,
+    "MESS BARU",
+    "GL 3 Lantai 2",
+    "SD-06",
+    "PPA-SHE-II-SD-2025-38"
+  ],
+  [
+    39,
+    "MESS BARU",
+    "GL 4 Lantai 1",
+    "SD-01",
+    "PPA-SHE-II-SD-2025-39"
+  ],
+  [
+    40,
+    "MESS BARU",
+    "GL 4 Lantai 1",
+    "SD-02",
+    "PPA-SHE-II-SD-2025-40"
+  ],
+  [
+    41,
+    "MESS BARU",
+    "GL 4 Lantai 1",
+    "SD-03",
+    "PPA-SHE-II-SD-2025-41"
+  ],
+  [
+    42,
+    "MESS BARU",
+    "GL 4 Lantai 2",
+    "SD-04",
+    "PPA-SHE-II-SD-2025-42"
+  ],
+  [
+    43,
+    "MESS BARU",
+    "GL 4 Lantai 2",
+    "SD-05",
+    "PPA-SHE-II-SD-2025-43"
+  ],
+  [
+    44,
+    "MESS BARU",
+    "GL 4 Lantai 2",
+    "SD-06",
+    "PPA-SHE-II-SD-2025-44"
+  ],
+  [
+    45,
+    "MESS BARU",
+    "GL 5 Lantai 1",
+    "SD-01",
+    "PPA-SHE-II-SD-2025-45"
+  ],
+  [
+    46,
+    "MESS BARU",
+    "GL 5 Lantai 1",
+    "SD-02",
+    "PPA-SHE-II-SD-2025-46"
+  ],
+  [
+    47,
+    "MESS BARU",
+    "GL 5 Lantai 1",
+    "SD-03",
+    "PPA-SHE-II-SD-2025-47"
+  ],
+  [
+    48,
+    "MESS BARU",
+    "GL 5 Lantai 2",
+    "SD-04",
+    "PPA-SHE-II-SD-2025-48"
+  ],
+  [
+    49,
+    "MESS BARU",
+    "GL 5 Lantai 2",
+    "SD-05",
+    "PPA-SHE-II-SD-2025-49"
+  ],
+  [
+    50,
+    "MESS BARU",
+    "GL 5 Lantai 2",
+    "SD-06",
+    "PPA-SHE-II-SD-2025-50"
+  ],
+  [
+    51,
+    "MESS BARU",
+    "GL 6 Lantai 1",
+    "SD-01",
+    "PPA-SHE-II-SD-2025-51"
+  ],
+  [
+    52,
+    "MESS BARU",
+    "GL 6 Lantai 1",
+    "SD-02",
+    "PPA-SHE-II-SD-2025-52"
+  ],
+  [
+    53,
+    "MESS BARU",
+    "GL 6 Lantai 1",
+    "SD-03",
+    "PPA-SHE-II-SD-2025-53"
+  ],
+  [
+    54,
+    "MESS BARU",
+    "GL 6 Lantai 2",
+    "SD-04",
+    "PPA-SHE-II-SD-2025-54"
+  ],
+  [
+    55,
+    "MESS BARU",
+    "GL 6 Lantai 2",
+    "SD-05",
+    "PPA-SHE-II-SD-2025-55"
+  ],
+  [
+    56,
+    "MESS BARU",
+    "GL 6 Lantai 2",
+    "SD-06",
+    "PPA-SHE-II-SD-2025-56"
+  ],
+  [
+    57,
+    "MESS BARU",
+    "GL 7 Lantai 1",
+    "SD-01",
+    "PPA-SHE-II-SD-2025-57"
+  ],
+  [
+    58,
+    "MESS BARU",
+    "GL 7 Lantai 1",
+    "SD-02",
+    "PPA-SHE-II-SD-2025-58"
+  ],
+  [
+    59,
+    "MESS BARU",
+    "GL 7 Lantai 1",
+    "SD-03",
+    "PPA-SHE-II-SD-2025-59"
+  ],
+  [
+    60,
+    "MESS BARU",
+    "GL 7 Lantai 2",
+    "SD-04",
+    "PPA-SHE-II-SD-2025-60"
+  ],
+  [
+    61,
+    "MESS BARU",
+    "GL 7 Lantai 2",
+    "SD-05",
+    "PPA-SHE-II-SD-2025-61"
+  ],
+  [
+    62,
+    "MESS BARU",
+    "GL 7 Lantai 2",
+    "SD-06",
+    "PPA-SHE-II-SD-2025-62"
+  ],
+  [
+    63,
+    "MESS BARU",
+    "GL 8 Lantai 1",
+    "SD-01",
+    "PPA-SHE-II-SD-2025-63"
+  ],
+  [
+    64,
+    "MESS BARU",
+    "GL 8 Lantai 1",
+    "SD-02",
+    "PPA-SHE-II-SD-2025-64"
+  ],
+  [
+    65,
+    "MESS BARU",
+    "GL 8 Lantai 1",
+    "SD-03",
+    "PPA-SHE-II-SD-2025-65"
+  ],
+  [
+    66,
+    "MESS BARU",
+    "GL 8 Lantai 2",
+    "SD-04",
+    "PPA-SHE-II-SD-2025-66"
+  ],
+  [
+    67,
+    "MESS BARU",
+    "GL 8 Lantai 2",
+    "SD-05",
+    "PPA-SHE-II-SD-2025-67"
+  ],
+  [
+    68,
+    "MESS BARU",
+    "GL 8 Lantai 2",
+    "SD-06",
+    "PPA-SHE-II-SD-2025-68"
+  ],
+  [
+    69,
+    "MESS BARU",
+    "GL 11 Lantai 1",
+    "SD-01",
+    "PPA-SHE-II-SD-2025-69"
+  ],
+  [
+    70,
+    "MESS BARU",
+    "GL 11 Lantai 1",
+    "SD-02",
+    "PPA-SHE-II-SD-2025-70"
+  ],
+  [
+    71,
+    "MESS BARU",
+    "GL 11 Lantai 1",
+    "SD-03",
+    "PPA-SHE-II-SD-2025-71"
+  ],
+  [
+    72,
+    "MESS BARU",
+    "GL 11 Lantai 2",
+    "SD-04",
+    "PPA-SHE-II-SD-2025-72"
+  ],
+  [
+    73,
+    "MESS BARU",
+    "GL 11 Lantai 2",
+    "SD-05",
+    "PPA-SHE-II-SD-2025-73"
+  ],
+  [
+    74,
+    "MESS BARU",
+    "GL 11 Lantai 2",
+    "SD-06",
+    "PPA-SHE-II-SD-2025-74"
+  ],
+  [
+    75,
+    "MESS BARU",
+    "GL 12 Lantai 1",
+    "SD-01",
+    "PPA-SHE-II-SD-2025-75"
+  ],
+  [
+    76,
+    "MESS BARU",
+    "GL 12 Lantai 1",
+    "SD-02",
+    "PPA-SHE-II-SD-2025-76"
+  ],
+  [
+    77,
+    "MESS BARU",
+    "GL 12 Lantai 1",
+    "SD-03",
+    "PPA-SHE-II-SD-2025-77"
+  ],
+  [
+    78,
+    "MESS BARU",
+    "GL 12 Lantai 2",
+    "SD-04",
+    "PPA-SHE-II-SD-2025-78"
+  ],
+  [
+    79,
+    "MESS BARU",
+    "GL 12 Lantai 2",
+    "SD-05",
+    "PPA-SHE-II-SD-2025-79"
+  ],
+  [
+    80,
+    "MESS BARU",
+    "GL 12 Lantai 2",
+    "SD-06",
+    "PPA-SHE-II-SD-2025-80"
+  ],
+  [
+    81,
+    "STATION ERT",
+    "LANTAI 1 (LOBBY)",
+    "SD-01",
+    "PPA-SHE-II-SD-2025-81"
+  ],
+  [
+    82,
+    "STATION ERT",
+    "LANTAI 1 (LOBBY)",
+    "SD-02",
+    "PPA-SHE-II-SD-2025-82"
+  ],
+  [
+    83,
+    "STATION ERT",
+    "LANTAI 1 (R.TRAINING)",
+    "SD-03",
+    "PPA-SHE-II-SD-2025-83"
+  ],
+  [
+    84,
+    "STATION ERT",
+    "LANTAI 1 (R.PERALATAN)",
+    "SD-04",
+    "PPA-SHE-II-SD-2025-84"
+  ],
+  [
+    85,
+    "STATION ERT",
+    "LANTAI 1 (R.PERALATAN)",
+    "SD-05",
+    "PPA-SHE-II-SD-2025-85"
+  ],
+  [
+    86,
+    "STATION ERT",
+    "LANTAI 2 (LOBBY)",
+    "SD-06",
+    "PPA-SHE-II-SD-2025-86"
+  ],
+  [
+    87,
+    "STATION ERT",
+    "LANTAI 2 (LOBBY)",
+    "SD-07",
+    "PPA-SHE-II-SD-2025-87"
+  ],
+  [
+    88,
+    "STATION ERT",
+    "LANTAI 2 (R.MEETING)",
+    "SD-08",
+    "PPA-SHE-II-SD-2025-88"
+  ],
+  [
+    89,
+    "STATION ERT",
+    "LANTAI 2 (R.CCR)",
+    "SD-09",
+    "PPA-SHE-II-SD-2025-89"
+  ],
+  [
+    90,
+    "STATION ERT",
+    "LANTAI 2 (MUSHOLLA)",
+    "SD-10",
+    "PPA-SHE-II-SD-2025-90"
+  ]
+]

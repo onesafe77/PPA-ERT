@@ -1,8 +1,8 @@
-import React from 'react';
-import { Bell, UserCircle, ArrowRight, QrCode, FilePlus, AlertTriangle, Search, Activity, Calendar, Clock, CheckCircle2, ChevronRight } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Bell, UserCircle, ArrowRight, QrCode, FilePlus, AlertTriangle, Search, Activity, Calendar, Clock, CheckCircle2, ChevronRight, MapPin, Flag, Flame, Truck, Shield, Eye, Droplets, Wind } from 'lucide-react';
 import { Card } from '../components/Card';
 import { SpotlightCarousel } from '../components/SpotlightCarousel';
-import { MOCK_KPI, MOCK_INSPECTIONS } from '../constants';
+import { MOCK_KPI } from '../constants';
 import { ScreenName } from '../types';
 
 interface HomeProps {
@@ -10,7 +10,97 @@ interface HomeProps {
     user: any;
 }
 
+interface PicaReport {
+    id: number;
+    category: string;
+    title: string;
+    description: string;
+    location?: string;
+    deadline?: string;
+    status: string;
+    priority: string;
+    photos?: string;
+    createdAt: string;
+}
+
 export const Home: React.FC<HomeProps> = ({ onNavigate, user }) => {
+    const [urgentPica, setUrgentPica] = useState<PicaReport[]>([]);
+    const [loadingPica, setLoadingPica] = useState(true);
+
+    useEffect(() => {
+        fetchUrgentPica();
+    }, []);
+
+    const fetchUrgentPica = async () => {
+        try {
+            const res = await fetch('/api/pica');
+            if (res.ok) {
+                const data = await res.json();
+                // Filter only HIGH and CRITICAL priority that are still OPEN
+                const urgent = data.filter((p: PicaReport) =>
+                    (p.priority === 'HIGH' || p.priority === 'CRITICAL') &&
+                    p.status !== 'CLOSED'
+                );
+                setUrgentPica(urgent.slice(0, 5)); // Limit to 5
+            }
+        } catch (err) {
+            console.error('Failed to fetch PICA:', err);
+        } finally {
+            setLoadingPica(false);
+        }
+    };
+
+    const formatDate = (dateString: string) => {
+        if (!dateString) return '';
+        const date = new Date(dateString);
+        if (isNaN(date.getTime())) return '';
+        return date.toLocaleDateString('id-ID', {
+            day: '2-digit',
+            month: 'short',
+            year: 'numeric'
+        });
+    };
+
+    const getPriorityColor = (priority: string) => {
+        switch (priority) {
+            case 'CRITICAL': return 'bg-red-500';
+            case 'HIGH': return 'bg-orange-500';
+            default: return 'bg-yellow-500';
+        }
+    };
+
+    const getPriorityName = (priority: string) => {
+        switch (priority) {
+            case 'CRITICAL': return 'KRITIS';
+            case 'HIGH': return 'TINGGI';
+            default: return 'SEDANG';
+        }
+    };
+
+    const getCategoryIcon = (category: string) => {
+        switch (category) {
+            case 'P2H': return <Truck size={14} />;
+            case 'Gear': return <Shield size={14} />;
+            case 'APAR': return <Flame size={14} />;
+            case 'Eye Wash': return <Eye size={14} />;
+            case 'Hydrant': return <Droplets size={14} />;
+            case 'Smoke Detector': return <Wind size={14} />;
+            default: return <AlertTriangle size={14} />;
+        }
+    };
+
+    const getCategoryColor = (category: string) => {
+        switch (category) {
+            case 'P2H': return 'bg-blue-500';
+            case 'Gear': return 'bg-purple-500';
+            case 'APAR': return 'bg-red-500';
+            case 'Eye Wash': return 'bg-cyan-500';
+            case 'Hydrant': return 'bg-emerald-500';
+            case 'Smoke Detector': return 'bg-orange-500';
+            default: return 'bg-slate-500';
+        }
+    };
+
     // Shared Components
     const Greeting = () => (
         <div>
@@ -50,14 +140,14 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, user }) => {
                     </div>
                 </div>
             ))}
-            {/* Desktop Only Extra KPI for Balance */}
-            <div className="hidden lg:block bg-indigo-50 p-6 rounded-[24px] shadow-sm border border-indigo-100 relative overflow-hidden">
+            {/* Desktop Only - Urgent PICA Count */}
+            <div className="hidden lg:block bg-red-50 p-6 rounded-[24px] shadow-sm border border-red-100 relative overflow-hidden">
                 <div className="relative z-10">
-                    <p className="text-xs font-bold text-indigo-400 uppercase tracking-wider mb-2">Total Inspeksi</p>
-                    <span className="text-3xl font-bold text-indigo-900">142</span>
-                    <div className="mt-2 text-xs font-bold flex items-center gap-1 text-indigo-600">
-                        <Calendar size={12} />
-                        Bulan Ini
+                    <p className="text-xs font-bold text-red-400 uppercase tracking-wider mb-2">PICA Darurat</p>
+                    <span className="text-3xl font-bold text-red-600">{urgentPica.length}</span>
+                    <div className="mt-2 text-xs font-bold flex items-center gap-1 text-red-500">
+                        <AlertTriangle size={12} />
+                        Perlu Tindakan
                     </div>
                 </div>
             </div>
@@ -102,80 +192,137 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, user }) => {
         </div>
     );
 
-    const RecentAlertsList = () => (
+    // Urgent PICA List Component
+    const UrgentPicaList = () => (
         <div className="space-y-3">
-            {MOCK_INSPECTIONS.filter(i => i.severity === 'Critical' || i.status === 'NOT READY').map((item) => (
-                <div
-                    key={item.id}
-                    onClick={() => onNavigate('history')}
-                    className="bg-white rounded-[24px] p-4 flex gap-4 items-center shadow-card border border-slate-100 cursor-pointer hover:shadow-float transition-all"
-                >
-                    <div className="w-12 h-12 bg-red-50 rounded-xl flex items-center justify-center text-red-500 flex-shrink-0">
-                        <AlertTriangle size={20} />
-                    </div>
-                    <div className="flex-1">
-                        <h5 className="text-sm font-bold text-slate-800 mb-1">{item.title}</h5>
-                        <div className="flex items-center gap-2">
-                            <span className="bg-red-100 text-red-700 text-[9px] font-bold px-2 py-0.5 rounded-full">{item.status}</span>
-                            <span className="text-xs text-slate-400 font-medium">{item.location}</span>
+            {urgentPica.length === 0 ? (
+                <div className="bg-emerald-50 border border-emerald-200 rounded-[20px] p-6 text-center">
+                    <CheckCircle2 size={32} className="text-emerald-500 mx-auto mb-2" />
+                    <p className="text-emerald-700 font-bold text-sm">Tidak ada PICA darurat</p>
+                    <p className="text-emerald-600 text-xs">Semua laporan prioritas tinggi sudah ditangani</p>
+                </div>
+            ) : (
+                urgentPica.map((item) => (
+                    <div
+                        key={item.id}
+                        onClick={() => onNavigate('history')}
+                        className="bg-white rounded-[20px] p-4 flex gap-4 items-start shadow-sm border border-slate-100 cursor-pointer hover:shadow-md hover:border-red-200 transition-all group"
+                    >
+                        {/* Category Icon */}
+                        <div className={`w-12 h-12 ${getCategoryColor(item.category)} rounded-xl flex items-center justify-center text-white flex-shrink-0 shadow-lg`}>
+                            {getCategoryIcon(item.category)}
+                        </div>
+
+                        {/* Content */}
+                        <div className="flex-1 min-w-0">
+                            <div className="flex items-center gap-2 mb-1">
+                                <span className={`text-[9px] font-bold px-2 py-0.5 rounded-full text-white ${getPriorityColor(item.priority)}`}>
+                                    {getPriorityName(item.priority)}
+                                </span>
+                                <span className="text-[10px] text-slate-400 font-medium">{item.category}</span>
+                            </div>
+                            <h5 className="text-sm font-bold text-slate-800 mb-1 line-clamp-1">{item.title}</h5>
+                            <div className="flex items-center gap-3 text-[10px] text-slate-400">
+                                {item.location && (
+                                    <span className="flex items-center gap-1">
+                                        <MapPin size={10} />
+                                        {item.location}
+                                    </span>
+                                )}
+                                {item.deadline && (
+                                    <span className="flex items-center gap-1 text-red-500">
+                                        <Calendar size={10} />
+                                        DL: {formatDate(item.deadline)}
+                                    </span>
+                                )}
+                            </div>
+                        </div>
+
+                        {/* Arrow */}
+                        <div className="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center group-hover:bg-red-50 transition-colors">
+                            <ArrowRight size={14} className="text-slate-400 group-hover:text-red-500 transition-colors" />
                         </div>
                     </div>
-                    <div className="w-6 h-6 rounded-full bg-slate-50 flex items-center justify-center">
-                        <ArrowRight size={14} className="text-slate-400" />
-                    </div>
-                </div>
-            ))}
+                ))
+            )}
         </div>
     );
 
-    const RecentAlertsTable = () => (
+    // Urgent PICA Table (Desktop)
+    const UrgentPicaTable = () => (
         <div className="bg-white rounded-[28px] border border-slate-200 shadow-sm overflow-hidden">
-            <div className="px-6 py-4 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
+            <div className="px-6 py-4 border-b border-slate-100 flex justify-between items-center bg-gradient-to-r from-red-50 to-orange-50">
                 <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 rounded-lg bg-red-100 flex items-center justify-center text-red-600">
+                    <div className="w-8 h-8 rounded-lg bg-red-500 flex items-center justify-center text-white shadow-lg shadow-red-500/30">
                         <AlertTriangle size={16} />
                     </div>
-                    <h3 className="font-bold text-slate-800">Alert Prioritas</h3>
+                    <div>
+                        <h3 className="font-bold text-slate-800">PICA Darurat</h3>
+                        <p className="text-[10px] text-slate-500">Laporan prioritas tinggi & kritis yang perlu tindakan segera</p>
+                    </div>
                 </div>
-                <button onClick={() => onNavigate('history')} className="text-xs font-bold text-indigo-600 hover:text-indigo-700 flex items-center gap-1">
+                <button onClick={() => onNavigate('history')} className="text-xs font-bold text-red-600 hover:text-red-700 flex items-center gap-1 bg-white px-3 py-2 rounded-lg border border-red-200 shadow-sm hover:shadow-md transition-all">
                     Lihat Semua <ArrowRight size={12} />
                 </button>
             </div>
-            <table className="w-full text-left text-sm">
-                <thead>
-                    <tr className="bg-slate-50 text-slate-500 text-xs uppercase tracking-wider">
-                        <th className="px-6 py-3 font-bold">Judul Inspeksi</th>
-                        <th className="px-6 py-3 font-bold">Lokasi</th>
-                        <th className="px-6 py-3 font-bold">Status</th>
-                        <th className="px-6 py-3 font-bold">Waktu</th>
-                        <th className="px-6 py-3 font-bold text-right">Aksi</th>
-                    </tr>
-                </thead>
-                <tbody className="divide-y divide-slate-100">
-                    {MOCK_INSPECTIONS.filter(i => i.severity === 'Critical' || i.status === 'NOT READY').map((item) => (
-                        <tr key={item.id} className="hover:bg-slate-50/80 transition-colors group">
-                            <td className="px-6 py-4 font-bold text-slate-800">
-                                {item.title}
-                                <span className="block text-[10px] text-slate-400 font-normal mt-0.5">{item.type} • #{item.id}</span>
-                            </td>
-                            <td className="px-6 py-4 text-slate-600">{item.location}</td>
-                            <td className="px-6 py-4">
-                                <span className="bg-red-100 text-red-700 text-[10px] font-bold px-2 py-1 rounded-full border border-red-200">{item.status}</span>
-                            </td>
-                            <td className="px-6 py-4 text-slate-500">
-                                <span className="flex items-center gap-1.5 text-xs">
-                                    <Clock size={12} /> {item.date}
-                                </span>
-                            </td>
-                            <td className="px-6 py-4 text-right">
-                                <button onClick={() => onNavigate('history')} className="text-slate-400 hover:text-indigo-600 transition-colors">
-                                    <ChevronRight size={18} />
-                                </button>
-                            </td>
+
+            {urgentPica.length === 0 ? (
+                <div className="p-12 text-center">
+                    <CheckCircle2 size={48} className="text-emerald-400 mx-auto mb-3" />
+                    <p className="text-slate-700 font-bold">Tidak ada PICA darurat!</p>
+                    <p className="text-slate-400 text-sm">Semua laporan prioritas tinggi sudah ditangani.</p>
+                </div>
+            ) : (
+                <table className="w-full text-left text-sm">
+                    <thead>
+                        <tr className="bg-slate-50 text-slate-500 text-xs uppercase tracking-wider">
+                            <th className="px-6 py-3 font-bold">Kategori</th>
+                            <th className="px-6 py-3 font-bold">Judul Laporan</th>
+                            <th className="px-6 py-3 font-bold">Lokasi</th>
+                            <th className="px-6 py-3 font-bold">Prioritas</th>
+                            <th className="px-6 py-3 font-bold">Deadline</th>
+                            <th className="px-6 py-3 font-bold text-right">Aksi</th>
                         </tr>
-                    ))}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody className="divide-y divide-slate-100">
+                        {urgentPica.map((item) => (
+                            <tr key={item.id} className="hover:bg-red-50/50 transition-colors group cursor-pointer" onClick={() => onNavigate('history')}>
+                                <td className="px-6 py-4">
+                                    <div className="flex items-center gap-2">
+                                        <div className={`w-8 h-8 ${getCategoryColor(item.category)} rounded-lg flex items-center justify-center text-white`}>
+                                            {getCategoryIcon(item.category)}
+                                        </div>
+                                        <span className="text-xs font-bold text-slate-600">{item.category}</span>
+                                    </div>
+                                </td>
+                                <td className="px-6 py-4">
+                                    <span className="font-bold text-slate-800 block">{item.title}</span>
+                                    <span className="text-[10px] text-slate-400">#{item.id}</span>
+                                </td>
+                                <td className="px-6 py-4 text-slate-600">{item.location || '-'}</td>
+                                <td className="px-6 py-4">
+                                    <span className={`text-[10px] font-bold px-2 py-1 rounded-full text-white ${getPriorityColor(item.priority)}`}>
+                                        {getPriorityName(item.priority)}
+                                    </span>
+                                </td>
+                                <td className="px-6 py-4 text-slate-500">
+                                    {item.deadline ? (
+                                        <span className="flex items-center gap-1.5 text-xs text-red-500">
+                                            <Calendar size={12} />
+                                            {formatDate(item.deadline)}
+                                        </span>
+                                    ) : '-'}
+                                </td>
+                                <td className="px-6 py-4 text-right">
+                                    <button className="text-slate-400 hover:text-red-600 transition-colors">
+                                        <ChevronRight size={18} />
+                                    </button>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            )}
         </div>
     );
 
@@ -207,7 +354,11 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, user }) => {
                             onClick={() => onNavigate('notifications')}
                             className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-white hover:bg-white/20 transition-colors border border-white/10 relative">
                             <Bell size={20} />
-                            <span className="absolute top-2 right-2.5 w-2 h-2 bg-red-500 rounded-full border border-slate-900 shadow-sm"></span>
+                            {urgentPica.length > 0 && (
+                                <span className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 rounded-full border-2 border-slate-900 shadow-sm flex items-center justify-center text-[10px] font-bold text-white">
+                                    {urgentPica.length}
+                                </span>
+                            )}
                         </button>
                         <button
                             onClick={() => onNavigate('profile')}
@@ -287,16 +438,27 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, user }) => {
                     </div>
                 </div>
 
-                {/* 3. Bottom Section: Alerts */}
+                {/* 3. Bottom Section: Urgent PICA */}
                 <div>
                     <div className="md:hidden">
                         <div className="flex items-center justify-between mb-4 pl-1">
-                            <h4 className="text-base font-bold text-slate-800">Perlu Tindakan</h4>
+                            <div className="flex items-center gap-2">
+                                <div className="w-8 h-8 bg-red-500 rounded-lg flex items-center justify-center text-white shadow-lg shadow-red-500/30">
+                                    <AlertTriangle size={16} />
+                                </div>
+                                <div>
+                                    <h4 className="text-base font-bold text-slate-800">PICA Darurat</h4>
+                                    <p className="text-[10px] text-slate-400">Prioritas tinggi & kritis</p>
+                                </div>
+                            </div>
+                            <button onClick={() => onNavigate('history')} className="text-xs font-bold text-red-600 flex items-center gap-1">
+                                Semua <ChevronRight size={14} />
+                            </button>
                         </div>
-                        <RecentAlertsList />
+                        <UrgentPicaList />
                     </div>
                     <div className="hidden md:block">
-                        <RecentAlertsTable />
+                        <UrgentPicaTable />
                     </div>
                 </div>
             </div>

@@ -1,0 +1,479 @@
+[
+  [
+    "NO",
+    "AREA",
+    "LOKASI",
+    "NO. LAMBUNG",
+    "NO. REGISTER"
+  ],
+  [],
+  [
+    1,
+    "WORKSHOP",
+    "Workshop Fabrikasi (BAY)",
+    1,
+    "EW-001"
+  ],
+  [
+    2,
+    "WORKSHOP",
+    "Workshop Fabrikasi (BAY)",
+    2,
+    "EW-002"
+  ],
+  [
+    3,
+    "WORKSHOP",
+    "Workshop Fabrikasi (BAY)",
+    3,
+    "EW-003"
+  ],
+  [
+    4,
+    "WORKSHOP",
+    "Workshop Fabrikasi (SRJ)",
+    1,
+    "EW-004"
+  ],
+  [
+    5,
+    "WORKSHOP",
+    "Workshop Fabrikasi (SRJ)",
+    2,
+    "EW-005"
+  ],
+  [
+    6,
+    "WORKSHOP",
+    "Workshop Tyre",
+    1,
+    "EW-006"
+  ],
+  [
+    7,
+    "WORKSHOP",
+    "Workshop Tyre",
+    2,
+    "EW-007"
+  ],
+  [
+    8,
+    "WORKSHOP",
+    "Workshop Tyre (PT.BJS)",
+    1,
+    "EW-008"
+  ],
+  [
+    9,
+    "WORKSHOP",
+    "Workshop UTAMA (BAY)",
+    1,
+    "EW-009"
+  ],
+  [
+    10,
+    "WORKSHOP",
+    "Workshop UTAMA (BAY)",
+    2,
+    "EW-010"
+  ],
+  [
+    11,
+    "WORKSHOP",
+    "Workshop UTAMA (BAY)",
+    3,
+    "EW-011"
+  ],
+  [
+    12,
+    "WORKSHOP",
+    "Workshop UTAMA (BAY)",
+    4,
+    "EW-012"
+  ],
+  [
+    13,
+    "WORKSHOP",
+    "Limbah B3",
+    1,
+    "EW-013"
+  ],
+  [
+    14,
+    "WORKSHOP",
+    "Limbah B3",
+    2,
+    "EW-014"
+  ],
+  [
+    15,
+    "WORKSHOP",
+    "Gudang Oli",
+    1,
+    "EW-015"
+  ],
+  [
+    18,
+    "MESS BARU",
+    "Genset Mess Baru",
+    1,
+    "EW-018"
+  ],
+  [
+    19,
+    "MESS BARU",
+    "WTP 01",
+    1,
+    "EW-019"
+  ],
+  [
+    20,
+    "ROM",
+    "Office AMM",
+    1,
+    "EW-020"
+  ],
+  [
+    21,
+    "ASSEMBLY",
+    "Assembly PPA (Lifting)",
+    1,
+    "EW-021"
+  ],
+  [
+    22,
+    "ASSEMBLY",
+    "Workshop High Voltage Elektrik",
+    1,
+    "EW-022"
+  ],
+  [
+    23,
+    "ASSEMBLY",
+    "Workshop Dewatering",
+    1,
+    "EW-023"
+  ],
+  [
+    24,
+    "WORKSHOP",
+    "WS.Temporary (Patria Fabrikasi)",
+    1,
+    "EW-024"
+  ],
+  [
+    33,
+    "WORKSHOP",
+    "WS.Temporary (Workshop BTB)",
+    1,
+    "EW-033"
+  ],
+  [
+    34,
+    "GUDANG HANDAK",
+    "Gudang Handak (Amunium Nitrat)",
+    1,
+    "EW-034"
+  ],
+  [
+    35,
+    "GUDANG HANDAK",
+    "Gudang Handak (Workshop MNK)",
+    2,
+    "EW-035"
+  ],
+  [
+    36,
+    "GUDANG HANDAK",
+    "Gudang Handak (Emulsion Plant)",
+    3,
+    "EW-036"
+  ],
+  [
+    37,
+    "GUDANG HANDAK",
+    "Gudang Handak (Emulsion Plant)",
+    4,
+    "EW-037"
+  ],
+  [
+    38,
+    "WAREHOUSE",
+    "Warehouse Fa & Log",
+    1,
+    "EW-038"
+  ],
+  [
+    39,
+    "WAREHOUSE",
+    "Warehouse Bina Pertiwi",
+    1,
+    "EW-039"
+  ],
+  [
+    40,
+    "WAREHOUSE",
+    "Warehouse Mastratech",
+    1,
+    "EW-040"
+  ],
+  [
+    41,
+    "PIT STOP KGU-U",
+    "Pit stop KGU-Utara (Fabrikasi)",
+    1,
+    "EW-041"
+  ],
+  [
+    42,
+    "PIT STOP KGU-U",
+    "Pit stop KGU-Utara (Track)",
+    2,
+    "EW-042"
+  ],
+  [
+    43,
+    "PIT STOP KGU-U",
+    "Pit stop KGU-Utara (Wheel)",
+    3,
+    "EW-043"
+  ],
+  [
+    44,
+    "PIT STOP KGU-U",
+    "Pit stop KGU-Utara (Wheel)",
+    4,
+    "EW-044"
+  ],
+  [
+    45,
+    "PIT STOP KGU-U",
+    "Pit stop KGU-Utara (Fa & Log)",
+    5,
+    "EW-045"
+  ],
+  [
+    46,
+    "PIT STOP KGU-U",
+    "Pit stop KGU-Utara (Bina Pertiwi)",
+    6,
+    "EW-046"
+  ],
+  [
+    47,
+    "PIT STOP KGU-T",
+    "pit stop KGU Tengah (Track)",
+    1,
+    "EW-047"
+  ],
+  [
+    48,
+    "FUEL STORAGE",
+    "Fuel Storage (IN)",
+    1,
+    "EW-048"
+  ],
+  [
+    49,
+    "FUEL STORAGE",
+    "Fuel Storage (OUT)",
+    2,
+    "EW-049"
+  ],
+  [
+    50,
+    "WORKSHOP",
+    "Workshop Transport (Koperasi)",
+    1,
+    "EW-050"
+  ],
+  [
+    51,
+    "WORKSHOP",
+    "Workshop Transport (Transkon)",
+    2,
+    "EW-051"
+  ],
+  [
+    52,
+    "WORKSHOP",
+    "Workshop Transport (Bagong)",
+    3,
+    "EW-052"
+  ],
+  [
+    53,
+    "WORKSHOP",
+    "Workshop Boston",
+    1,
+    "EW-053"
+  ],
+  [
+    54,
+    "PIT STOP KGU",
+    "Pit Stop FMC-UT KGU-Utara",
+    1,
+    "EW-054"
+  ],
+  [
+    55,
+    "PIT STOP KGU",
+    "Pit Stop FMC-UT KGU-Utara",
+    2,
+    "EW-055"
+  ],
+  [
+    56,
+    "WORKSHOP",
+    "Workshop UT (BAY)",
+    1,
+    "EW-056"
+  ],
+  [
+    57,
+    "WORKSHOP",
+    "Workshop UT (BAY)",
+    2,
+    "EW-057"
+  ],
+  [
+    58,
+    "WORKSHOP",
+    "Workshop HAULING (BAY) GOH",
+    1,
+    "EW-058"
+  ],
+  [
+    59,
+    "WORKSHOP",
+    "Workshop HAULING (BAY) GOH",
+    2,
+    "EW-059"
+  ],
+  [
+    60,
+    "WORKSHOP",
+    "Workshop HAULING (BAY) GOH",
+    3,
+    "EW-060"
+  ],
+  [
+    61,
+    "WORKSHOP",
+    "Workshop TRACK (BAY) GOH",
+    4,
+    "EW-061"
+  ],
+  [
+    62,
+    "WORKSHOP",
+    "Workshop TRACK (BAY) GOH",
+    5,
+    "EW-062"
+  ],
+  [
+    63,
+    "WORKSHOP",
+    "Workshop COMEX Baru",
+    1,
+    "EW-063"
+  ],
+  [
+    64,
+    "WORKSHOP",
+    "Workshop COMEX Baru",
+    2,
+    "EW-064"
+  ],
+  [
+    65,
+    "PIT STOP KGU-S",
+    "Pit Stop KGU Selatan",
+    1,
+    "EW-065"
+  ],
+  [
+    66,
+    "WORKSHOP",
+    "Workshop Hauling Baru",
+    1,
+    "EW-066"
+  ],
+  [
+    67,
+    "WORKSHOP",
+    "Workshop Hauling Baru",
+    2,
+    "EW-067"
+  ],
+  [
+    68,
+    "WORKSHOP",
+    "Workshop Wheel Baru",
+    1,
+    "EW-068"
+  ],
+  [
+    69,
+    "WORKSHOP",
+    "Workshop Wheel Baru",
+    2,
+    "EW-069"
+  ],
+  [
+    70,
+    "WORKSHOP",
+    "Workshop Wheel Baru",
+    3,
+    "EW-070"
+  ],
+  [
+    71,
+    "MESS BARU",
+    "IPAL 03",
+    1,
+    "EW-071"
+  ],
+  [
+    72,
+    "MESS BARU",
+    "WTP 02",
+    1,
+    "EW-072"
+  ],
+  [
+    73,
+    "OUT PIT",
+    "KONTAINER OUT PIT 3C",
+    1,
+    "EW-073"
+  ],
+  [
+    74,
+    "WORKSHOP",
+    "Workshop Suport ( BAY 1)",
+    1,
+    "EW-074"
+  ],
+  [
+    75,
+    "WORKSHOP",
+    "Workshop Suport ( BAY 2)",
+    2,
+    "EW-075"
+  ],
+  [
+    76,
+    "WORKSHOP",
+    "Workshop Suport ( BAY 3)",
+    3,
+    "EW-076"
+  ],
+  [
+    77,
+    "WORKSHOP",
+    "Workshop Suport ( Office lantai1)",
+    4,
+    "EW-077"
+  ]
+]

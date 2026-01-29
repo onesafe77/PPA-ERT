@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useLocalStorage } from '../utils/useLocalStorage';
 import { ArrowLeft, ArrowRight, Save, ChevronDown, Plus, Trash2, FileText, Check, ClipboardList, PenTool, Camera, X } from 'lucide-react';
 import { ScreenName } from '../types';
@@ -6,6 +6,7 @@ import { LoadingOverlay } from '../components/LoadingOverlay';
 import { generateAPARPDF } from '../utils/pdfGenerator';
 import { SignaturePad } from '../components/SignaturePad';
 import { PhotoCapture } from '../components/PhotoCapture';
+import { formatTagNumber, getUniqueAreas, getLocationsWithTagByArea, LocationWithTag, parseTagNumber } from '../data/spipData';
 
 interface APARFormProps {
     onNavigate: (screen: ScreenName) => void;
@@ -14,70 +15,18 @@ interface APARFormProps {
 
 interface APARUnit {
     id: number;
-    unitNumber: string;
+    unitNumber: string; // Detail Lokasi
     capacity: string;
     tagNumber: string;
     checks: Record<string, boolean>;
     condition: 'LAYAK' | 'TIDAK LAYAK';
     notes: string;
-
 }
 
 const APAR_ITEMS = ['Handle', 'Lock Pin', 'Seal Segel', 'Tabung', 'Hose Nozzle', 'Braket'];
 
-const APAR_LOCATIONS = [
-    'MAIN OFFICE',
-    'AREA ASSEMBLY',
-    'AREA CATERING',
-    'AREA GOH BAY TRACK & WHEEL',
-    'BUSS BAGONG',
-    'GUDANG OLI',
-    'MANPOWER',
-    'MASTRATECH',
-    'OFFICE ERT BARU',
-    'OFFICE GA MESS BARU',
-    'OFFICE SHE',
-    'OFFICE SS6',
-    'PIT STOP FMC UT KGU',
-    'PIT STOP KGU SELATAN',
-    'PIT STOP KGU TENGAH',
-    'PIT STOP KGU UTARA',
-    'ROOM A2',
-    'SWIMMING POOL',
-    'VIEW POINT',
-    'VIEWPOINT KGU-SELATAN',
-    'WAREHOUSE UT',
-    'WORKSHOP BINA PERTIWI',
-    'WORKSHOP BOSTON',
-    'WORKSHOP EKA DHARMA & PWB',
-    'WORKSHOP FMC UT',
-    'WORKSHOP HIGH VOLTAGE',
-    'WORKSHOP MULTINDO',
-    'WORKSHOP SENTOSA TEKHNIK',
-    'WORKSHOP UNITED DIESEL',
-    'WTP'
-];
-
-// Common APAR placement points
-const APAR_DETAIL_POINTS = [
-    'Depan Pintu Masuk',
-    'Pos Security',
-    'Lobby',
-    'Ruang Meeting',
-    'Ruang Staff',
-    'Ruang Manager',
-    'Pantry / Dapur',
-    'Gudang / Warehouse',
-    'Area Parkir',
-    'Koridor / Lorong',
-    'Workshop Area',
-    'Kantin',
-    'Toilet',
-    'Ruang Genset / Panel',
-    'Tangga Darurat',
-    'Area Produksi',
-    'Lainnya'
-];
+// Get unique areas for APAR
+const APAR_AREAS = getUniqueAreas('apar');
 
 export const APARInspectionScreen: React.FC<APARFormProps> = ({ onNavigate, user }) => {
     const [loading, setLoading] = useState(false);
@@ -86,26 +35,34 @@ export const APARInspectionScreen: React.FC<APARFormProps> = ({ onNavigate, user
     const [location, setLocation] = useLocalStorage('apar_location', '');
     const [pic, setPic] = useLocalStorage('apar_pic', user?.name || '');
 
-
     const MONTH_NAMES = ['JANUARI', 'FEBRUARI', 'MARET', 'APRIL', 'MEI', 'JUNI', 'JULI', 'AGUSTUS', 'SEPTEMBER', 'OKTOBER', 'NOVEMBER', 'DESEMBER'];
 
+    // Unit state
     const [unitNumber, setUnitNumber] = useState('');
+    const [isManualUnit, setIsManualUnit] = useState(false);
     const [capacity, setCapacity] = useState('6 Kg');
     const [tagNumber, setTagNumber] = useState('');
     const [checks, setChecks] = useState<Record<string, boolean>>({});
     const [condition, setCondition] = useState<'LAYAK' | 'TIDAK LAYAK'>('LAYAK');
     const [notes, setNotes] = useState('');
-    const [photo, setPhoto] = useState('');
 
     const [units, setUnits] = useLocalStorage<APARUnit[]>('apar_units', []);
     const [nextId, setNextId] = useLocalStorage('apar_nextId', 1);
 
+    // Signature & Photos
     const [diketahuiOleh, setDiketahuiOleh] = useLocalStorage('apar_signer_known', '');
     const [diPeriksaOleh, setDiPeriksaOleh] = useLocalStorage('apar_signer_checked', '');
     const [signatureDiketahui, setSignatureDiketahui] = useLocalStorage('apar_sig_known', '');
-
     const [signatureDiPeriksa, setSignatureDiPeriksa] = useLocalStorage('apar_sig_checked', '');
     const [sessionPhotos, setSessionPhotos] = useLocalStorage<string[]>('apar_photos', []);
+
+    // Get locations available for the selected area
+    const availableLocations = useMemo((): LocationWithTag[] => {
+        if (location) {
+            return getLocationsWithTagByArea('apar', location);
+        }
+        return [];
+    }, [location]);
 
     const handleCheck = (item: string) => {
         setChecks(prev => ({ ...prev, [item]: !prev[item] }));
@@ -113,6 +70,7 @@ export const APARInspectionScreen: React.FC<APARFormProps> = ({ onNavigate, user
 
     const resetUnitForm = () => {
         setUnitNumber('');
+        setIsManualUnit(false);
         setCapacity('6 Kg');
         setTagNumber('');
         setChecks({});
@@ -134,7 +92,7 @@ export const APARInspectionScreen: React.FC<APARFormProps> = ({ onNavigate, user
             id: nextId,
             unitNumber,
             capacity,
-            tagNumber: tagNumber || String(nextId),
+            tagNumber: formatTagNumber('apar', tagNumber || String(nextId)),
             checks: { ...checks },
             condition,
             notes
@@ -206,31 +164,7 @@ export const APARInspectionScreen: React.FC<APARFormProps> = ({ onNavigate, user
             if (results.length === units.length) {
                 alert(`${results.length} unit APAR berhasil disimpan!`);
 
-                // Clear local storage session
-                localStorage.removeItem('apar_step');
-                localStorage.removeItem('apar_location');
-                localStorage.removeItem('apar_pic');
-
-                localStorage.removeItem('apar_units');
-                localStorage.removeItem('apar_nextId');
-                localStorage.removeItem('apar_signer_known');
-                localStorage.removeItem('apar_signer_checked');
-                localStorage.removeItem('apar_sig_known');
-                localStorage.removeItem('apar_sig_checked');
-                localStorage.removeItem('apar_photos');
-
-                // Reset state
-                setCurrentStep(1);
-                setUnits([]);
-                setSessionPhotos([]);
-                setLocation('');
-                // setPic('');
-                setDiketahuiOleh('');
-                setDiPeriksaOleh('');
-                setSignatureDiketahui('');
-                setSignatureDiPeriksa('');
-
-
+                // Create PDF Data
                 const unitsForPDF = units.map((u, idx) => ({
                     no: idx + 1,
                     unitNumber: u.unitNumber,
@@ -254,6 +188,18 @@ export const APARInspectionScreen: React.FC<APARFormProps> = ({ onNavigate, user
                     units: unitsForPDF,
                     photos: sessionPhotos
                 } as any);
+
+                // Clear storage
+                localStorage.removeItem('apar_step');
+                localStorage.removeItem('apar_location');
+                localStorage.removeItem('apar_pic');
+                localStorage.removeItem('apar_units');
+                localStorage.removeItem('apar_nextId');
+                localStorage.removeItem('apar_signer_known');
+                localStorage.removeItem('apar_signer_checked');
+                localStorage.removeItem('apar_sig_known');
+                localStorage.removeItem('apar_sig_checked');
+                localStorage.removeItem('apar_photos');
 
                 onNavigate('history');
             } else {
@@ -336,11 +282,17 @@ export const APARInspectionScreen: React.FC<APARFormProps> = ({ onNavigate, user
                                 <div className="relative">
                                     <select
                                         value={location}
-                                        onChange={(e) => setLocation(e.target.value)}
+                                        onChange={(e) => {
+                                            setLocation(e.target.value);
+                                            // Reset lower data
+                                            setUnits([]);
+                                            setNextId(1);
+                                            resetUnitForm();
+                                        }}
                                         className="w-full h-12 px-4 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500 transition-all appearance-none cursor-pointer"
                                     >
                                         <option value="">-- Pilih Lokasi --</option>
-                                        {APAR_LOCATIONS.map((loc) => (
+                                        {APAR_AREAS.map((loc) => (
                                             <option key={loc} value={loc}>{loc}</option>
                                         ))}
                                     </select>
@@ -367,7 +319,6 @@ export const APARInspectionScreen: React.FC<APARFormProps> = ({ onNavigate, user
                                         localStorage.removeItem('apar_step');
                                         localStorage.removeItem('apar_location');
                                         localStorage.removeItem('apar_pic');
-
                                         localStorage.removeItem('apar_units');
                                         localStorage.removeItem('apar_nextId');
                                         localStorage.removeItem('apar_signer_known');
@@ -410,23 +361,49 @@ export const APARInspectionScreen: React.FC<APARFormProps> = ({ onNavigate, user
                             </div>
 
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-
-
                                 <div>
                                     <label className="text-[10px] font-bold text-slate-500 uppercase block mb-1">NO UNIT / DETAIL LOKASI</label>
                                     <div className="relative">
                                         <select
-                                            value={unitNumber}
-                                            onChange={(e) => setUnitNumber(e.target.value)}
-                                            className="w-full h-10 px-3 bg-slate-50 border border-slate-200 rounded-lg text-sm font-medium focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500 transition-all appearance-none cursor-pointer"
+                                            value={isManualUnit ? 'MANUAL_ENTRY' : unitNumber}
+                                            onChange={(e) => {
+                                                const val = e.target.value;
+                                                if (val === 'MANUAL_ENTRY') {
+                                                    setIsManualUnit(true);
+                                                    setUnitNumber('');
+                                                    setTagNumber('');
+                                                } else {
+                                                    setIsManualUnit(false);
+                                                    setUnitNumber(val);
+                                                    // Auto fill tag
+                                                    const foundLoc = availableLocations.find(l => l.displayName === val);
+                                                    if (foundLoc) {
+                                                        const numPart = parseTagNumber(foundLoc.regNumber);
+                                                        setTagNumber(numPart);
+                                                    } else {
+                                                        setTagNumber('');
+                                                    }
+                                                }
+                                            }}
+                                            className="w-full h-10 px-3 bg-slate-50 border border-slate-200 rounded-lg text-sm font-medium focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500 transition-all appearance-none cursor-pointer pr-8"
                                         >
                                             <option value="">-- Pilih Posisi --</option>
-                                            {APAR_DETAIL_POINTS.map(p => (
-                                                <option key={p} value={p}>{p}</option>
+                                            {availableLocations.map(p => (
+                                                <option key={`${p.location}|${p.regNumber}`} value={p.displayName}>{p.displayName}</option>
                                             ))}
+                                            <option value="MANUAL_ENTRY">Lainnya (Input Manual)</option>
                                         </select>
                                         <ChevronDown size={16} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
                                     </div>
+                                    {isManualUnit && (
+                                        <input
+                                            type="text"
+                                            value={unitNumber}
+                                            onChange={(e) => setUnitNumber(e.target.value)}
+                                            placeholder="Masukkan Detail Lokasi Manual..."
+                                            className="w-full mt-2 h-10 px-3 bg-slate-50 border border-slate-200 rounded-lg text-sm font-medium focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500 transition-all"
+                                        />
+                                    )}
                                 </div>
                                 <div>
                                     <label className="text-[10px] font-bold text-slate-500 uppercase block mb-1">KAPASITAS</label>
@@ -441,14 +418,19 @@ export const APARInspectionScreen: React.FC<APARFormProps> = ({ onNavigate, user
                                     </select>
                                 </div>
                                 <div>
-                                    <label className="text-[10px] font-bold text-slate-500 uppercase block mb-1">NO TAG</label>
-                                    <input
-                                        type="text"
-                                        value={tagNumber}
-                                        onChange={(e) => setTagNumber(e.target.value)}
-                                        placeholder={`Auto: ${units.length + 1}`}
-                                        className="w-full h-10 px-3 bg-slate-50 border border-slate-200 rounded-lg text-sm font-medium focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500 transition-all"
-                                    />
+                                    <label className="text-[10px] font-bold text-slate-500 uppercase block mb-1">NO TAG (cukup angka)</label>
+                                    <div className="flex items-center gap-2">
+                                        <span className="text-sm font-bold text-slate-600 bg-slate-100 px-2 py-2 rounded-lg">APR-</span>
+                                        <input
+                                            type="number"
+                                            value={tagNumber}
+                                            onChange={(e) => setTagNumber(e.target.value.replace(/\D/g, ''))}
+                                            placeholder={`${units.length + 1}`}
+                                            className="flex-1 h-10 px-3 bg-slate-50 border border-slate-200 rounded-lg text-sm font-medium focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500 transition-all"
+                                            min="1"
+                                        />
+                                    </div>
+                                    {tagNumber && <span className="text-xs text-slate-500 mt-1 block">Output: {formatTagNumber('apar', tagNumber)}</span>}
                                 </div>
                             </div>
 

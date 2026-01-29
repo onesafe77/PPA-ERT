@@ -87,11 +87,14 @@ export const schedules = pgTable('schedules', {
 
 export const picaReports = pgTable('pica_reports', {
     id: serial('id').primaryKey(),
+    category: text('category').notNull().default('APAR'), // P2H, Gear, APAR, Eye Wash, Hydrant, Smoke Detector
     title: text('title').notNull(),
     description: text('description').notNull(),
+    location: text('location'), // Lokasi masalah
     imageData: text('image_data'), // Base64 or URL
     deadline: timestamp('deadline'),
-    status: text('status').default('OPEN'), // OPEN, CLOSED
+    status: text('status').default('OPEN'), // OPEN, IN_PROGRESS, CLOSED
+    priority: text('priority').default('MEDIUM'), // LOW, MEDIUM, HIGH, CRITICAL
     photos: text('photos'), // JSON string of array for multiple photos
     userId: integer('user_id').references(() => users.id),
     createdAt: timestamp('created_at').defaultNow(),
@@ -144,4 +147,32 @@ export const smokeDetectorUnits = pgTable('smoke_detector_units', {
     fungsiSensor: text('fungsi_sensor').notNull(),
     fungsiFireAlarm: text('fungsi_fire_alarm').notNull(),
     keterangan: text('keterangan'),
+});
+
+// Equipment Inspection Table
+export const equipmentInspections = pgTable('equipment_inspections', {
+    id: serial('id').primaryKey(),
+    date: timestamp('date').notNull(),
+    period: text('period').notNull(), // e.g. "JANUARI 2026"
+    location: text('location').notNull(), // e.g. "7014"
+    category: text('category'), // ALL or specific category
+    inspectorName: text('inspector_name').notNull(),
+    approverName: text('approver_name'),
+    totalItems: integer('total_items').notNull(),
+    layakCount: integer('layak_count').notNull(),
+    tidakLayakCount: integer('tidak_layak_count').notNull(),
+    userId: integer('user_id').references(() => users.id),
+    createdAt: timestamp('created_at').defaultNow(),
+});
+
+// Equipment Inspection Items Table
+export const equipmentInspectionItems = pgTable('equipment_inspection_items', {
+    id: serial('id').primaryKey(),
+    inspectionId: integer('inspection_id').references(() => equipmentInspections.id),
+    name: text('name').notNull(),
+    tagNumber: text('tag_number').notNull(),
+    brand: text('brand'),
+    category: text('category').notNull(),
+    condition: text('condition').notNull(), // 'LAYAK' or 'TIDAK_LAYAK'
+    notes: text('notes'),
 });
