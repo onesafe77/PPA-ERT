@@ -1,146 +1,127 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useLocalStorage } from '../utils/useLocalStorage';
-import { ArrowLeft, ArrowRight, Save, ChevronDown, Plus, Trash2, FileText, Check, ClipboardList, PenTool, Droplets, Camera, X } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Save, ChevronDown, Plus, Trash2, ClipboardList, PenTool, Droplets, Camera, X, Check } from 'lucide-react';
 import { ScreenName } from '../types';
 import { LoadingOverlay } from '../components/LoadingOverlay';
 import { generateHydrantPDF } from '../utils/pdfGenerator';
 import { SignaturePad } from '../components/SignaturePad';
 import { PhotoCapture } from '../components/PhotoCapture';
+import { formatTagNumber, getUniqueAreas, getLocationsWithTagByArea, LocationWithTag, parseTagNumber } from '../data/spipData';
 
 interface HydrantFormProps {
     onNavigate: (screen: ScreenName) => void;
     user?: any;
 }
 
-interface HydrantLineItem {
+interface HydrantUnit {
     id: number;
-    lineNumber: string;
-    komponenUnit: string;
-    subKomponen: string;
+    location: string;
+    tagNumber: string;
     checks: Record<string, boolean>;
-    condition: 'L' | 'TL';
+    condition: 'LAYAK' | 'TIDAK LAYAK';
     notes: string;
-
 }
 
-const HYDRANT_AREAS = [
-    'HYDRANT EMULSION PLANT (GUDANG HANDAK)',
-    'HYDRANT AREA WORKSHOP',
-    'HYDRANT AREA OFFICE',
-    'HYDRANT AREA WAREHOUSE',
-    'HYDRANT AREA FUEL STATION',
-    'HYDRANT AREA PARKING',
-    'HYDRANT AREA MESS',
-    'HYDRANT AREA CATERING'
+const HYDRANT_CHECKLIST_ITEMS = [
+    'Box Hydrant (Bersih/Kondisi Baik)',
+    'Jet Nozzle (Tidak Retak/Aus)',
+    'Hose Hydrant (Tidak Bocor/Rapi)',
+    'Hose Rack (Tidak Patah/Berfungsi)',
+    'Kunci Hydrant (Tersedia/Berfungsi)',
+    'Hydrant Pillar (Tidak Bocor/Mudah Dibuka)',
+    'Pipa Hydrant (Tidak Bocor/Korosif)',
+    'Water Cannon (Jika Ada - Kondisi Baik)'
 ];
 
-const KOMPONEN_OPTIONS: Record<string, { subKomponen: string[], deskripsi: Record<string, string[]> }> = {
-    'ISI BOX HYDRANT': {
-        subKomponen: ['BOX HYDRANT', 'JET NOOZLE', 'HOSE HYDRANT', 'HOSE RACK', 'KUNCI HYDRANT PILLAR'],
-        deskripsi: {
-            'BOX HYDRANT': ['Kondisi Box Bersih', 'Tidak ada barang lain Selain Perlengkapan Hydrant'],
-            'JET NOOZLE': ['Tidak Terdapat retakan Atau Bocor', 'Kaitan Sambungan Kopling Tidak Aus'],
-            'HOSE HYDRANT': ['Tidak dalam Keadaan Bocor', 'Tersusun Rapi di Hose Rack'],
-            'HOSE RACK': ['Rack Tidak Ada Yang Patah', 'Mudah di urai Jika digunakan'],
-            'KUNCI HYDRANT PILLAR': ['Tersedia Kunci Hydrant', 'Kunci Hydrant Valve Berfungsi Dengan Baik']
-        }
-    },
-    'WATER CANNON': {
-        subKomponen: ['WATER CANNON'],
-        deskripsi: {
-            'WATER CANNON': ['Tidak Ada Keretakan, Kebocoran & Berkarat', 'Mekanisme katup Bisa dibuka, ditutup & diputar dengan lancar', 'Mekanisme Drainase Tidak Ada Sumbatan']
-        }
-    },
-    'HYDRANT PILLAR': {
-        subKomponen: ['HYDRANT PILLAR'],
-        deskripsi: {
-            'HYDRANT PILLAR': ['Tidak ada Retakan, Korosi atau keausan', 'Tidak dalam Keadaan Bocor', 'Mudah Digunakan dan Tidak Berkarat', 'Valve pillar Hydran di buka & di tutup dengan mudah', 'Tidak ada sumbatan']
-        }
-    },
-    'PIPA HYDRANT': {
-        subKomponen: ['PIPA HYDRANT'],
-        deskripsi: {
-            'PIPA HYDRANT': ['Pipa Hydrant Tidak ada kebocoran, retakan & korosif']
-        }
-    }
-};
+// Get unique areas for Hydrant
+const HYDRANT_AREAS = getUniqueAreas('hydrant');
 
 export const HydrantInspectionScreen: React.FC<HydrantFormProps> = ({ onNavigate, user }) => {
     const [loading, setLoading] = useState(false);
     const [currentStep, setCurrentStep] = useLocalStorage('hydrant_step', 1);
-    const LINES = ['LINE 1', 'LINE 2', 'LINE 3', 'LINE 4', 'LINE 5'];
-    const activeLine = currentStep >= 2 && currentStep <= 6 ? LINES[currentStep - 2] : '';
 
-    const [areaInspeksi, setAreaInspeksi] = useLocalStorage('hydrant_area', '');
+    // Step 1: Info
+    const [area, setArea] = useLocalStorage('hydrant_area', '');
     const [pic, setPic] = useLocalStorage('hydrant_pic', user?.name || '');
-
 
     const MONTH_NAMES = ['JANUARI', 'FEBRUARI', 'MARET', 'APRIL', 'MEI', 'JUNI', 'JULI', 'AGUSTUS', 'SEPTEMBER', 'OKTOBER', 'NOVEMBER', 'DESEMBER'];
 
-    const [lineNumber, setLineNumber] = useState('LINE 1');
-    const [komponenUnit, setKomponenUnit] = useState('ISI BOX HYDRANT');
-    const [subKomponen, setSubKomponen] = useState('BOX HYDRANT');
-    const [unitNumber, setUnitNumber] = useState('01');
+    // Step 2: Unit Form State
+    const [location, setLocation] = useState('');
+    const [isManualLocation, setIsManualLocation] = useState(false);
+    const [tagNumber, setTagNumber] = useState('');
     const [checks, setChecks] = useState<Record<string, boolean>>({});
-    const [condition, setCondition] = useState<'L' | 'TL'>('L');
+    const [condition, setCondition] = useState<'LAYAK' | 'TIDAK LAYAK'>('LAYAK');
     const [notes, setNotes] = useState('');
-    const [photo, setPhoto] = useState('');
 
-    const [items, setItems] = useLocalStorage<HydrantLineItem[]>('hydrant_items', []);
+    // Multi-unit Data
+    const [units, setUnits] = useLocalStorage<HydrantUnit[]>('hydrant_units', []);
     const [nextId, setNextId] = useLocalStorage('hydrant_nextId', 1);
 
+    // Step 3: Review & Sign
     const [diketahuiOleh, setDiketahuiOleh] = useLocalStorage('hydrant_signer_known', '');
     const [diPeriksaOleh, setDiPeriksaOleh] = useLocalStorage('hydrant_signer_checked', '');
     const [signatureDiketahui, setSignatureDiketahui] = useLocalStorage('hydrant_sig_known', '');
     const [signatureDiPeriksa, setSignatureDiPeriksa] = useLocalStorage('hydrant_sig_checked', '');
     const [sessionPhotos, setSessionPhotos] = useLocalStorage<string[]>('hydrant_photos', []);
 
-    const currentDeskripsi = KOMPONEN_OPTIONS[komponenUnit]?.deskripsi[subKomponen] || [];
+    // Get locations available for the selected area
+    const availableLocations = useMemo((): LocationWithTag[] => {
+        if (area) {
+            return getLocationsWithTagByArea('hydrant', area);
+        }
+        return [];
+    }, [area]);
 
     const handleCheck = (item: string) => {
         setChecks(prev => ({ ...prev, [item]: !prev[item] }));
     };
 
-    const resetItemForm = () => {
-        setUnitNumber(String(parseInt(unitNumber) + 1).padStart(2, '0'));
+    const resetUnitForm = () => {
+        setLocation('');
+        setIsManualLocation(false);
+        setTagNumber('');
         setChecks({});
-        setCondition('L');
+        setCondition('LAYAK');
         setNotes('');
     };
 
-    const handleAddItem = () => {
-        if (!subKomponen) {
-            alert('Mohon pilih Sub Komponen');
+    const handleAddUnit = () => {
+        if (!location) {
+            alert('Mohon isi Lokasi Hydrant');
+            return;
+        }
+        if (units.length >= 30) {
+            alert('Maksimal 30 unit per inspeksi');
             return;
         }
 
-        const newItem: HydrantLineItem = {
+        const newUnit: HydrantUnit = {
             id: nextId,
-            lineNumber: activeLine,
-            komponenUnit,
-            subKomponen: `${subKomponen} ${unitNumber}`,
+            location,
+            tagNumber: formatTagNumber('hydrant', tagNumber || String(nextId)),
             checks: { ...checks },
             condition,
             notes
         };
 
-        setItems(prev => [...prev, newItem]);
+        setUnits(prev => [...prev, newUnit]);
         setNextId(prev => prev + 1);
-        resetItemForm();
+        resetUnitForm();
     };
 
-    const handleRemoveItem = (id: number) => {
-        setItems(prev => prev.filter(i => i.id !== id));
+    const handleRemoveUnit = (id: number) => {
+        setUnits(prev => prev.filter(u => u.id !== id));
     };
 
     const goToStep = (step: number) => {
-        if (step > currentStep) {
-            // Validation before moving forward
-            if (currentStep === 1 && (!areaInspeksi || !pic)) {
-                alert('Mohon lengkapi Area Inspeksi dan nama PIC');
-                return;
-            }
-            // Optional: require at least one item per line? For now, allow skipping lines (maybe no hydrant there).
+        if (step === 2 && (!area || !pic)) {
+            alert('Mohon lengkapi Area dan Nama PIC');
+            return;
+        }
+        if (step === 3 && units.length === 0) {
+            alert('Mohon tambahkan minimal 1 unit Hydrant');
+            return;
         }
         setCurrentStep(step);
     };
@@ -157,69 +138,54 @@ export const HydrantInspectionScreen: React.FC<HydrantFormProps> = ({ onNavigate
 
         setLoading(true);
         try {
-            const inspectionData = {
-                date: new Date(),
-                location: areaInspeksi,
-                checklistData: JSON.stringify({
-                    items: items.map(item => ({
-                        lineNumber: item.lineNumber,
-                        komponenUnit: item.komponenUnit,
-                        subKomponen: item.subKomponen,
-                        checks: item.checks,
-                        condition: item.condition,
-                        notes: item.notes
-                    })),
-                    photos: sessionPhotos,
-                    periodeInspeksi: `${MONTH_NAMES[new Date().getMonth()]} ${new Date().getFullYear()}`,
-                    diketahuiOleh,
-                    diPeriksaOleh,
-                    signatureDiketahui,
-                    signatureDiPeriksa
-                }),
-                notes: '',
-                pic: diPeriksaOleh,
-                userId: user?.id
-            };
+            const results = [];
+            for (const [index, unit] of units.entries()) {
+                // Attach session photos to the first unit's checklistData for persistence
+                const checklistPayload: any = { ...unit.checks };
+                if (index === 0 && sessionPhotos.length > 0) {
+                    checklistPayload.photos = sessionPhotos;
+                }
 
-            const response = await fetch('/api/hydrant', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(inspectionData),
-            });
-            const data = await response.json();
+                const response = await fetch('/api/hydrant', { // Assuming endpoint is generic or same logic
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        date: new Date(),
+                        location: area, // Area as main location context
+                        subKomponen: unit.location, // Specific location stored in subKomponen or we need a new field? 
+                        // Note: Existing schema might expect specific fields. 
+                        // Let's check schema: hydrantInspections usually has location, unitNumber, etc.
+                        // Assuming valid schema usage:
+                        unitNumber: unit.tagNumber,
+                        checklistData: JSON.stringify(checklistPayload), // All checks
+                        condition: unit.condition,
+                        notes: unit.notes,
+                        pic: diPeriksaOleh,
+                        userId: user?.id
+                    }),
+                });
+                const data = await response.json();
+                if (data.id) {
+                    results.push({ ...unit, dbId: data.id });
+                }
+            }
 
-            if (data.id) {
-                alert('Inspeksi Hydrant berhasil disimpan!');
+            if (results.length === units.length) {
+                alert(`${results.length} unit Hydrant berhasil disimpan!`);
 
-                // Clear local storage session
-                localStorage.removeItem('hydrant_step');
-                localStorage.removeItem('hydrant_area');
-                localStorage.removeItem('hydrant_pic');
-
-                localStorage.removeItem('hydrant_items');
-                localStorage.removeItem('hydrant_nextId');
-                localStorage.removeItem('hydrant_signer_known');
-                localStorage.removeItem('hydrant_signer_checked');
-                localStorage.removeItem('hydrant_sig_known');
-                localStorage.removeItem('hydrant_sig_checked');
-                localStorage.removeItem('hydrant_photos');
-
-                // Reset state manually to ensure UI updates immediately
-                setCurrentStep(1);
-                setItems([]);
-                setSessionPhotos([]);
-                setChecks({});
-                setAreaInspeksi('');
-                // setPic(''); // Keep PIC maybe? Or reset. Let's reset to default or keep user name.
-                setDiketahuiOleh('');
-                setDiPeriksaOleh('');
-                setSignatureDiketahui('');
-                setSignatureDiPeriksa('');
-
+                // Create PDF Data
+                const unitsForPDF = units.map((u, idx) => ({
+                    no: idx + 1,
+                    location: u.location,
+                    tagNumber: u.tagNumber,
+                    checks: u.checks,
+                    condition: u.condition,
+                    notes: u.notes
+                }));
 
                 await generateHydrantPDF({
-                    id: data.id,
-                    location: areaInspeksi,
+                    id: results[0].dbId,
+                    location: area,
                     pic: diPeriksaOleh,
                     diketahuiOleh,
                     diPeriksaOleh,
@@ -227,21 +193,25 @@ export const HydrantInspectionScreen: React.FC<HydrantFormProps> = ({ onNavigate
                     signatureDiPeriksa,
                     periodeInspeksi: `${MONTH_NAMES[new Date().getMonth()]} ${new Date().getFullYear()}`,
                     createdAt: new Date().toISOString(),
-                    items: items.map((item, idx) => ({
-                        no: idx + 1,
-                        lineNumber: item.lineNumber,
-                        komponenUnit: item.komponenUnit,
-                        subKomponen: item.subKomponen,
-                        checks: item.checks,
-                        condition: item.condition,
-                        notes: item.notes
-                    })),
+                    units: unitsForPDF,
                     photos: sessionPhotos
-                });
+                } as any);
+
+                // Clear storage
+                localStorage.removeItem('hydrant_step');
+                localStorage.removeItem('hydrant_area');
+                localStorage.removeItem('hydrant_pic');
+                localStorage.removeItem('hydrant_units');
+                localStorage.removeItem('hydrant_nextId');
+                localStorage.removeItem('hydrant_signer_known');
+                localStorage.removeItem('hydrant_signer_checked');
+                localStorage.removeItem('hydrant_sig_known');
+                localStorage.removeItem('hydrant_sig_checked');
+                localStorage.removeItem('hydrant_photos');
 
                 onNavigate('history');
             } else {
-                alert('Gagal menyimpan inspeksi.');
+                alert(`Berhasil menyimpan ${results.length} dari ${units.length} unit`);
             }
         } catch (err) {
             console.error('Submit error:', err);
@@ -252,29 +222,22 @@ export const HydrantInspectionScreen: React.FC<HydrantFormProps> = ({ onNavigate
     };
 
     const StepIndicator = () => (
-        <div className="flex items-center justify-center gap-1 py-3 bg-white/10 overflow-x-auto px-4">
-            {[1, 2, 3, 4, 5, 6, 7].map((step) => {
-                let label = '';
-                if (step === 1) label = 'Info';
-                else if (step === 7) label = 'Review';
-                else label = `L${step - 1}`; // L1, L2...
-
-                return (
-                    <div key={step} className="flex items-center flex-shrink-0">
-                        <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-all border-2 ${currentStep === step
-                            ? 'bg-white text-cyan-600 border-white'
-                            : currentStep > step
-                                ? 'bg-green-500 text-white border-green-500'
-                                : 'bg-transparent text-white/50 border-white/30'
-                            }`}>
-                            {currentStep > step ? <Check size={14} /> : label}
-                        </div>
-                        {step < 7 && (
-                            <div className={`w-4 h-0.5 mx-0.5 rounded ${currentStep > step ? 'bg-green-500' : 'bg-white/20'}`} />
-                        )}
+        <div className="flex items-center justify-center gap-2 py-3 bg-white/10">
+            {[1, 2, 3].map((step) => (
+                <div key={step} className="flex items-center">
+                    <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold transition-all ${currentStep === step
+                        ? 'bg-white text-emerald-600'
+                        : currentStep > step
+                            ? 'bg-emerald-800 text-white'
+                            : 'bg-white/30 text-white'
+                        }`}>
+                        {currentStep > step ? <Check size={16} /> : step}
                     </div>
-                );
-            })}
+                    {step < 3 && (
+                        <div className={`w-8 h-1 mx-1 rounded ${currentStep > step ? 'bg-emerald-800' : 'bg-white/30'}`} />
+                    )}
+                </div>
+            ))}
         </div>
     );
 
@@ -282,7 +245,7 @@ export const HydrantInspectionScreen: React.FC<HydrantFormProps> = ({ onNavigate
         <div className="w-full min-h-screen bg-[#F3F6F8] font-sans pb-32 flex flex-col">
             <LoadingOverlay isLoading={loading} message="Menyimpan inspeksi..." />
 
-            <div className="bg-cyan-600 pt-6 pb-2 px-4 sticky top-0 z-20 shadow-md shrink-0">
+            <div className="bg-emerald-600 pt-6 pb-2 px-4 sticky top-0 z-20 shadow-md shrink-0">
                 <div className="flex items-center gap-3 mb-3">
                     <button
                         onClick={() => currentStep === 1 ? onNavigate('home') : setCurrentStep(currentStep - 1)}
@@ -292,15 +255,15 @@ export const HydrantInspectionScreen: React.FC<HydrantFormProps> = ({ onNavigate
                     </button>
                     <div className="flex-1">
                         <h1 className="text-lg font-bold text-white">INSPEKSI HYDRANT</h1>
-                        <p className="text-cyan-100 text-xs">
+                        <p className="text-emerald-100 text-xs">
                             {currentStep === 1 && 'Langkah 1: Informasi Inspeksi'}
-                            {currentStep >= 2 && currentStep <= 6 && `Langkah ${currentStep}: Inspeksi ${activeLine}`}
-                            {currentStep === 7 && 'Langkah 7: Review & Tanda Tangan'}
+                            {currentStep === 2 && 'Langkah 2: Tambah Unit Hydrant'}
+                            {currentStep === 3 && 'Langkah 3: Review & Tanda Tangan'}
                         </p>
                     </div>
-                    {items.length > 0 && (
+                    {units.length > 0 && (
                         <div className="bg-white/20 px-3 py-1 rounded-full">
-                            <span className="text-white text-sm font-bold">{items.length} Item</span>
+                            <span className="text-white text-sm font-bold">{units.length} Unit</span>
                         </div>
                     )}
                 </div>
@@ -312,12 +275,12 @@ export const HydrantInspectionScreen: React.FC<HydrantFormProps> = ({ onNavigate
                 {currentStep === 1 && (
                     <div className="bg-white rounded-xl p-5 shadow-sm space-y-5 max-w-2xl mx-auto w-full">
                         <div className="flex items-center gap-3 mb-4">
-                            <div className="w-12 h-12 bg-cyan-100 rounded-xl flex items-center justify-center">
-                                <Droplets size={24} className="text-cyan-600" />
+                            <div className="w-12 h-12 bg-emerald-100 rounded-xl flex items-center justify-center">
+                                <FileText size={24} className="text-emerald-600" />
                             </div>
                             <div>
                                 <h2 className="font-bold text-slate-800 text-lg">Informasi Inspeksi</h2>
-                                <p className="text-slate-500 text-sm">Pilih area dan nama petugas</p>
+                                <p className="text-slate-500 text-sm">Pilih lokasi dan nama petugas</p>
                             </div>
                         </div>
 
@@ -326,26 +289,32 @@ export const HydrantInspectionScreen: React.FC<HydrantFormProps> = ({ onNavigate
                                 <label className="text-xs font-bold text-slate-600 uppercase block mb-2">AREA INSPEKSI</label>
                                 <div className="relative">
                                     <select
-                                        value={areaInspeksi}
-                                        onChange={(e) => setAreaInspeksi(e.target.value)}
-                                        className="w-full h-12 px-4 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium focus:outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 transition-all appearance-none cursor-pointer"
+                                        value={area}
+                                        onChange={(e) => {
+                                            setArea(e.target.value);
+                                            // Reset lower data
+                                            setUnits([]);
+                                            setNextId(1);
+                                            resetUnitForm();
+                                        }}
+                                        className="w-full h-12 px-4 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all appearance-none cursor-pointer"
                                     >
                                         <option value="">-- Pilih Area --</option>
-                                        {HYDRANT_AREAS.map((area) => (
-                                            <option key={area} value={area}>{area}</option>
+                                        {HYDRANT_AREAS.map((loc) => (
+                                            <option key={loc} value={loc}>{loc}</option>
                                         ))}
                                     </select>
                                     <ChevronDown size={20} className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
                                 </div>
                             </div>
                             <div>
-                                <label className="text-xs font-bold text-slate-600 uppercase block mb-2">NAMA PIC (PETUGAS INSPEKSI)</label>
+                                <label className="text-xs font-bold text-slate-600 uppercase block mb-2">NAMA PIC (PETUGAS)</label>
                                 <input
                                     type="text"
                                     value={pic}
                                     onChange={(e) => setPic(e.target.value)}
                                     placeholder="Masukkan nama petugas..."
-                                    className="w-full h-12 px-4 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium focus:outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 transition-all"
+                                    className="w-full h-12 px-4 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all"
                                 />
                             </div>
 
@@ -358,8 +327,7 @@ export const HydrantInspectionScreen: React.FC<HydrantFormProps> = ({ onNavigate
                                         localStorage.removeItem('hydrant_step');
                                         localStorage.removeItem('hydrant_area');
                                         localStorage.removeItem('hydrant_pic');
-
-                                        localStorage.removeItem('hydrant_items');
+                                        localStorage.removeItem('hydrant_units');
                                         localStorage.removeItem('hydrant_nextId');
                                         localStorage.removeItem('hydrant_signer_known');
                                         localStorage.removeItem('hydrant_signer_checked');
@@ -376,18 +344,17 @@ export const HydrantInspectionScreen: React.FC<HydrantFormProps> = ({ onNavigate
                             </button>
                             <button
                                 onClick={() => goToStep(2)}
-                                disabled={!areaInspeksi || !pic}
-                                className="flex-1 bg-cyan-600 hover:bg-cyan-700 disabled:bg-slate-300 text-white font-bold py-4 rounded-xl shadow-lg active:scale-[0.98] transition-all flex items-center justify-center gap-3"
+                                disabled={!area || !pic}
+                                className="flex-1 bg-emerald-600 hover:bg-emerald-700 disabled:bg-slate-300 text-white font-bold py-4 rounded-xl shadow-lg active:scale-[0.98] transition-all flex items-center justify-center gap-3"
                             >
-                                Lanjut ke Tambah Item
+                                Lanjut ke Tambah Unit
                                 <ArrowRight size={20} />
                             </button>
                         </div>
                     </div>
                 )}
 
-                {/* Dynamic Line Steps (2-6) */}
-                {currentStep >= 2 && currentStep <= 6 && (
+                {currentStep === 2 && (
                     <div className="space-y-4 max-w-5xl mx-auto w-full">
                         <div className="bg-white rounded-xl p-4 shadow-sm space-y-4">
                             <div className="flex items-center gap-3 mb-2">
@@ -395,70 +362,79 @@ export const HydrantInspectionScreen: React.FC<HydrantFormProps> = ({ onNavigate
                                     <Plus size={20} className="text-orange-600" />
                                 </div>
                                 <div>
-                                    <h2 className="font-bold text-slate-800">Inspeksi {activeLine}</h2>
-                                    <p className="text-slate-500 text-xs">Area: {areaInspeksi}</p>
+                                    <h2 className="font-bold text-slate-800">Tambah Unit Hydrant</h2>
+                                    <p className="text-slate-500 text-xs">Area: {area}</p>
                                 </div>
-                                <span className="text-xs text-slate-400 ml-auto bg-slate-100 px-3 py-1 rounded-full">Item ke-{items.length + 1}</span>
+                                <span className="text-xs text-slate-400 ml-auto bg-slate-100 px-3 py-1 rounded-full">Unit ke-{units.length + 1}</span>
                             </div>
 
-                            <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                                 <div>
-                                    <label className="text-[10px] font-bold text-slate-500 uppercase block mb-1">LINE</label>
-                                    <input
-                                        type="text"
-                                        value={activeLine}
-                                        disabled
-                                        className="w-full h-10 px-3 bg-slate-100 border border-slate-200 rounded-lg text-sm font-bold text-slate-500 cursor-not-allowed"
-                                    />
+                                    <label className="text-[10px] font-bold text-slate-500 uppercase block mb-1">LOKASI TITIK HYDRANT</label>
+                                    <div className="relative">
+                                        <select
+                                            value={isManualLocation ? 'MANUAL_ENTRY' : location}
+                                            onChange={(e) => {
+                                                const val = e.target.value;
+                                                if (val === 'MANUAL_ENTRY') {
+                                                    setIsManualLocation(true);
+                                                    setLocation('');
+                                                    setTagNumber('');
+                                                } else {
+                                                    setIsManualLocation(false);
+                                                    setLocation(val);
+                                                    // Auto fill tag
+                                                    const foundLoc = availableLocations.find(l => l.displayName === val);
+                                                    if (foundLoc) {
+                                                        const numPart = parseTagNumber(foundLoc.regNumber);
+                                                        setTagNumber(numPart);
+                                                    } else {
+                                                        setTagNumber('');
+                                                    }
+                                                }
+                                            }}
+                                            className="w-full h-10 px-3 bg-slate-50 border border-slate-200 rounded-lg text-sm font-medium focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all appearance-none cursor-pointer pr-8"
+                                        >
+                                            <option value="">-- Pilih Lokasi --</option>
+                                            {availableLocations.map(p => (
+                                                <option key={`${p.location}|${p.regNumber}`} value={p.displayName}>{p.displayName}</option>
+                                            ))}
+                                            <option value="MANUAL_ENTRY">Lainnya (Input Manual)</option>
+                                        </select>
+                                        <ChevronDown size={16} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
+                                    </div>
+                                    {isManualLocation && (
+                                        <input
+                                            type="text"
+                                            value={location}
+                                            onChange={(e) => setLocation(e.target.value)}
+                                            placeholder="Masukkan Lokasi Hydrant Manual..."
+                                            className="w-full mt-2 h-10 px-3 bg-slate-50 border border-slate-200 rounded-lg text-sm font-medium focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all"
+                                        />
+                                    )}
                                 </div>
+
                                 <div>
-                                    <label className="text-[10px] font-bold text-slate-500 uppercase block mb-1">KOMPONEN UNIT</label>
-                                    <select
-                                        value={komponenUnit}
-                                        onChange={(e) => {
-                                            setKomponenUnit(e.target.value);
-                                            const firstSub = KOMPONEN_OPTIONS[e.target.value]?.subKomponen[0] || '';
-                                            setSubKomponen(firstSub);
-                                            setChecks({});
-                                        }}
-                                        className="w-full h-10 px-3 bg-slate-50 border border-slate-200 rounded-lg text-sm font-medium focus:outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 transition-all"
-                                    >
-                                        {Object.keys(KOMPONEN_OPTIONS).map(k => (
-                                            <option key={k} value={k}>{k}</option>
-                                        ))}
-                                    </select>
-                                </div>
-                                <div>
-                                    <label className="text-[10px] font-bold text-slate-500 uppercase block mb-1">SUB-KOMPONEN</label>
-                                    <select
-                                        value={subKomponen}
-                                        onChange={(e) => {
-                                            setSubKomponen(e.target.value);
-                                            setChecks({});
-                                        }}
-                                        className="w-full h-10 px-3 bg-slate-50 border border-slate-200 rounded-lg text-sm font-medium focus:outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 transition-all"
-                                    >
-                                        {KOMPONEN_OPTIONS[komponenUnit]?.subKomponen.map(s => (
-                                            <option key={s} value={s}>{s}</option>
-                                        ))}
-                                    </select>
-                                </div>
-                                <div>
-                                    <label className="text-[10px] font-bold text-slate-500 uppercase block mb-1">NO UNIT</label>
-                                    <input
-                                        type="text"
-                                        value={unitNumber}
-                                        onChange={(e) => setUnitNumber(e.target.value)}
-                                        placeholder="01, 02..."
-                                        className="w-full h-10 px-3 bg-slate-50 border border-slate-200 rounded-lg text-sm font-medium focus:outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 transition-all"
-                                    />
+                                    <label className="text-[10px] font-bold text-slate-500 uppercase block mb-1">NO TAG / NO LAMBUNG (cukup angka)</label>
+                                    <div className="flex items-center gap-2">
+                                        <span className="text-sm font-bold text-slate-600 bg-slate-100 px-2 py-2 rounded-lg">HYD-</span>
+                                        <input
+                                            type="number"
+                                            value={tagNumber}
+                                            onChange={(e) => setTagNumber(e.target.value.replace(/\D/g, ''))}
+                                            placeholder={`${units.length + 1}`}
+                                            className="flex-1 h-10 px-3 bg-slate-50 border border-slate-200 rounded-lg text-sm font-medium focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all"
+                                            min="1"
+                                        />
+                                    </div>
+                                    {tagNumber && <span className="text-xs text-slate-500 mt-1 block">Output: {formatTagNumber('hydrant', tagNumber)}</span>}
                                 </div>
                             </div>
 
                             <div className="bg-slate-50 rounded-xl p-3">
-                                <p className="text-[10px] text-slate-500 font-medium mb-2">DESKRIPSI PEMERIKSAAN (Centang jika OK)</p>
-                                <div className="space-y-2">
-                                    {currentDeskripsi.map((item) => (
+                                <p className="text-[10px] text-slate-500 font-medium mb-2">ITEM PEMERIKSAAN (Centang jika OK)</p>
+                                <div className="grid grid-cols-2 md:grid-cols-2 gap-2">
+                                    {HYDRANT_CHECKLIST_ITEMS.map((item) => (
                                         <label key={item} className="flex items-center gap-2 bg-white rounded-lg px-3 py-2 cursor-pointer hover:bg-slate-100 transition-colors">
                                             <input
                                                 type="checkbox"
@@ -466,7 +442,7 @@ export const HydrantInspectionScreen: React.FC<HydrantFormProps> = ({ onNavigate
                                                 onChange={() => handleCheck(item)}
                                                 className="w-4 h-4 accent-emerald-500"
                                             />
-                                            <span className="text-sm text-slate-700">{item}</span>
+                                            <span className="text-xs text-slate-700">{item}</span>
                                         </label>
                                     ))}
                                 </div>
@@ -474,19 +450,19 @@ export const HydrantInspectionScreen: React.FC<HydrantFormProps> = ({ onNavigate
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                                 <div>
-                                    <label className="text-[10px] font-bold text-slate-500 uppercase block mb-1">LAYAK / TIDAK LAYAK</label>
+                                    <label className="text-[10px] font-bold text-slate-500 uppercase block mb-1">KONDISI HYDRANT</label>
                                     <div className="grid grid-cols-2 gap-2">
                                         <button
-                                            onClick={() => setCondition('L')}
-                                            className={`py-2 rounded-lg text-xs font-bold border transition-all ${condition === 'L' ? 'bg-emerald-500 text-white border-emerald-500' : 'bg-white text-slate-400 border-slate-200'}`}
+                                            onClick={() => setCondition('LAYAK')}
+                                            className={`py-2 rounded-lg text-xs font-bold border transition-all ${condition === 'LAYAK' ? 'bg-emerald-500 text-white border-emerald-500' : 'bg-white text-slate-400 border-slate-200'}`}
                                         >
-                                            L (LAYAK)
+                                            LAYAK
                                         </button>
                                         <button
-                                            onClick={() => setCondition('TL')}
-                                            className={`py-2 rounded-lg text-xs font-bold border transition-all ${condition === 'TL' ? 'bg-red-500 text-white border-red-500' : 'bg-white text-slate-400 border-slate-200'}`}
+                                            onClick={() => setCondition('TIDAK LAYAK')}
+                                            className={`py-2 rounded-lg text-xs font-bold border transition-all ${condition === 'TIDAK LAYAK' ? 'bg-red-500 text-white border-red-500' : 'bg-white text-slate-400 border-slate-200'}`}
                                         >
-                                            TL (TIDAK LAYAK)
+                                            TIDAK LAYAK
                                         </button>
                                     </div>
                                 </div>
@@ -497,52 +473,29 @@ export const HydrantInspectionScreen: React.FC<HydrantFormProps> = ({ onNavigate
                                         value={notes}
                                         onChange={(e) => setNotes(e.target.value)}
                                         placeholder="Catatan (opsional)..."
-                                        className="w-full h-10 px-3 bg-slate-50 border border-slate-200 rounded-lg text-sm font-medium focus:outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 transition-all"
+                                        className="w-full h-10 px-3 bg-slate-50 border border-slate-200 rounded-lg text-sm font-medium focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all"
                                     />
-                                </div>
-                                <div className="md:col-span-2">
                                 </div>
                             </div>
 
+
                             <button
-                                onClick={() => {
-                                    // Make sure to add current item logic if needed? 
-                                    // Use handleAddItem for the current form state to items list
-                                    const newLineItem: HydrantLineItem = {
-                                        id: nextId,
-                                        lineNumber: activeLine, // Use activeLine
-                                        komponenUnit,
-                                        subKomponen: `${subKomponen} ${unitNumber}`,
-                                        checks: { ...checks },
-                                        condition,
-                                        notes
-                                    };
-
-                                    // Basic validation before adding
-                                    if (!subKomponen) {
-                                        alert('Mohon lengkapi data item');
-                                        return;
-                                    }
-
-                                    setItems(prev => [...prev, newLineItem]);
-                                    setNextId(prev => prev + 1);
-                                    resetItemForm();
-                                }}
-                                className="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 rounded-xl shadow-md active:scale-[0.98] transition-all flex items-center justify-center gap-2"
+                                onClick={handleAddUnit}
+                                disabled={!location}
+                                className="w-full bg-orange-500 hover:bg-orange-600 disabled:bg-slate-300 text-white font-bold py-3 rounded-xl shadow-md active:scale-[0.98] transition-all flex items-center justify-center gap-2"
                             >
                                 <Plus size={18} />
-                                Tambah Item ke {activeLine}
+                                Tambah ke Daftar
                             </button>
                         </div>
 
-                        {/* List Items Specific to Current Line for clarity? Or All? Let's show All but highlight current line maybe? Or just All. */}
-                        {items.length > 0 && (
+                        {units.length > 0 && (
                             <div className="bg-white rounded-xl p-4 shadow-sm">
                                 <div className="flex items-center gap-3 mb-3">
                                     <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
                                         <ClipboardList size={16} className="text-blue-600" />
                                     </div>
-                                    <h2 className="font-bold text-slate-700">Daftar Item ({items.length})</h2>
+                                    <h2 className="font-bold text-slate-700">Daftar Unit ({units.length}/30)</h2>
                                 </div>
 
                                 <div className="overflow-x-auto">
@@ -550,28 +503,26 @@ export const HydrantInspectionScreen: React.FC<HydrantFormProps> = ({ onNavigate
                                         <thead>
                                             <tr className="bg-slate-300">
                                                 <th className="px-2 py-2 text-left font-bold text-slate-700">NO</th>
-                                                <th className="px-2 py-2 text-left font-bold text-slate-700">LINE</th>
-                                                <th className="px-2 py-2 text-left font-bold text-slate-700">KOMPONEN</th>
-                                                <th className="px-2 py-2 text-left font-bold text-slate-700">SUB-KOMPONEN</th>
-                                                <th className="px-2 py-2 text-center font-bold text-slate-700">L/TL</th>
+                                                <th className="px-2 py-2 text-left font-bold text-slate-700">Lokasi</th>
+                                                <th className="px-2 py-2 text-center font-bold text-slate-700">Tag</th>
+                                                <th className="px-2 py-2 text-center font-bold text-slate-700">Kondisi</th>
                                                 <th className="px-2 py-2 text-center font-bold text-slate-700">Hapus</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {items.map((item, idx) => (
-                                                <tr key={item.id} className="border-b border-slate-100 hover:bg-slate-50">
+                                            {units.map((unit, idx) => (
+                                                <tr key={unit.id} className="border-b border-slate-100 hover:bg-slate-50">
                                                     <td className="px-2 py-2 font-medium">{idx + 1}</td>
-                                                    <td className="px-2 py-2">{item.lineNumber}</td>
-                                                    <td className="px-2 py-2">{item.komponenUnit}</td>
-                                                    <td className="px-2 py-2">{item.subKomponen}</td>
+                                                    <td className="px-2 py-2">{unit.location}</td>
+                                                    <td className="px-2 py-2 text-center">{unit.tagNumber}</td>
                                                     <td className="px-2 py-2 text-center">
-                                                        <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${item.condition === 'L' ? 'bg-emerald-100 text-emerald-700' : 'bg-red-100 text-red-700'}`}>
-                                                            {item.condition}
+                                                        <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${unit.condition === 'LAYAK' ? 'bg-emerald-100 text-emerald-700' : 'bg-red-100 text-red-700'}`}>
+                                                            {unit.condition === 'LAYAK' ? 'L' : 'TL'}
                                                         </span>
                                                     </td>
                                                     <td className="px-2 py-2 text-center">
                                                         <button
-                                                            onClick={() => handleRemoveItem(item.id)}
+                                                            onClick={() => handleRemoveUnit(unit.id)}
                                                             className="p-1 text-red-500 hover:bg-red-50 rounded"
                                                         >
                                                             <Trash2 size={14} />
@@ -587,24 +538,25 @@ export const HydrantInspectionScreen: React.FC<HydrantFormProps> = ({ onNavigate
 
                         <div className="flex gap-3">
                             <button
-                                onClick={() => setCurrentStep(currentStep - 1)}
+                                onClick={() => setCurrentStep(1)}
                                 className="flex-1 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold py-4 rounded-xl active:scale-[0.98] transition-all flex items-center justify-center gap-2"
                             >
                                 <ArrowLeft size={18} />
-                                {currentStep === 2 ? 'Info' : `Line ${currentStep - 2}`}
+                                Kembali
                             </button>
                             <button
-                                onClick={() => goToStep(currentStep + 1)}
-                                className="flex-1 bg-cyan-600 hover:bg-cyan-700 text-white font-bold py-4 rounded-xl shadow-lg active:scale-[0.98] transition-all flex items-center justify-center gap-2"
+                                onClick={() => goToStep(3)}
+                                disabled={units.length === 0}
+                                className="flex-1 bg-emerald-600 hover:bg-emerald-700 disabled:bg-slate-300 text-white font-bold py-4 rounded-xl shadow-lg active:scale-[0.98] transition-all flex items-center justify-center gap-2"
                             >
-                                {currentStep === 6 ? 'Lanjut Review' : `Lanjut ke Line ${currentStep}`}
+                                Lanjut Review
                                 <ArrowRight size={18} />
                             </button>
                         </div>
                     </div>
                 )}
 
-                {currentStep === 7 && (
+                {currentStep === 3 && (
                     <div className="space-y-4 max-w-3xl mx-auto w-full">
                         <div className="bg-white rounded-xl p-5 shadow-sm">
                             <div className="flex items-center gap-3 mb-4">
@@ -613,7 +565,7 @@ export const HydrantInspectionScreen: React.FC<HydrantFormProps> = ({ onNavigate
                                 </div>
                                 <div>
                                     <h2 className="font-bold text-slate-800 text-lg">Review Inspeksi</h2>
-                                    <p className="text-slate-500 text-sm">{areaInspeksi}</p>
+                                    <p className="text-slate-500 text-sm">{area}</p>
                                 </div>
                             </div>
 
@@ -621,19 +573,19 @@ export const HydrantInspectionScreen: React.FC<HydrantFormProps> = ({ onNavigate
                                 <div className="grid grid-cols-2 gap-4 text-sm">
                                     <div>
                                         <span className="text-slate-500">Area:</span>
-                                        <p className="font-bold text-slate-800">{areaInspeksi}</p>
+                                        <p className="font-bold text-slate-800">{area}</p>
                                     </div>
                                     <div>
-                                        <span className="text-slate-500">Jumlah Item:</span>
-                                        <p className="font-bold text-slate-800">{items.length} Item</p>
+                                        <span className="text-slate-500">Jumlah Unit:</span>
+                                        <p className="font-bold text-slate-800">{units.length} Unit</p>
                                     </div>
                                     <div>
                                         <span className="text-slate-500">Layak:</span>
-                                        <p className="font-bold text-emerald-600">{items.filter(i => i.condition === 'L').length} Item</p>
+                                        <p className="font-bold text-emerald-600">{units.filter(u => u.condition === 'LAYAK').length} Unit</p>
                                     </div>
                                     <div>
                                         <span className="text-slate-500">Tidak Layak:</span>
-                                        <p className="font-bold text-red-600">{items.filter(i => i.condition === 'TL').length} Item</p>
+                                        <p className="font-bold text-red-600">{units.filter(u => u.condition === 'TIDAK LAYAK').length} Unit</p>
                                     </div>
                                 </div>
                             </div>
@@ -643,24 +595,24 @@ export const HydrantInspectionScreen: React.FC<HydrantFormProps> = ({ onNavigate
                                     <thead>
                                         <tr className="bg-slate-100">
                                             <th className="px-2 py-2 text-left">NO</th>
-                                            <th className="px-2 py-2 text-left">LINE</th>
-                                            <th className="px-2 py-2 text-left">SUB-KOMPONEN</th>
-                                            <th className="px-2 py-2 text-center">L/TL</th>
+                                            <th className="px-2 py-2 text-left">Lokasi</th>
+                                            <th className="px-2 py-2 text-center">Tag</th>
+                                            <th className="px-2 py-2 text-center">Kondisi</th>
                                             <th className="px-2 py-2 text-left">Keterangan</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {items.map((item, idx) => (
-                                            <tr key={item.id} className="border-b border-slate-100">
+                                        {units.map((unit, idx) => (
+                                            <tr key={unit.id} className="border-b border-slate-100">
                                                 <td className="px-2 py-2">{idx + 1}</td>
-                                                <td className="px-2 py-2">{item.lineNumber}</td>
-                                                <td className="px-2 py-2">{item.subKomponen}</td>
+                                                <td className="px-2 py-2">{unit.location}</td>
+                                                <td className="px-2 py-2 text-center">{unit.tagNumber}</td>
                                                 <td className="px-2 py-2 text-center">
-                                                    <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${item.condition === 'L' ? 'bg-emerald-100 text-emerald-700' : 'bg-red-100 text-red-700'}`}>
-                                                        {item.condition}
+                                                    <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${unit.condition === 'LAYAK' ? 'bg-emerald-100 text-emerald-700' : 'bg-red-100 text-red-700'}`}>
+                                                        {unit.condition === 'LAYAK' ? 'L' : 'TL'}
                                                     </span>
                                                 </td>
-                                                <td className="px-2 py-2 text-slate-500">{item.notes || '-'}</td>
+                                                <td className="px-2 py-2 text-slate-500">{unit.notes || '-'}</td>
                                             </tr>
                                         ))}
                                     </tbody>
@@ -708,8 +660,6 @@ export const HydrantInspectionScreen: React.FC<HydrantFormProps> = ({ onNavigate
                                 )}
                             </div>
                         </div>
-
-
 
                         <div className="bg-white rounded-xl p-5 shadow-sm">
                             <div className="flex items-center gap-3 mb-4">
@@ -760,26 +710,26 @@ export const HydrantInspectionScreen: React.FC<HydrantFormProps> = ({ onNavigate
 
                         <div className="flex gap-3">
                             <button
-                                onClick={() => setCurrentStep(6)}
+                                onClick={() => setCurrentStep(2)}
                                 className="flex-1 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold py-4 rounded-xl active:scale-[0.98] transition-all flex items-center justify-center gap-2"
                             >
                                 <ArrowLeft size={18} />
-                                Kembali ke Line 5
+                                Kembali
                             </button>
                             <button
                                 onClick={handleSubmitAll}
                                 disabled={!diketahuiOleh || !diPeriksaOleh || !signatureDiketahui || !signatureDiPeriksa}
-                                className="flex-1 bg-green-600 hover:bg-green-700 disabled:bg-slate-300 text-white font-bold py-4 rounded-xl shadow-lg active:scale-[0.98] transition-all flex items-center justify-center gap-2"
+                                className="flex-1 bg-emerald-600 hover:bg-emerald-700 disabled:bg-slate-300 text-white font-bold py-4 rounded-xl shadow-lg active:scale-[0.98] transition-all flex items-center justify-center gap-2"
                             >
                                 <Save size={18} />
                                 Simpan & Download PDF
                             </button>
                         </div>
                     </div>
-                )}
+                )
+                }
 
-            </div>
+            </div >
         </div >
-
     );
 };
