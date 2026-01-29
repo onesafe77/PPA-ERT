@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { useLocalStorage } from '../utils/useLocalStorage';
-import { ArrowLeft, ArrowRight, Save, ChevronDown, Plus, Trash2, ClipboardList, PenTool, Droplets, Camera, X, Check } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Save, ChevronDown, Plus, Trash2, ClipboardList, PenTool, Droplets, Camera, X, Check, FileText } from 'lucide-react';
 import { ScreenName } from '../types';
 import { LoadingOverlay } from '../components/LoadingOverlay';
 import { generateHydrantPDF } from '../utils/pdfGenerator';

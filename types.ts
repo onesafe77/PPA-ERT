@@ -1,4 +1,4 @@
-export type ScreenName = 'landing' | 'login' | 'home' | 'inspection' | 'chat' | 'history' | 'profile' | 'p2h-form' | 'qr-scan' | 'schedule' | 'notifications' | 'apar-form' | 'hydrant-form' | 'pica-form' | 'eyewash-form' | 'smoke-detector-form';
+export type ScreenName = 'landing' | 'login' | 'home' | 'inspection' | 'chat' | 'history' | 'profile' | 'p2h-form' | 'qr-scan' | 'schedule' | 'notifications' | 'apar-form' | 'hydrant-form' | 'pica-form' | 'eyewash-form' | 'smoke-detector-form' | 'equipment-form';
 
 export interface Inspection {
   id: string;

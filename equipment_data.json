@@ -1,0 +1,341 @@
+[
+  [
+    "FORM INSPEKSI PERALATAN EMERGENCY RESPONSE TEAM TAHUN 2026"
+  ],
+  [
+    "PPA                                                                                                                   PT PUTRA PERKASA ABADI site  BORNEO INDOBARA"
+  ],
+  [
+    "NO.",
+    "NAMA PERALATAN",
+    "NO. LAMBUNG",
+    "JMLH",
+    "MERK",
+    "JANUARI 2026",
+    null,
+    "AREA/LOKASI",
+    "KATEGORI",
+    "KETERANGAN"
+  ],
+  [
+    null,
+    null,
+    null,
+    null,
+    null,
+    "LAYAK",
+    "TIDAK\nLAYAK"
+  ],
+  [
+    1,
+    "REGULATOR LSP",
+    "RLSP 04",
+    1,
+    "Life Support Product",
+    null,
+    null,
+    7009,
+    "FIRST AID/MFR"
+  ],
+  [
+    2,
+    "TABUNG LSP",
+    "TLSP 03",
+    1,
+    "Life Support Product",
+    null,
+    null,
+    7009,
+    "FIRST AID/MFR"
+  ],
+  [
+    3,
+    "STHETOSCOPE",
+    "ST 10",
+    1,
+    "GENERAL CARE",
+    null,
+    null,
+    7009,
+    "FIRST AID/MFR"
+  ],
+  [
+    4,
+    "LIGHTING LED",
+    "LED 05",
+    1,
+    "AMSCUD",
+    null,
+    null,
+    7009,
+    "JUNGLE RESCUE"
+  ],
+  [
+    5,
+    "LIFE JACKET",
+    "LJ 22",
+    1,
+    "ADULT UNIVERSAL",
+    null,
+    null,
+    7009,
+    "WATER RESCUE"
+  ],
+  [
+    6,
+    "LIFE JACKET",
+    "LJ 26",
+    1,
+    "BIAWAK",
+    null,
+    null,
+    7009,
+    "WATER RESCUE"
+  ],
+  [
+    7,
+    "LIFE JACKET",
+    "LJ 30",
+    1,
+    "BIAWAK",
+    null,
+    null,
+    7009,
+    "WATER RESCUE"
+  ],
+  [
+    8,
+    "RESCUE TUBE",
+    "RT.01",
+    1,
+    "GUARD",
+    null,
+    null,
+    7009,
+    "WATER RESCUE"
+  ],
+  [
+    9,
+    "HELMET RESCUE (KUNING)",
+    "H.05",
+    1,
+    "PETZL",
+    null,
+    null,
+    7009,
+    "HART"
+  ],
+  [
+    10,
+    "HELMET RESCUE (KUNING)",
+    "H.07",
+    1,
+    "PETZL",
+    null,
+    null,
+    7009,
+    "HART"
+  ],
+  [
+    12,
+    "DOUBLE LANYARD",
+    "DL.09",
+    1,
+    "PETZL",
+    null,
+    null,
+    7009,
+    "HART"
+  ],
+  [
+    13,
+    "DOUBLE LANYARD",
+    "DL.15",
+    1,
+    "PETZL",
+    null,
+    null,
+    7009,
+    "HART"
+  ],
+  [
+    14,
+    "TALI LEMPAR",
+    "TAL.03",
+    1,
+    "ASTRAL",
+    null,
+    null,
+    7009,
+    "WATER RESCUE"
+  ],
+  [
+    15,
+    "FULL BODY HARNESS",
+    "FBH.02",
+    1,
+    "PETZL",
+    null,
+    null,
+    7009,
+    "HART"
+  ],
+  [
+    16,
+    "FULL BODY HARNESS",
+    "FBH.12",
+    1,
+    "PETZL",
+    null,
+    null,
+    7009,
+    "HART"
+  ],
+  [
+    17,
+    "TALI KARMANTLE",
+    "TK.07",
+    1,
+    "-",
+    null,
+    null,
+    7009,
+    "HART"
+  ],
+  [
+    18,
+    "RESPONDER BAG",
+    "RBAG.05",
+    1,
+    "FERNO",
+    null,
+    null,
+    7009,
+    "FIRST AID/MFR"
+  ],
+  [
+    19,
+    "BVM",
+    "BVM.02",
+    1,
+    "MPM",
+    null,
+    null,
+    7009,
+    "FIRST AID/MFR"
+  ],
+  [
+    20,
+    "SPALK",
+    "SPALK.01",
+    1,
+    "PMI",
+    null,
+    null,
+    7009,
+    "FIRST AID/MFR"
+  ],
+  [
+    21,
+    "NECK COLLAR",
+    "NC.07",
+    1,
+    "ABN",
+    null,
+    null,
+    7009,
+    "FIRST AID/MFR"
+  ],
+  [
+    22,
+    "SHACKLE",
+    "S.03",
+    1,
+    "CROSBY",
+    null,
+    null,
+    7009,
+    "RAR"
+  ],
+  [
+    23,
+    "SPHYGMOMANOMETER",
+    "S.12",
+    1,
+    "ABN",
+    null,
+    null,
+    7009,
+    "FIRST AID/MFR"
+  ],
+  [
+    24,
+    "HECTING SET",
+    "HS.06",
+    1,
+    "MARWA",
+    null,
+    null,
+    7009,
+    "FIRST AID/MFR"
+  ],
+  [
+    25,
+    "RESPONDER BAG",
+    "RBAG.11",
+    1,
+    "4LIFE",
+    null,
+    null,
+    7009,
+    "FIRST AID/MFR"
+  ],
+  [
+    26,
+    "WEBBING SLING",
+    "SLI.03",
+    1,
+    "DAWSON",
+    null,
+    null,
+    7009,
+    "FIRST AID/MFR"
+  ],
+  [
+    27,
+    "THERMOGUN IR",
+    "TG. 03",
+    1,
+    "YUWEEL",
+    null,
+    null,
+    7009,
+    "FIRST AID/MFR"
+  ],
+  [
+    28,
+    "RING BUOY",
+    "RING.03",
+    1,
+    "LIFE BUOY",
+    null,
+    null,
+    7009,
+    "FIRST AID/MFR"
+  ],
+  [
+    "Girimulya,             JANUARI 2026"
+  ],
+  [
+    "Diperiksa Oleh,"
+  ],
+  [
+    "Diketahui Oleh,"
+  ],
+  [
+    "( MUHAMMAD MAULANDHANI )"
+  ],
+  [
+    "GROUP LEADER EMERGENCY"
+  ]
+]
